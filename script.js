@@ -27,7 +27,7 @@ const SVGS = {
  * UTILS
  */
 const formatNum = (num) => {
-    return num === 0 ? "kosong" : num.toString();
+    return num.toString();
 };
 
 const translations = {
@@ -35,11 +35,11 @@ const translations = {
         choose_avatar: "Pilih Hero",
         select_level: "Pilih Tahap",
         lvl1_title: "Hutan Tambah",
-        lvl1_desc: "Tambah kosong - 10",
+        lvl1_desc: "Tambah 0 - 10",
         lvl2_title: "Lembah Tolak",
-        lvl2_desc: "Tolak kosong - 15",
+        lvl2_desc: "Tolak 0 - 15",
         lvl3_title: "Gunung Nombor",
-        lvl3_desc: "Tambah & Tolak kosong - 20",
+        lvl3_desc: "Tambah & Tolak 0 - 20",
         play: "MAIN",
         well_done: "Hebat!",
         try_again: "Cuba Lagi!",
@@ -67,8 +67,9 @@ const translations = {
         off: "TUTUP",
         on: "BUKA",
         loading: "Memuat...",
-        bgm_volume: "Muzik Latar",
-        sfx_volume: "Kesan Bunyi",
+        bgm_toggle: "Muzik Latar",
+        bgm_volume: "Volume Muzik",
+        sfx_volume: "Volume Kesan Bunyi",
         reduced_motion: "Kurangkan Animasi",
         minutes_label: "min",
         star_balance: "Baki Bintang",
@@ -83,11 +84,11 @@ const translations = {
         choose_avatar: "Choose Hero",
         select_level: "Select Level",
         lvl1_title: "Addition Forest",
-        lvl1_desc: "Addition kosong - 10",
+        lvl1_desc: "Addition 0 - 10",
         lvl2_title: "Subtraction Valley",
-        lvl2_desc: "Subtraction kosong - 15",
+        lvl2_desc: "Subtraction 0 - 15",
         lvl3_title: "Number Mountain",
-        lvl3_desc: "Mix kosong - 20",
+        lvl3_desc: "Mix 0 - 20",
         play: "PLAY",
         well_done: "Well Done!",
         try_again: "Try Again!",
@@ -115,8 +116,9 @@ const translations = {
         off: "OFF",
         on: "ON",
         loading: "Loading...",
-        bgm_volume: "Background Music",
-        sfx_volume: "Sound Effects",
+        bgm_toggle: "Background Music",
+        bgm_volume: "Music Volume",
+        sfx_volume: "SFX Volume",
         reduced_motion: "Reduced Motion",
         minutes_label: "min",
         star_balance: "Star Balance",
@@ -149,6 +151,7 @@ const gameState = {
         speechSpeed: 1.0,
         reducedMotion: false,
         bgmVolume: 0.3,
+        bgmEnabled: true,
         sfxVolume: 0.5,
         voiceEnabled: true
     },
@@ -281,8 +284,12 @@ const SpeechManager = {
         if (!gameState.accessibility.voiceEnabled || !this.synth) return;
         this.synth.cancel();
 
-        // Enforce the "kosong" rule in speech
-        const speechText = text.toString().replace(/\b0\b/g, "kosong");
+        let speechText = text.toString();
+
+        // Enforce the "kosong" rule in Malay speech
+        if (LanguageManager.current === 'ms') {
+            speechText = speechText.replace(/\b0\b/g, "kosong");
+        }
 
         const utterance = new SpeechSynthesisUtterance(speechText);
         utterance.rate = gameState.accessibility.speechSpeed || 1.0;
@@ -362,7 +369,7 @@ const AudioManager = {
     },
 
     startBGM() {
-        if (this.bgmStarted) return;
+        if (this.bgmStarted || !gameState.accessibility.bgmEnabled) return;
         this.createContext();
         this.bgmStarted = true;
         this.playBGMLoop();
@@ -371,6 +378,7 @@ const AudioManager = {
     playBGMLoop() {
         const ctx = this.audioCtx;
         const playNote = (freq, time, duration, vol) => {
+            if (!gameState.accessibility.bgmEnabled) return;
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
             osc.type = 'sine';
@@ -389,6 +397,7 @@ const AudioManager = {
         let nextTime = ctx.currentTime + 0.5;
 
         const loop = () => {
+            if (!this.bgmStarted) return;
             const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
             for (let i = 0; i < 8; i++) {
                 playNote(notes[i % 4], nextTime + i * quarter, quarter * 0.8, 0.05);
@@ -397,6 +406,10 @@ const AudioManager = {
             setTimeout(loop, 8 * quarter * 1000 - 100);
         };
         loop();
+    },
+
+    stopBGM() {
+        this.bgmStarted = false;
     }
 };
 
@@ -542,6 +555,7 @@ const GameManager = {
         const contrastBtn = document.getElementById('toggle-contrast');
         const dyslexiaBtn = document.getElementById('toggle-dyslexia');
         const voiceBtn = document.getElementById('toggle-voice-global');
+        const bgmToggleBtn = document.getElementById('toggle-bgm');
         const motionBtn = document.getElementById('toggle-motion');
         const bgmSlider = document.getElementById('bgm-slider');
         const sfxSlider = document.getElementById('sfx-slider');
@@ -549,6 +563,7 @@ const GameManager = {
         if (contrastBtn) contrastBtn.innerText = acc.highContrast ? LanguageManager.get('on') : LanguageManager.get('off');
         if (dyslexiaBtn) dyslexiaBtn.innerText = acc.dyslexiaFont ? LanguageManager.get('on') : LanguageManager.get('off');
         if (voiceBtn) voiceBtn.innerText = acc.voiceEnabled ? LanguageManager.get('on') : LanguageManager.get('off');
+        if (bgmToggleBtn) bgmToggleBtn.innerText = acc.bgmEnabled ? LanguageManager.get('on') : LanguageManager.get('off');
         if (motionBtn) motionBtn.innerText = acc.reducedMotion ? LanguageManager.get('on') : LanguageManager.get('off');
         if (bgmSlider) bgmSlider.value = acc.bgmVolume;
         if (sfxSlider) sfxSlider.value = acc.sfxVolume;
@@ -686,7 +701,9 @@ const GameManager = {
     },
 
     endLevel() {
-        const resultStars = Math.min(3, Math.ceil(gameState.currentScore / 20));
+        // QuestionsPerLevel is 5, correct answer gives 10 points. Max score 50.
+        // 50 points = 3 stars, 30-40 = 2 stars, 10-20 = 1 star
+        const resultStars = Math.min(3, Math.ceil(gameState.currentScore / 16));
         gameState.levelRatings[gameState.selectedLevel] = Math.max(gameState.levelRatings[gameState.selectedLevel], resultStars);
 
         let bonusStars = resultStars === 3 ? 50 : (resultStars === 2 ? 20 : 10);
@@ -794,8 +811,16 @@ const GameManager = {
         document.getElementById('buy-hint-btn').onclick = () => this.buyHint();
         document.getElementById('map-return-btn').onclick = () => {
             if (gameState.levelRatings[gameState.selectedLevel] >= 1 && gameState.selectedLevel < 3) {
-                gameState.selectedLevel++;
-                this.showScreen('map-screen');
+                const currentLevel = gameState.selectedLevel;
+                const nextLevel = currentLevel + 1;
+
+                if (gameState.unlockedLevels.includes(nextLevel)) {
+                    gameState.selectedLevel = nextLevel;
+                    gameState.currentQuestionIndex = 0; // Reset progress for the next level
+                    this.showScreen('map-screen');
+                } else {
+                    this.showScreen('level-selection-screen');
+                }
             } else {
                 this.showScreen('level-selection-screen');
             }
@@ -827,6 +852,16 @@ const GameManager = {
         document.getElementById('toggle-voice-global').onclick = () => {
             gameState.accessibility.voiceEnabled = !gameState.accessibility.voiceEnabled;
             document.getElementById('toggle-voice-global').innerText = gameState.accessibility.voiceEnabled ? LanguageManager.get('on') : LanguageManager.get('off');
+            SaveSystem.save();
+        };
+        document.getElementById('toggle-bgm').onclick = () => {
+            gameState.accessibility.bgmEnabled = !gameState.accessibility.bgmEnabled;
+            document.getElementById('toggle-bgm').innerText = gameState.accessibility.bgmEnabled ? LanguageManager.get('on') : LanguageManager.get('off');
+            if (gameState.accessibility.bgmEnabled) {
+                AudioManager.startBGM();
+            } else {
+                AudioManager.stopBGM();
+            }
             SaveSystem.save();
         };
         document.getElementById('bgm-slider').oninput = (e) => {
