@@ -141,15 +141,18 @@
                 <div class="star-rating" id="result-stars" style="display: flex; justify-content: center; gap: 10px; margin: 20px 0;">
                     <!-- Stars injected here -->
                 </div>
-                <div style="font-size: 1.5rem; margin-bottom: 30px; font-weight: 900;">
+                <div style="font-size: 1.5rem; margin-bottom: 10px; font-weight: 900;">
                     <span data-key="score">Skor</span>: <span id="final-score">0</span>
                 </div>
+                <div id="auto-continue-timer" style="font-size: 0.9rem; font-weight: 700; color: var(--secondary-color); margin-bottom: 20px;"></div>
                 <div id="reward-display" class="mt-20 mb-20">
                     <!-- Unlockable animals injected here -->
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 15px;">
                     <button id="map-return-btn" class="btn-block btn-primary" data-key="continue">TERUSKAN</button>
                     <button id="retry-btn" class="btn-block btn-secondary" data-key="retry">CUBA LAGI</button>
+                    <button id="replay-all-btn" class="btn-block btn-accent hidden" data-key="replay_all">MAIN SEMULA</button>
+                    <button id="practice-mode-btn" class="btn-block btn-secondary hidden" data-key="practice_mode">MOD LATIHAN</button>
                 </div>
             </div>
         </section>

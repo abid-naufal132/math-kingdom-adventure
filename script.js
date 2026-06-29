@@ -73,6 +73,10 @@ const translations = {
         reduced_motion: "Kurangkan Animasi",
         minutes_label: "min",
         star_balance: "Baki Bintang",
+        auto_continue: "Seterusnya dalam",
+        congratulations: "Tahniah!",
+        replay_all: "MAIN SEMULA",
+        practice_mode: "MOD LATIHAN",
         animals_label: "Haiwan",
         badges_label: "Lencana",
         badge_novice: "Permulaan Matematik",
@@ -122,6 +126,10 @@ const translations = {
         reduced_motion: "Reduced Motion",
         minutes_label: "min",
         star_balance: "Star Balance",
+        auto_continue: "Next in",
+        congratulations: "Congratulations!",
+        replay_all: "REPLAY ALL",
+        practice_mode: "PRACTICE MODE",
         animals_label: "Animals",
         badges_label: "Badges",
         badge_novice: "Math Novice",
@@ -569,10 +577,19 @@ const GameManager = {
         if (sfxSlider) sfxSlider.value = acc.sfxVolume;
     },
 
+    updateTheme() {
+        const app = document.getElementById('app-container');
+        if (app) {
+            app.classList.remove('level-1', 'level-2', 'level-3');
+            app.classList.add(`level-${gameState.selectedLevel}`);
+        }
+    },
+
     showScreen(screenId) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         const target = document.getElementById(screenId);
         if (target) {
+            this.updateTheme();
             target.classList.add('active');
             gameState.currentScreen = screenId;
             if (screenId === 'level-selection-screen') LevelManager.renderLevelList();
@@ -581,6 +598,7 @@ const GameManager = {
     },
 
     startLevel() {
+        this.updateTheme();
         gameState.currentScore = 0;
         gameState.currentQuestionIndex = 0;
         gameState.wrongAttempts = 0;
@@ -701,15 +719,16 @@ const GameManager = {
     },
 
     endLevel() {
-        // QuestionsPerLevel is 5, correct answer gives 10 points. Max score 50.
-        // 50 points = 3 stars, 30-40 = 2 stars, 10-20 = 1 star
         const resultStars = Math.min(3, Math.ceil(gameState.currentScore / 16));
         gameState.levelRatings[gameState.selectedLevel] = Math.max(gameState.levelRatings[gameState.selectedLevel], resultStars);
 
         let bonusStars = resultStars === 3 ? 50 : (resultStars === 2 ? 20 : 10);
         StarManager.addStars(bonusStars);
 
-        if (resultStars >= 1) {
+        const isFinalLevel = gameState.selectedLevel === 3;
+        const hasPassed = resultStars >= 1;
+
+        if (hasPassed) {
             const nextLv = gameState.selectedLevel + 1;
             if (nextLv <= 3 && !gameState.unlockedLevels.includes(nextLv)) {
                 gameState.unlockedLevels.push(nextLv);
@@ -719,11 +738,33 @@ const GameManager = {
 
         this.checkBadges();
         SaveSystem.save();
+
+        const resultTitle = document.getElementById('result-title');
+        const replayAllBtn = document.getElementById('replay-all-btn');
+        const practiceModeBtn = document.getElementById('practice-mode-btn');
+        const mapReturnBtn = document.getElementById('map-return-btn');
+        const retryBtn = document.getElementById('retry-btn');
+
+        if (isFinalLevel && hasPassed) {
+            resultTitle.innerText = LanguageManager.get('congratulations');
+            replayAllBtn.classList.remove('hidden');
+            practiceModeBtn.classList.remove('hidden');
+            mapReturnBtn.classList.add('hidden');
+            retryBtn.classList.add('hidden');
+        } else {
+            resultTitle.innerText = hasPassed ? LanguageManager.get('well_done') : LanguageManager.get('try_again');
+            replayAllBtn.classList.add('hidden');
+            practiceModeBtn.classList.add('hidden');
+            mapReturnBtn.classList.remove('hidden');
+            retryBtn.classList.remove('hidden');
+        }
+
         this.renderResultScreen(resultStars);
         this.showScreen('result-screen');
         AudioManager.playSFX('complete');
     },
 
+    autoContinueInterval: null,
     renderResultScreen(stars) {
         const starContainer = document.getElementById('result-stars');
         starContainer.innerHTML = '';
@@ -734,6 +775,28 @@ const GameManager = {
             starContainer.appendChild(star);
         }
         document.getElementById('final-score').innerText = formatNum(gameState.currentScore);
+
+        // Auto-continue logic
+        const timerEl = document.getElementById('auto-continue-timer');
+        if (this.autoContinueInterval) clearInterval(this.autoContinueInterval);
+
+        const isFinalLevel = gameState.selectedLevel === 3;
+        const hasPassed = stars >= 1;
+
+        if (hasPassed && !isFinalLevel) {
+            let timeLeft = 5;
+            timerEl.innerText = `${LanguageManager.get('auto_continue')} ${timeLeft}s...`;
+            this.autoContinueInterval = setInterval(() => {
+                timeLeft--;
+                timerEl.innerText = `${LanguageManager.get('auto_continue')} ${timeLeft}s...`;
+                if (timeLeft <= 0) {
+                    clearInterval(this.autoContinueInterval);
+                    document.getElementById('map-return-btn').click();
+                }
+            }, 1000);
+        } else {
+            timerEl.innerText = '';
+        }
     },
 
     unlockRandomAnimal() {
@@ -810,14 +873,21 @@ const GameManager = {
         document.getElementById('retry-btn').onclick = () => this.startLevel();
         document.getElementById('buy-hint-btn').onclick = () => this.buyHint();
         document.getElementById('map-return-btn').onclick = () => {
+            if (this.autoContinueInterval) clearInterval(this.autoContinueInterval);
             if (gameState.levelRatings[gameState.selectedLevel] >= 1 && gameState.selectedLevel < 3) {
                 const currentLevel = gameState.selectedLevel;
                 const nextLevel = currentLevel + 1;
 
                 if (gameState.unlockedLevels.includes(nextLevel)) {
                     gameState.selectedLevel = nextLevel;
-                    gameState.currentQuestionIndex = 0; // Reset progress for the next level
+                    gameState.currentQuestionIndex = 0;
                     this.showScreen('map-screen');
+                    // Automatically transition to the next level after showing the map briefly
+                    setTimeout(() => {
+                        if (gameState.currentScreen === 'map-screen' && gameState.selectedLevel === nextLevel) {
+                            this.startLevel();
+                        }
+                    }, 2000);
                 } else {
                     this.showScreen('level-selection-screen');
                 }
@@ -888,6 +958,18 @@ const GameManager = {
                 localStorage.removeItem(SaveSystem.KEY);
                 location.reload();
             }
+        };
+
+        document.getElementById('replay-all-btn').onclick = () => {
+            gameState.unlockedLevels = [1];
+            gameState.selectedLevel = 1;
+            gameState.currentQuestionIndex = 0;
+            SaveSystem.save();
+            this.startLevel();
+        };
+
+        document.getElementById('practice-mode-btn').onclick = () => {
+            this.showScreen('level-selection-screen');
         };
     },
 
