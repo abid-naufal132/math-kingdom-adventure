@@ -12,40 +12,41 @@
     <div id="app-container">
         <!-- Splash Screen -->
         <section id="splash-screen" class="screen active">
-            <div class="game-title-container">
+            <div class="game-title-container text-center">
                 <h1 class="game-title">Math Safari</h1>
                 <h2 class="game-subtitle">Kerajaan Nombor</h2>
             </div>
-            <div class="avatar-display" id="main-avatar-preview">
-                <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" fill="#2ecc71"/></svg>
+            <div class="avatar-display mt-20" id="main-avatar-preview">
+                <!-- SVG Icon will be injected here -->
             </div>
             <button id="start-game-btn" class="btn-block btn-primary">MULA / START</button>
+            <button id="open-dashboard-btn" class="btn-block btn-secondary mt-20" style="padding: 12px;">STATS</button>
         </section>
 
         <!-- Avatar Selection Screen -->
         <section id="avatar-screen" class="screen">
             <div class="top-nav">
                 <button class="icon-btn back-to-splash">
-                    <svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+                    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                 </button>
                 <h1 data-key="choose_avatar">Pilih Hero</h1>
             </div>
             <div class="avatar-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px;">
-                <button class="avatar-choice" data-avatar="lion" style="background: white; border: 4px solid #eee; border-radius: 24px; padding: 20px; cursor: pointer;">
-                    <div style="font-size: 4rem;">🦁</div>
-                    <p style="font-weight: 900;">Leo</p>
+                <button class="avatar-choice card" data-avatar="lion">
+                    <div class="avatar-icon-svg" data-icon="lion"></div>
+                    <p style="font-weight: 900; margin-top: 10px;">Leo</p>
                 </button>
-                <button class="avatar-choice" data-avatar="monkey" style="background: white; border: 4px solid #eee; border-radius: 24px; padding: 20px; cursor: pointer;">
-                    <div style="font-size: 4rem;">🐒</div>
-                    <p style="font-weight: 900;">Momo</p>
+                <button class="avatar-choice card" data-avatar="monkey">
+                    <div class="avatar-icon-svg" data-icon="monkey"></div>
+                    <p style="font-weight: 900; margin-top: 10px;">Momo</p>
                 </button>
-                <button class="avatar-choice" data-avatar="zebra" style="background: white; border: 4px solid #eee; border-radius: 24px; padding: 20px; cursor: pointer;">
-                    <div style="font-size: 4rem;">🦓</div>
-                    <p style="font-weight: 900;">Zizi</p>
+                <button class="avatar-choice card" data-avatar="zebra">
+                    <div class="avatar-icon-svg" data-icon="zebra"></div>
+                    <p style="font-weight: 900; margin-top: 10px;">Zizi</p>
                 </button>
-                <button class="avatar-choice" data-avatar="elephant" style="background: white; border: 4px solid #eee; border-radius: 24px; padding: 20px; cursor: pointer;">
-                    <div style="font-size: 4rem;">🐘</div>
-                    <p style="font-weight: 900;">Elly</p>
+                <button class="avatar-choice card" data-avatar="elephant">
+                    <div class="avatar-icon-svg" data-icon="elephant"></div>
+                    <p style="font-weight: 900; margin-top: 10px;">Elly</p>
                 </button>
             </div>
         </section>
@@ -54,44 +55,18 @@
         <section id="level-selection-screen" class="screen">
             <div class="top-nav">
                 <button class="icon-btn back-to-avatar">
-                    <svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+                    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                 </button>
                 <h1 data-key="select_level">Pilih Tahap</h1>
-                <div class="settings-btns" style="display: flex; gap: 10px;">
-                    <button id="lang-toggle" class="icon-btn">BM</button>
-                    <button id="sound-toggle" class="icon-btn">
-                        <svg viewBox="0 0 24 24" id="sound-icon"><path d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.85 14,18.71V20.77C18.01,19.86 21,16.28 21,12C21,7.72 18.01,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16.02C15.5,15.29 16.5,13.77 16.5,12M3,9V15H7L12,20V4L7,9H3Z" /></svg>
+                <div class="settings-btns" style="display: flex; gap: 8px;">
+                    <button id="lang-toggle" class="icon-btn" style="font-weight: 900; font-size: 0.9rem;">BM</button>
+                    <button id="accessibility-btn" class="icon-btn">
+                        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
                     </button>
                 </div>
             </div>
-            <div class="level-grid">
-                <div class="level-card" data-level="1">
-                    <div class="level-badge">1</div>
-                    <div class="level-info">
-                        <h3 data-key="lvl1_title">Hutan Tambah</h3>
-                        <p data-key="lvl1_desc">0 - 10</p>
-                    </div>
-                </div>
-                <div class="level-card locked" data-level="2">
-                    <div class="level-badge">2</div>
-                    <div class="level-info">
-                        <h3 data-key="lvl2_title">Lembah Tolak</h3>
-                        <p data-key="lvl2_desc">0 - 15</p>
-                    </div>
-                    <div class="lock-status">
-                        <svg viewBox="0 0 24 24" style="width: 24px;"><path d="M12,17A2,2 0 0,0 14,15C14,13.89 13.11,13 12,13A2,2 0 0,0 10,15C10,16.11 10.89,17 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.89,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z" /></svg>
-                    </div>
-                </div>
-                <div class="level-card locked" data-level="3">
-                    <div class="level-badge">3</div>
-                    <div class="level-info">
-                        <h3 data-key="lvl3_title">Gunung Nombor</h3>
-                        <p data-key="lvl3_desc">0 - 20</p>
-                    </div>
-                    <div class="lock-status">
-                        <svg viewBox="0 0 24 24" style="width: 24px;"><path d="M12,17A2,2 0 0,0 14,15C14,13.89 13.11,13 12,13A2,2 0 0,0 10,15C10,16.11 10.89,17 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.89,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z" /></svg>
-                    </div>
-                </div>
+            <div class="level-grid" id="level-list">
+                <!-- Levels generated by JS -->
             </div>
         </section>
 
@@ -99,17 +74,19 @@
         <section id="map-screen" class="screen">
             <div class="top-nav">
                 <button class="icon-btn back-to-levels">
-                    <svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+                    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                 </button>
-                <div class="game-stats">
-                    <svg viewBox="0 0 24 24" style="width: 24px; fill: #f1c40f;"><path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></svg>
-                    <span id="map-stars-count">0</span>
+                <div class="game-stats icon-btn" style="width: auto; gap: 8px;">
+                    <svg viewBox="0 0 24 24" style="fill: #f1c40f; stroke: #c29d0b;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <span id="map-stars-count" style="font-weight: 900;">0</span>
                 </div>
             </div>
-            <div class="map-canvas" id="safari-path">
-                <!-- Nodes generated by JS -->
+            <div class="map-container">
+                <div id="safari-path">
+                    <!-- Nodes generated by JS -->
+                </div>
             </div>
-            <div style="margin-top: 20px;">
+            <div class="mt-20">
                 <button id="play-level-btn" class="btn-block btn-accent" data-key="play">MAIN</button>
             </div>
         </section>
@@ -118,36 +95,47 @@
         <section id="game-screen" class="screen">
             <div class="top-nav">
                 <button id="exit-game-btn" class="icon-btn">
-                    <svg viewBox="0 0 24 24"><path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" /></svg>
+                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                 </button>
-                <div class="progress-track">
+                <div class="progress-container">
                     <div id="progress-bar" class="progress-fill"></div>
                 </div>
-                <div class="game-stats">
-                    <svg viewBox="0 0 24 24" style="width: 24px; fill: #f1c40f;"><path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></svg>
-                    <span id="game-score-count">0</span>
+                <div class="game-stats icon-btn" style="width: auto; gap: 8px;">
+                    <span id="game-score-count" style="font-weight: 900;">0</span>
                 </div>
             </div>
 
-            <div class="question-box">
-                <div id="level-label" style="font-weight: 900; color: var(--secondary-color); margin-bottom: 10px;">LEVEL 1</div>
-                <div id="question-text" class="q-text">0 + 0</div>
+            <div class="question-area">
+                <div id="level-label" style="font-weight: 900; color: var(--secondary-color); margin-bottom: 5px;">TAHAP 1</div>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 15px;">
+                    <div id="question-text" class="q-text">0 + 0</div>
+                    <button id="replay-voice-btn" class="icon-btn" style="width: 44px; height: 44px; border-radius: 50%;">
+                        <svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                    </button>
+                </div>
             </div>
 
-            <div id="options-container" class="options-layout">
+            <div id="options-container" class="options-grid">
                 <!-- Generated by JS -->
+            </div>
+
+            <div id="hint-box" class="card mt-20 hidden" style="background: #fff9db; border-color: #fab005; padding: 15px;">
+                <p id="hint-text" style="font-weight: 700; color: #f08c00; text-align: center;"></p>
             </div>
         </section>
 
         <!-- Result Screen -->
         <section id="result-screen" class="screen">
-            <div class="result-card">
+            <div class="card text-center" style="padding: 40px 20px;">
                 <h1 id="result-title" data-key="well_done">Hebat!</h1>
-                <div class="star-rating" id="result-stars">
-                    <svg viewBox="0 0 24 24" style="width: 60px; fill: #f1c40f;"><path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></svg>
+                <div class="star-rating" id="result-stars" style="display: flex; justify-content: center; gap: 10px; margin: 20px 0;">
+                    <!-- Stars injected here -->
                 </div>
-                <div style="font-size: 1.5rem; margin-bottom: 30px;">
+                <div style="font-size: 1.5rem; margin-bottom: 30px; font-weight: 900;">
                     <span data-key="score">Skor</span>: <span id="final-score">0</span>
+                </div>
+                <div id="reward-display" class="mt-20 mb-20">
+                    <!-- Unlockable animals injected here -->
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 15px;">
                     <button id="map-return-btn" class="btn-block btn-primary" data-key="continue">TERUSKAN</button>
@@ -155,13 +143,60 @@
                 </div>
             </div>
         </section>
-    </div>
 
-    <!-- Feedback Overlay -->
-    <div id="feedback-overlay" class="feedback-overlay">
-        <div class="feedback-card">
-            <div id="feedback-icon" style="font-size: 5rem; margin-bottom: 10px;">✅</div>
-            <h2 id="feedback-text" style="font-weight: 900;">BETUL!</h2>
+        <!-- Accessibility Screen -->
+        <section id="accessibility-screen" class="screen">
+            <div class="top-nav">
+                <button class="icon-btn back-to-levels">
+                    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                </button>
+                <h1 data-key="accessibility">Aksesibilitas</h1>
+            </div>
+            <div class="settings-list">
+                <div class="setting-item">
+                    <span data-key="high_contrast">Kontras Tinggi</span>
+                    <button id="toggle-contrast" class="icon-btn" style="width: 80px;">OFF</button>
+                </div>
+                <div class="setting-item">
+                    <span data-key="dyslexia_font">Font Disleksia</span>
+                    <button id="toggle-dyslexia" class="icon-btn" style="width: 80px;">OFF</button>
+                </div>
+                <div class="setting-item">
+                    <span data-key="text_size">Saiz Teks</span>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="text-smaller" class="icon-btn" style="width: 44px;">A-</button>
+                        <button id="text-larger" class="icon-btn" style="width: 44px;">A+</button>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <span data-key="voice_toggle">Suara</span>
+                    <button id="toggle-voice-global" class="icon-btn" style="width: 80px;">ON</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Screen -->
+        <section id="dashboard-screen" class="screen">
+            <div class="top-nav">
+                <button class="icon-btn back-to-splash">
+                    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                </button>
+                <h1 data-key="dashboard_title">Dashboard Guru</h1>
+            </div>
+            <div id="dashboard-content" class="card">
+                <!-- Stats injected here -->
+            </div>
+            <button id="reset-progress-btn" class="btn-block btn-accent" style="background: var(--danger-color); color: white; border-color: var(--danger-shadow);">RESET DATA</button>
+        </section>
+
+        <!-- Feedback Overlay -->
+        <div id="feedback-overlay" class="overlay">
+            <div class="feedback-card">
+                <div id="feedback-icon" style="margin-bottom: 20px;">
+                    <!-- SVG injected here -->
+                </div>
+                <h2 id="feedback-text" style="font-weight: 900; font-size: 2rem;">BETUL!</h2>
+            </div>
         </div>
     </div>
 
