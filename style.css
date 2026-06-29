@@ -83,6 +83,26 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    transition: background 0.8s ease;
+}
+
+#app-container.level-1 { --bg-current: var(--bg-safari); }
+#app-container.level-2 { --bg-current: var(--bg-valley); }
+#app-container.level-3 { --bg-current: var(--bg-mountain); }
+
+.screen {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: 24px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    background: linear-gradient(180deg, var(--bg-current, var(--bg-safari)) 0%, var(--bg-light) 100%);
+    z-index: 10;
+    transition: background 0.8s ease;
 }
 
 @media (min-width: 481px) {
@@ -110,19 +130,6 @@ body {
     .opt-btn { padding: 15px; font-size: 2rem; }
 }
 
-.screen {
-    display: none;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-    padding: 24px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    overflow-y: auto;
-    background: linear-gradient(180deg, var(--bg-safari) 0%, var(--bg-light) 100%);
-    z-index: 10;
-}
 
 .screen.active {
     display: flex;
