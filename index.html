@@ -81,7 +81,7 @@
                 </button>
                 <div class="game-stats icon-btn" style="width: auto; gap: 8px;">
                     <svg viewBox="0 0 24 24" style="fill: #f1c40f; stroke: #c29d0b;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <span class="star-balance-count" style="font-weight: 900;">kosong</span>
+                    <span class="star-balance-count" style="font-weight: 900;">0</span>
                 </div>
             </div>
             <div class="map-container">
@@ -105,14 +105,14 @@
                 </div>
                 <div class="game-stats icon-btn" style="width: auto; gap: 8px;">
                     <svg viewBox="0 0 24 24" style="fill: #f1c40f; stroke: #c29d0b; width: 20px; height: 20px;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <span class="star-balance-count" style="font-weight: 900;">kosong</span>
+                    <span class="star-balance-count" style="font-weight: 900;">0</span>
                 </div>
             </div>
 
             <div class="question-area">
                 <div id="level-label" style="font-weight: 900; color: var(--secondary-color); margin-bottom: 5px;">TAHAP 1</div>
                 <div style="display: flex; justify-content: center; align-items: center; gap: 15px;">
-                    <div id="question-text" class="q-text">kosong + kosong</div>
+                    <div id="question-text" class="q-text">0 + 0</div>
                     <button id="replay-voice-btn" class="icon-btn" style="width: 44px; height: 44px; border-radius: 50%;">
                         <svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
                     </button>
@@ -142,7 +142,7 @@
                     <!-- Stars injected here -->
                 </div>
                 <div style="font-size: 1.5rem; margin-bottom: 30px; font-weight: 900;">
-                    <span data-key="score">Skor</span>: <span id="final-score">kosong</span>
+                    <span data-key="score">Skor</span>: <span id="final-score">0</span>
                 </div>
                 <div id="reward-display" class="mt-20 mb-20">
                     <!-- Unlockable animals injected here -->
@@ -182,12 +182,16 @@
                     <span data-key="voice_toggle">Suara</span>
                     <button id="toggle-voice-global" class="icon-btn" style="width: 80px;">ON</button>
                 </div>
+                <div class="setting-item">
+                    <span data-key="bgm_toggle">Muzik Latar</span>
+                    <button id="toggle-bgm" class="icon-btn" style="width: 80px;">ON</button>
+                </div>
                 <div class="setting-item" style="flex-direction: column; align-items: flex-start; gap: 10px;">
-                    <span data-key="bgm_volume">Muzik Latar</span>
+                    <span data-key="bgm_volume">Volume Muzik</span>
                     <input type="range" id="bgm-slider" min="0" max="1" step="0.1" value="0.3" style="width: 100%;">
                 </div>
                 <div class="setting-item" style="flex-direction: column; align-items: flex-start; gap: 10px;">
-                    <span data-key="sfx_volume">Kesan Bunyi</span>
+                    <span data-key="sfx_volume">Volume Kesan Bunyi</span>
                     <input type="range" id="sfx-slider" min="0" max="1" step="0.1" value="0.5" style="width: 100%;">
                 </div>
                 <div class="setting-item">
