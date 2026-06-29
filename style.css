@@ -285,6 +285,17 @@ h2 { font-size: 1.2rem; font-weight: 700; color: #636e72; }
     justify-content: space-around;
     align-items: center;
     padding: 40px 0;
+    position: relative;
+}
+
+#safari-path::before {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 80%;
+    background: rgba(0,0,0,0.1);
+    border-radius: 4px;
+    z-index: 1;
 }
 
 .node {
@@ -435,6 +446,35 @@ h2 { font-size: 1.2rem; font-weight: 700; color: #636e72; }
     0% { transform: scale(1); }
     50% { transform: scale(1.4); }
     100% { transform: scale(1); }
+}
+
+@keyframes starSpin {
+    from { transform: rotate(0deg) scale(0); opacity: 0; }
+    to { transform: rotate(360deg) scale(1); opacity: 1; }
+}
+
+@keyframes charJump {
+    from { transform: translateY(0); }
+    to { transform: translateY(-10px); }
+}
+
+.star-hint-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.hint-star {
+    width: 30px;
+    height: 30px;
+    animation: starSpin 0.4s ease-out backwards;
+}
+
+body.reduced-motion * {
+    animation: none !important;
+    transition: none !important;
 }
 
 /* Accessibility settings */
