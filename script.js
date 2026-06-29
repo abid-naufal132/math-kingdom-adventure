@@ -13,10 +13,21 @@ const SVGS = {
     turtle: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="30" width="60" height="50" rx="25" fill="#27ae60"/><rect x="35" y="25" width="30" height="20" rx="10" fill="#2ecc71"/><circle cx="42" cy="32" r="3" fill="#2d3436"/><circle cx="58" cy="32" r="3" fill="#2d3436"/><path d="M35 50 H65 M40 60 H60 M45 70 H55" stroke="#1e8449" stroke-width="4" stroke-linecap="round"/></svg>`,
     rhino: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="15" y="25" width="70" height="60" rx="20" fill="#bdc3c7"/><path d="M50 45 L50 25 L60 45 Z" fill="#ecf0f1"/><circle cx="35" cy="50" r="5" fill="#2d3436"/><circle cx="65" cy="50" r="5" fill="#2d3436"/></svg>`,
     hippo: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="15" y="25" width="70" height="60" rx="30" fill="#9b59b6"/><rect x="30" y="55" width="40" height="25" rx="10" fill="#8e44ad"/><circle cx="35" cy="45" r="5" fill="#2d3436"/><circle cx="65" cy="45" r="5" fill="#2d3436"/></svg>`,
+    badgeNovice: `<svg viewBox="0 0 24 24" fill="#e67e22" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><path d="M12 6l2 4 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1z" fill="white"/></svg>`,
+    badgeExplorer: `<svg viewBox="0 0 24 24" fill="#2ecc71" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M6 12h12" stroke="white" stroke-width="2"/></svg>`,
+    badgeMaster: `<svg viewBox="0 0 24 24" fill="#f1c40f" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><path d="M12 6l2 4 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1z" fill="white"/></svg>`,
+    badgeCollector: `<svg viewBox="0 0 24 24" fill="#9b59b6" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><rect x="7" y="7" width="10" height="10" rx="2" fill="white"/></svg>`,
     check: `<svg viewBox="0 0 24 24" fill="none" stroke="#00b894" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`,
     cross: `<svg viewBox="0 0 24 24" fill="none" stroke="#d63031" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`,
     star: `<svg viewBox="0 0 24 24" fill="#f1c40f" stroke="#f39c12" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
     starEmpty: `<svg viewBox="0 0 24 24" fill="none" stroke="#dfe6e9" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`
+};
+
+/**
+ * UTILS
+ */
+const formatNum = (num) => {
+    return num === 0 ? "kosong" : num.toString();
 };
 
 const translations = {
@@ -24,11 +35,11 @@ const translations = {
         choose_avatar: "Pilih Hero",
         select_level: "Pilih Tahap",
         lvl1_title: "Hutan Tambah",
-        lvl1_desc: "Tambah 0 - 10",
+        lvl1_desc: "Tambah kosong - 10",
         lvl2_title: "Lembah Tolak",
-        lvl2_desc: "Tolak 0 - 15",
+        lvl2_desc: "Tolak kosong - 15",
         lvl3_title: "Gunung Nombor",
-        lvl3_desc: "Tambah & Tolak 0 - 20",
+        lvl3_desc: "Tambah & Tolak kosong - 20",
         play: "MAIN",
         well_done: "Hebat!",
         try_again: "Cuba Lagi!",
@@ -58,17 +69,25 @@ const translations = {
         loading: "Memuat...",
         bgm_volume: "Muzik Latar",
         sfx_volume: "Kesan Bunyi",
-        reduced_motion: "Kurangkan Animasi"
+        reduced_motion: "Kurangkan Animasi",
+        minutes_label: "min",
+        star_balance: "Baki Bintang",
+        animals_label: "Haiwan",
+        badges_label: "Lencana",
+        badge_novice: "Permulaan Matematik",
+        badge_explorer: "Penjelajah Safari",
+        badge_master: "Raja Strategi",
+        badge_collector: "Pengumpul Bintang"
     },
     en: {
         choose_avatar: "Choose Hero",
         select_level: "Select Level",
         lvl1_title: "Addition Forest",
-        lvl1_desc: "Addition 0 - 10",
+        lvl1_desc: "Addition kosong - 10",
         lvl2_title: "Subtraction Valley",
-        lvl2_desc: "Subtraction 0 - 15",
+        lvl2_desc: "Subtraction kosong - 15",
         lvl3_title: "Number Mountain",
-        lvl3_desc: "Mix 0 - 20",
+        lvl3_desc: "Mix kosong - 20",
         play: "PLAY",
         well_done: "Well Done!",
         try_again: "Try Again!",
@@ -98,7 +117,15 @@ const translations = {
         loading: "Loading...",
         bgm_volume: "Background Music",
         sfx_volume: "Sound Effects",
-        reduced_motion: "Reduced Motion"
+        reduced_motion: "Reduced Motion",
+        minutes_label: "min",
+        star_balance: "Star Balance",
+        animals_label: "Animals",
+        badges_label: "Badges",
+        badge_novice: "Math Novice",
+        badge_explorer: "Safari Explorer",
+        badge_master: "Streak Master",
+        badge_collector: "Star Collector"
     }
 };
 
@@ -113,6 +140,7 @@ const gameState = {
     starCurrency: 0,
     streak: 0,
     animals: [],
+    badges: [],
 
     accessibility: {
         highContrast: false,
@@ -158,6 +186,7 @@ const SaveSystem = {
             starCurrency: gameState.starCurrency,
             selectedAvatar: gameState.selectedAvatar,
             animals: gameState.animals,
+            badges: gameState.badges,
             accessibility: gameState.accessibility,
             stats: gameState.stats
         };
@@ -217,6 +246,7 @@ const LanguageManager = {
         if (mainLangToggle) mainLangToggle.innerText = translations[this.current].lang_btn;
 
         StarManager.updateBalanceUI();
+        GameManager.syncAccessibilityUI();
         if (gameState.currentScreen === 'level-selection-screen') LevelManager.renderLevelList();
         if (gameState.currentScreen === 'game-screen' && gameState.currentQuestion) GameManager.renderQuestion();
     },
@@ -250,7 +280,11 @@ const SpeechManager = {
     speak(text) {
         if (!gameState.accessibility.voiceEnabled || !this.synth) return;
         this.synth.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
+
+        // Enforce the "kosong" rule in speech
+        const speechText = text.toString().replace(/\b0\b/g, "kosong");
+
+        const utterance = new SpeechSynthesisUtterance(speechText);
         utterance.rate = gameState.accessibility.speechSpeed || 1.0;
         if (LanguageManager.current === 'ms') {
             utterance.voice = this.voice;
@@ -386,7 +420,7 @@ const QuestionGenerator = {
         }
 
         const options = this.generateOptions(answer, config.max);
-        return { a, b, op, answer, options, text: `${a} ${op} ${b}` };
+        return { a, b, op, answer, options, text: `${formatNum(a)} ${op} ${formatNum(b)}` };
     },
 
     generateOptions(correct, max) {
@@ -420,7 +454,7 @@ const StarManager = {
     },
     updateBalanceUI() {
         document.querySelectorAll('.star-balance-count').forEach(el => {
-            el.innerText = gameState.starCurrency;
+            el.innerText = formatNum(gameState.starCurrency);
             if (!gameState.accessibility.reducedMotion) {
                 el.classList.add('animate-pop');
                 setTimeout(() => el.classList.remove('animate-pop'), 300);
@@ -442,7 +476,7 @@ const LevelManager = {
             const card = document.createElement('div');
             card.className = `level-card ${isLocked ? 'locked' : ''}`;
             card.innerHTML = `
-                <div class="level-badge">${lv}</div>
+                <div class="level-badge">${formatNum(lv)}</div>
                 <div class="level-info">
                     <h3 data-key="lvl${lv}_title">${LanguageManager.get('lvl'+lv+'_title')}</h3>
                     <p data-key="lvl${lv}_desc">${LanguageManager.get('lvl'+lv+'_desc')}</p>
@@ -471,7 +505,7 @@ const LevelManager = {
             node.className = 'node';
             if (i < currentStep) node.classList.add('completed');
             if (i === currentStep) node.classList.add('current');
-            node.innerText = i;
+            node.innerText = formatNum(i);
             container.appendChild(node);
 
             if (i === currentStep) {
@@ -499,7 +533,25 @@ const GameManager = {
         SpeechManager.init();
         this.updateAvatarIcons();
         this.bindEvents();
+        this.syncAccessibilityUI();
         this.showScreen('splash-screen');
+    },
+
+    syncAccessibilityUI() {
+        const acc = gameState.accessibility;
+        const contrastBtn = document.getElementById('toggle-contrast');
+        const dyslexiaBtn = document.getElementById('toggle-dyslexia');
+        const voiceBtn = document.getElementById('toggle-voice-global');
+        const motionBtn = document.getElementById('toggle-motion');
+        const bgmSlider = document.getElementById('bgm-slider');
+        const sfxSlider = document.getElementById('sfx-slider');
+
+        if (contrastBtn) contrastBtn.innerText = acc.highContrast ? LanguageManager.get('on') : LanguageManager.get('off');
+        if (dyslexiaBtn) dyslexiaBtn.innerText = acc.dyslexiaFont ? LanguageManager.get('on') : LanguageManager.get('off');
+        if (voiceBtn) voiceBtn.innerText = acc.voiceEnabled ? LanguageManager.get('on') : LanguageManager.get('off');
+        if (motionBtn) motionBtn.innerText = acc.reducedMotion ? LanguageManager.get('on') : LanguageManager.get('off');
+        if (bgmSlider) bgmSlider.value = acc.bgmVolume;
+        if (sfxSlider) sfxSlider.value = acc.sfxVolume;
     },
 
     showScreen(screenId) {
@@ -534,7 +586,7 @@ const GameManager = {
     renderQuestion() {
         const q = gameState.currentQuestion;
         document.getElementById('question-text').innerText = q.text;
-        document.getElementById('level-label').innerText = `${LanguageManager.get('level_label')} ${gameState.selectedLevel}`;
+        document.getElementById('level-label').innerText = `${LanguageManager.get('level_label')} ${formatNum(gameState.selectedLevel)}`;
         document.getElementById('progress-bar').style.width = `${(gameState.currentQuestionIndex / gameState.questionsPerLevel) * 100}%`;
 
         document.getElementById('hint-box').classList.add('hidden');
@@ -546,7 +598,7 @@ const GameManager = {
         q.options.forEach(opt => {
             const btn = document.createElement('button');
             btn.className = 'opt-btn';
-            btn.innerText = opt;
+            btn.innerText = formatNum(opt);
             btn.onclick = () => this.checkAnswer(opt);
             container.appendChild(btn);
         });
@@ -580,6 +632,7 @@ const GameManager = {
             SpeechManager.speak(LanguageManager.get('correct'));
             gameState.currentQuestionIndex++;
             gameState.wrongAttempts = 0;
+            this.checkBadges();
         } else {
             AudioManager.playSFX('wrong');
             icon.innerHTML = SVGS.cross;
@@ -594,17 +647,42 @@ const GameManager = {
         setTimeout(() => {
             overlay.classList.remove('active');
             if (isCorrect) {
-                if (gameState.currentQuestionIndex < gameState.questionsPerLevel) {
-                    this.showScreen('map-screen');
-                    setTimeout(() => {
+                // Show map after every correct answer to show progression
+                this.showScreen('map-screen');
+
+                setTimeout(() => {
+                    if (gameState.currentQuestionIndex < gameState.questionsPerLevel) {
                         this.showScreen('game-screen');
                         this.nextQuestion();
-                    }, 1500);
-                } else {
-                    this.nextQuestion();
-                }
+                    } else {
+                        this.endLevel();
+                    }
+                }, 1500);
             }
         }, 1200);
+    },
+
+    checkBadges() {
+        const unlocked = [];
+        if (!gameState.badges.includes('novice') && gameState.stats.correctAnswers >= 5) {
+            unlocked.push('novice');
+        }
+        if (!gameState.badges.includes('explorer') && gameState.unlockedLevels.includes(2)) {
+            unlocked.push('explorer');
+        }
+        if (!gameState.badges.includes('master') && gameState.streak >= 5) {
+            unlocked.push('master');
+        }
+        if (!gameState.badges.includes('collector') && gameState.starCurrency >= 100) {
+            unlocked.push('collector');
+        }
+
+        unlocked.forEach(b => {
+            gameState.badges.push(b);
+            AudioManager.playSFX('star');
+            // Visual notification could be added here
+        });
+        if (unlocked.length > 0) SaveSystem.save();
     },
 
     endLevel() {
@@ -622,6 +700,7 @@ const GameManager = {
             if (resultStars === 3) this.unlockRandomAnimal();
         }
 
+        this.checkBadges();
         SaveSystem.save();
         this.renderResultScreen(resultStars);
         this.showScreen('result-screen');
@@ -637,7 +716,7 @@ const GameManager = {
             star.style.width = '50px';
             starContainer.appendChild(star);
         }
-        document.getElementById('final-score').innerText = gameState.currentScore;
+        document.getElementById('final-score').innerText = formatNum(gameState.currentScore);
     },
 
     unlockRandomAnimal() {
@@ -785,12 +864,14 @@ const GameManager = {
 
             // Visual Star Hint System
             const answer = gameState.currentQuestion.answer;
+            const levelMax = gameState.levelConfig[gameState.selectedLevel].max;
+
             hintText.innerHTML = `
-                <div>${LanguageManager.get('star_hint')}${answer}</div>
+                <div>${LanguageManager.get('star_hint')}${formatNum(answer)}</div>
                 <div class="star-hint-container">
-                    ${Array.from({length: answer}, (_, i) => `
+                    ${Array.from({length: levelMax}, (_, i) => `
                         <div class="hint-star" style="animation-delay: ${i * 0.05}s">
-                            ${SVGS.star}
+                            ${i < answer ? SVGS.star : SVGS.starEmpty}
                         </div>
                     `).join('')}
                 </div>
@@ -814,15 +895,26 @@ const GameManager = {
 
         container.innerHTML = `
             <div style="display: grid; gap: 15px; text-align: left;">
-                <div><strong>${LanguageManager.get('level_label')}:</strong> ${gameState.unlockedLevels.length} / 3</div>
-                <div><strong>${LanguageManager.get('total_questions')}:</strong> ${gameState.stats.totalQuestions}</div>
-                <div><strong>${LanguageManager.get('accuracy')}:</strong> ${accuracy}%</div>
-                <div><strong>${LanguageManager.get('time_spent')}:</strong> ${timeMinutes} min</div>
-                <div><strong>Star Balance:</strong> ${gameState.starCurrency}</div>
+                <div><strong>${LanguageManager.get('level_label')}:</strong> ${formatNum(gameState.unlockedLevels.length)} / ${formatNum(3)}</div>
+                <div><strong>${LanguageManager.get('total_questions')}:</strong> ${formatNum(gameState.stats.totalQuestions)}</div>
+                <div><strong>${LanguageManager.get('accuracy')}:</strong> ${formatNum(accuracy)}%</div>
+                <div><strong>${LanguageManager.get('time_spent')}:</strong> ${formatNum(timeMinutes)} ${LanguageManager.get('minutes_label')}</div>
+                <div><strong>${LanguageManager.get('star_balance')}:</strong> ${formatNum(gameState.starCurrency)}</div>
                 <div style="border-top: 1px solid #eee; padding-top: 10px;">
-                    <strong>Animals:</strong>
+                    <strong>${LanguageManager.get('animals_label')}:</strong>
                     <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px;">
                         ${gameState.animals.map(a => `<div style="width: 30px; height: 30px;">${SVGS[a]}</div>`).join('')}
+                    </div>
+                </div>
+                <div style="border-top: 1px solid #eee; padding-top: 10px;">
+                    <strong>${LanguageManager.get('badges_label')}:</strong>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px;">
+                        ${gameState.badges.map(b => `
+                            <div style="text-align: center; width: 60px;">
+                                <div style="width: 40px; height: 40px; margin: 0 auto;">${SVGS['badge' + b.charAt(0).toUpperCase() + b.slice(1)]}</div>
+                                <p style="font-size: 0.6rem; font-weight: 700; margin-top: 4px;">${LanguageManager.get('badge_' + b)}</p>
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
             </div>
