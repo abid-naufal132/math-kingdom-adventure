@@ -3,6 +3,7 @@
  * Modular Production-Ready Codebase
  */
 
+/* --- ASSETS & CONSTANTS --- */
 const SVGS = {
     lion: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="15" y="15" width="70" height="70" rx="20" fill="#f39c12"/><path d="M10 10 H90 V40 H10 Z" fill="#e67e22" rx="10"/><circle cx="35" cy="45" r="5" fill="#2d3436"/><circle cx="65" cy="45" r="5" fill="#2d3436"/><rect x="40" y="60" width="20" height="10" rx="5" fill="#2d3436"/></svg>`,
     monkey: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="60" height="60" rx="25" fill="#d35400"/><circle cx="20" cy="50" r="12" fill="#d35400"/><circle cx="80" cy="50" r="12" fill="#d35400"/><rect x="30" y="35" width="40" height="40" rx="15" fill="#edbb99"/><circle cx="40" cy="45" r="4" fill="#2d3436"/><circle cx="60" cy="45" r="4" fill="#2d3436"/><path d="M40 65 Q50 75 60 65" stroke="#2d3436" stroke-width="3" stroke-linecap="round"/></svg>`,
@@ -23,9 +24,7 @@ const SVGS = {
     starEmpty: `<svg viewBox="0 0 24 24" fill="none" stroke="#dfe6e9" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`
 };
 
-/**
- * UTILS
- */
+/* --- UTILITIES --- */
 const formatNum = (num) => {
     return num.toString();
 };
@@ -47,7 +46,7 @@ const translations = {
         continue: "TERUSKAN",
         retry: "CUBA LAGI",
         correct: "BETUL!",
-        wrong: "SALAH!",
+        wrong: "Cuba lagi! 🌟",
         level_label: "TAHAP",
         lang_btn: "BM",
         accessibility: "Aksesibilitas",
@@ -100,7 +99,7 @@ const translations = {
         continue: "CONTINUE",
         retry: "RETRY",
         correct: "CORRECT!",
-        wrong: "WRONG!",
+        wrong: "Try again! 🌟",
         level_label: "LEVEL",
         lang_btn: "EN",
         accessibility: "Accessibility",
@@ -139,15 +138,14 @@ const translations = {
     }
 };
 
-/**
- * STATE MANAGEMENT
- */
+/* --- STATE MANAGEMENT --- */
 const gameState = {
     selectedAvatar: 'lion',
     selectedLevel: 1,
     unlockedLevels: [1],
     levelRatings: { 1: 0, 2: 0, 3: 0 },
     starCurrency: 0,
+    lastRewardDate: null,
     streak: 0,
     animals: [],
     badges: [],
@@ -173,7 +171,8 @@ const gameState = {
     stats: {
         totalQuestions: 0,
         correctAnswers: 0,
-        startTime: Date.now()
+        startTime: Date.now(),
+        history: []
     },
 
     levelConfig: {
@@ -185,9 +184,7 @@ const gameState = {
     currentScreen: 'splash-screen'
 };
 
-/**
- * SAVE SYSTEM
- */
+/* --- MANAGERS --- */
 const SaveSystem = {
     KEY: 'mathSafariData_production_v1',
     save() {
@@ -195,6 +192,7 @@ const SaveSystem = {
             unlockedLevels: gameState.unlockedLevels,
             levelRatings: gameState.levelRatings,
             starCurrency: gameState.starCurrency,
+            lastRewardDate: gameState.lastRewardDate,
             selectedAvatar: gameState.selectedAvatar,
             animals: gameState.animals,
             badges: gameState.badges,
@@ -485,6 +483,42 @@ const StarManager = {
 };
 
 /**
+ * CELEBRATION MANAGER
+ */
+const CelebrationManager = {
+    triggerStars(count = 5) {
+        if (gameState.accessibility.reducedMotion) return;
+        const container = document.getElementById('app-container');
+        for (let i = 0; i < count; i++) {
+            const star = document.createElement('div');
+            star.className = 'celebration-star';
+            star.innerHTML = SVGS.star;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = (Math.random() * 20 + 20) + 'px';
+            star.style.animationDelay = (Math.random() * 0.5) + 's';
+            container.appendChild(star);
+            setTimeout(() => star.remove(), 2000);
+        }
+    },
+    triggerConfetti() {
+        if (gameState.accessibility.reducedMotion) return;
+        const container = document.getElementById('app-container');
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'confetti';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.backgroundColor = ['#fdcb6e', '#00b894', '#0984e3', '#e84393'][Math.floor(Math.random() * 4)];
+            p.style.width = (Math.random() * 8 + 4) + 'px';
+            p.style.height = (Math.random() * 8 + 4) + 'px';
+            p.style.animationDelay = (Math.random() * 2) + 's';
+            container.appendChild(p);
+            setTimeout(() => p.remove(), 4000);
+        }
+    }
+};
+
+/**
  * LEVEL MANAGER
  */
 const LevelManager = {
@@ -494,11 +528,13 @@ const LevelManager = {
         container.innerHTML = '';
         [1, 2, 3].forEach(lv => {
             const isLocked = !gameState.unlockedLevels.includes(lv);
-            const card = document.createElement('div');
+            const card = document.createElement('button');
             card.className = `level-card ${isLocked ? 'locked' : ''}`;
+            card.setAttribute('aria-label', `Level ${lv}`);
+            if (isLocked) card.setAttribute('disabled', 'true');
             card.innerHTML = `
                 <div class="level-badge">${formatNum(lv)}</div>
-                <div class="level-info">
+                <div class="level-info" style="text-align: left;">
                     <h3 data-key="lvl${lv}_title">${LanguageManager.get('lvl'+lv+'_title')}</h3>
                     <p data-key="lvl${lv}_desc">${LanguageManager.get('lvl'+lv+'_desc')}</p>
                 </div>
@@ -516,30 +552,54 @@ const LevelManager = {
     renderMap() {
         const container = document.getElementById('safari-path');
         if (!container) return;
-        container.innerHTML = '';
 
         // currentStep is 1-indexed, represents current node
         const currentStep = Math.min(5, gameState.currentQuestionIndex + 1);
 
-        for(let i=1; i<=5; i++) {
-            const node = document.createElement('div');
-            node.className = 'node';
-            if (i < currentStep) node.classList.add('completed');
-            if (i === currentStep) node.classList.add('current');
-            node.innerText = formatNum(i);
-            container.appendChild(node);
-
-            if (i === currentStep) {
-                const char = document.createElement('div');
-                char.className = 'char-marker';
-                char.innerHTML = SVGS[gameState.selectedAvatar];
-
-                // Position adjustment for smoother look
-                char.style.bottom = '15px';
-                char.style.animation = gameState.accessibility.reducedMotion ? 'none' : 'charJump 0.5s ease-in-out infinite alternate';
-                node.appendChild(char);
+        // Check if map nodes already exist, if so just update them
+        const nodes = container.querySelectorAll('.node');
+        if (nodes.length === 5) {
+            nodes.forEach((node, idx) => {
+                const i = idx + 1;
+                node.className = 'node';
+                if (i < currentStep) node.classList.add('completed');
+                if (i === currentStep) node.classList.add('current');
+            });
+        } else {
+            container.innerHTML = '';
+            for(let i=1; i<=5; i++) {
+                const node = document.createElement('div');
+                node.className = 'node';
+                if (i < currentStep) node.classList.add('completed');
+                if (i === currentStep) node.classList.add('current');
+                node.innerText = formatNum(i);
+                container.appendChild(node);
             }
         }
+
+        // Handle char marker movement
+        let char = document.querySelector('.char-marker');
+        if (!char) {
+            char = document.createElement('div');
+            char.className = 'char-marker';
+            char.innerHTML = SVGS[gameState.selectedAvatar];
+            container.appendChild(char);
+        }
+
+        const currentNode = container.querySelectorAll('.node')[currentStep - 1];
+        if (currentNode) {
+            const containerRect = container.getBoundingClientRect();
+            const nodeRect = currentNode.getBoundingClientRect();
+
+            // Calculate relative position within container
+            const bottom = containerRect.bottom - nodeRect.bottom + 15;
+            const left = nodeRect.left - containerRect.left + (nodeRect.width / 2);
+            char.style.bottom = bottom + 'px';
+            char.style.left = left + 'px';
+            char.style.transform = 'translateX(-50%)';
+            char.style.animation = gameState.accessibility.reducedMotion ? 'none' : 'charJump 0.5s ease-in-out infinite alternate';
+        }
+
         StarManager.updateBalanceUI();
     }
 };
@@ -548,8 +608,20 @@ const LevelManager = {
  * GAME MANAGER
  */
 const GameManager = {
+    checkDailyReward() {
+        const today = new Date().toDateString();
+        if (gameState.lastRewardDate !== today) {
+            gameState.starCurrency += 20;
+            gameState.lastRewardDate = today;
+            SaveSystem.save();
+            // We can't easily show a popup here yet as UI might not be ready,
+            // but the stars will be there when they enter.
+        }
+    },
+
     init() {
         SaveSystem.load();
+        this.checkDailyReward();
         LanguageManager.init();
         SpeechManager.init();
         this.updateAvatarIcons();
@@ -665,6 +737,7 @@ const GameManager = {
             SpeechManager.speak(LanguageManager.get('correct'));
             gameState.currentQuestionIndex++;
             gameState.wrongAttempts = 0;
+            CelebrationManager.triggerStars(5);
             this.checkBadges();
         } else {
             AudioManager.playSFX('wrong');
@@ -736,6 +809,15 @@ const GameManager = {
             if (resultStars === 3) this.unlockRandomAnimal();
         }
 
+        // Record history
+        gameState.stats.history.unshift({
+            level: gameState.selectedLevel,
+            score: gameState.currentScore,
+            stars: resultStars,
+            date: new Date().toLocaleDateString()
+        });
+        if (gameState.stats.history.length > 10) gameState.stats.history.pop();
+
         this.checkBadges();
         SaveSystem.save();
 
@@ -762,6 +844,7 @@ const GameManager = {
         this.renderResultScreen(resultStars);
         this.showScreen('result-screen');
         AudioManager.playSFX('complete');
+        if (stars >= 1) CelebrationManager.triggerConfetti();
     },
 
     autoContinueInterval: null,
@@ -1010,6 +1093,13 @@ const GameManager = {
         const accuracy = gameState.stats.totalQuestions > 0 ? Math.round((gameState.stats.correctAnswers / gameState.stats.totalQuestions) * 100) : 0;
         const timeMinutes = Math.round((Date.now() - gameState.stats.startTime) / 60000);
 
+        const historyHtml = gameState.stats.history.map(h => `
+            <div style="font-size: 0.8rem; padding: 8px; background: #f8f9fa; border-radius: 8px; margin-bottom: 5px; display: flex; justify-content: space-between;">
+                <span>Lvl ${h.level} - ${h.date}</span>
+                <span>${h.score} pts | ${'★'.repeat(h.stars)}${'☆'.repeat(3-h.stars)}</span>
+            </div>
+        `).join('');
+
         container.innerHTML = `
             <div style="display: grid; gap: 15px; text-align: left;">
                 <div><strong>${LanguageManager.get('level_label')}:</strong> ${formatNum(gameState.unlockedLevels.length)} / ${formatNum(3)}</div>
@@ -1032,6 +1122,12 @@ const GameManager = {
                                 <p style="font-size: 0.6rem; font-weight: 700; margin-top: 4px;">${LanguageManager.get('badge_' + b)}</p>
                             </div>
                         `).join('')}
+                    </div>
+                </div>
+                <div style="border-top: 1px solid #eee; padding-top: 10px;">
+                    <strong>Recent Sessions:</strong>
+                    <div style="margin-top: 10px; max-height: 150px; overflow-y: auto;">
+                        ${historyHtml || '<p style="font-size: 0.8rem; color: #999;">No history yet.</p>'}
                     </div>
                 </div>
             </div>
