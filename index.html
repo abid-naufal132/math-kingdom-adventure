@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Math Safari Adventure: Kerajaan Nombor</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
@@ -11,102 +12,156 @@
     <div id="app-container">
         <!-- Splash Screen -->
         <section id="splash-screen" class="screen active">
-            <div class="content">
-                <h1 class="game-title">Math Safari Adventure</h1>
+            <div class="game-title-container">
+                <h1 class="game-title">Math Safari</h1>
                 <h2 class="game-subtitle">Kerajaan Nombor</h2>
-                <div class="avatar-preview">🦁</div>
-                <button id="start-game-btn" class="btn-primary">MULA</button>
+            </div>
+            <div class="avatar-display" id="main-avatar-preview">
+                <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" fill="#2ecc71"/></svg>
+            </div>
+            <button id="start-game-btn" class="btn-block btn-primary">MULA / START</button>
+        </section>
+
+        <!-- Avatar Selection Screen -->
+        <section id="avatar-screen" class="screen">
+            <div class="top-nav">
+                <button class="icon-btn back-to-splash">
+                    <svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+                </button>
+                <h1 data-key="choose_avatar">Pilih Hero</h1>
+            </div>
+            <div class="avatar-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px;">
+                <button class="avatar-choice" data-avatar="lion" style="background: white; border: 4px solid #eee; border-radius: 24px; padding: 20px; cursor: pointer;">
+                    <div style="font-size: 4rem;">🦁</div>
+                    <p style="font-weight: 900;">Leo</p>
+                </button>
+                <button class="avatar-choice" data-avatar="monkey" style="background: white; border: 4px solid #eee; border-radius: 24px; padding: 20px; cursor: pointer;">
+                    <div style="font-size: 4rem;">🐒</div>
+                    <p style="font-weight: 900;">Momo</p>
+                </button>
+                <button class="avatar-choice" data-avatar="zebra" style="background: white; border: 4px solid #eee; border-radius: 24px; padding: 20px; cursor: pointer;">
+                    <div style="font-size: 4rem;">🦓</div>
+                    <p style="font-weight: 900;">Zizi</p>
+                </button>
+                <button class="avatar-choice" data-avatar="elephant" style="background: white; border: 4px solid #eee; border-radius: 24px; padding: 20px; cursor: pointer;">
+                    <div style="font-size: 4rem;">🐘</div>
+                    <p style="font-weight: 900;">Elly</p>
+                </button>
             </div>
         </section>
 
         <!-- Level Selection Screen -->
         <section id="level-selection-screen" class="screen">
-            <header>
-                <button class="back-btn">⬅️</button>
-                <h1>Pilih Tahap</h1>
-            </header>
-            <div class="level-list">
-                <button class="level-card" data-level="1">
-                    <span class="level-num">1</span>
-                    <span class="level-desc">Tambah & Tolak (0-10)</span>
+            <div class="top-nav">
+                <button class="icon-btn back-to-avatar">
+                    <svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
                 </button>
-                <button class="level-card locked" data-level="2" disabled>
-                    <span class="level-num">2</span>
-                    <span class="level-desc">Tambah & Tolak (0-15)</span>
-                    <span class="lock-icon">🔒</span>
-                </button>
-                <button class="level-card locked" data-level="3" disabled>
-                    <span class="level-num">3</span>
-                    <span class="level-desc">Tambah & Tolak (0-20)</span>
-                    <span class="lock-icon">🔒</span>
-                </button>
+                <h1 data-key="select_level">Pilih Tahap</h1>
+                <div class="settings-btns" style="display: flex; gap: 10px;">
+                    <button id="lang-toggle" class="icon-btn">BM</button>
+                    <button id="sound-toggle" class="icon-btn">
+                        <svg viewBox="0 0 24 24" id="sound-icon"><path d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.85 14,18.71V20.77C18.01,19.86 21,16.28 21,12C21,7.72 18.01,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16.02C15.5,15.29 16.5,13.77 16.5,12M3,9V15H7L12,20V4L7,9H3Z" /></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="level-grid">
+                <div class="level-card" data-level="1">
+                    <div class="level-badge">1</div>
+                    <div class="level-info">
+                        <h3 data-key="lvl1_title">Hutan Tambah</h3>
+                        <p data-key="lvl1_desc">0 - 10</p>
+                    </div>
+                </div>
+                <div class="level-card locked" data-level="2">
+                    <div class="level-badge">2</div>
+                    <div class="level-info">
+                        <h3 data-key="lvl2_title">Lembah Tolak</h3>
+                        <p data-key="lvl2_desc">0 - 15</p>
+                    </div>
+                    <div class="lock-status">
+                        <svg viewBox="0 0 24 24" style="width: 24px;"><path d="M12,17A2,2 0 0,0 14,15C14,13.89 13.11,13 12,13A2,2 0 0,0 10,15C10,16.11 10.89,17 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.89,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z" /></svg>
+                    </div>
+                </div>
+                <div class="level-card locked" data-level="3">
+                    <div class="level-badge">3</div>
+                    <div class="level-info">
+                        <h3 data-key="lvl3_title">Gunung Nombor</h3>
+                        <p data-key="lvl3_desc">0 - 20</p>
+                    </div>
+                    <div class="lock-status">
+                        <svg viewBox="0 0 24 24" style="width: 24px;"><path d="M12,17A2,2 0 0,0 14,15C14,13.89 13.11,13 12,13A2,2 0 0,0 10,15C10,16.11 10.89,17 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.89,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z" /></svg>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Map Screen -->
         <section id="map-screen" class="screen">
-            <header>
-                <button class="back-btn">⬅️</button>
-                <div class="stats">
-                    <span id="map-stars">⭐ 0</span>
+            <div class="top-nav">
+                <button class="icon-btn back-to-levels">
+                    <svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+                </button>
+                <div class="game-stats">
+                    <svg viewBox="0 0 24 24" style="width: 24px; fill: #f1c40f;"><path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></svg>
+                    <span id="map-stars-count">0</span>
                 </div>
-            </header>
-            <div class="map-container">
-                <div id="safari-path" class="path">
-                    <!-- Nodes will be generated by JS -->
-                </div>
+            </div>
+            <div class="map-canvas" id="safari-path">
+                <!-- Nodes generated by JS -->
+            </div>
+            <div style="margin-top: 20px;">
+                <button id="play-level-btn" class="btn-block btn-accent" data-key="play">MAIN</button>
             </div>
         </section>
 
         <!-- Game Screen -->
         <section id="game-screen" class="screen">
-            <div class="game-header">
-                <button id="exit-game-btn" class="icon-btn">🏠</button>
-                <div class="progress-container">
-                    <div id="progress-bar"></div>
+            <div class="top-nav">
+                <button id="exit-game-btn" class="icon-btn">
+                    <svg viewBox="0 0 24 24"><path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" /></svg>
+                </button>
+                <div class="progress-track">
+                    <div id="progress-bar" class="progress-fill"></div>
                 </div>
-                <div id="game-score">⭐ 0</div>
+                <div class="game-stats">
+                    <svg viewBox="0 0 24 24" style="width: 24px; fill: #f1c40f;"><path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></svg>
+                    <span id="game-score-count">0</span>
+                </div>
             </div>
 
-            <div class="question-container">
-                <div id="level-tag">Tahap 1</div>
-                <div id="question-text">1 + 1 = ?</div>
+            <div class="question-box">
+                <div id="level-label" style="font-weight: 900; color: var(--secondary-color); margin-bottom: 10px;">LEVEL 1</div>
+                <div id="question-text" class="q-text">0 + 0</div>
             </div>
 
-            <div id="options-container" class="options-grid">
-                <!-- Buttons will be generated by JS -->
+            <div id="options-container" class="options-layout">
+                <!-- Generated by JS -->
             </div>
-
-            <div id="feedback-message" class="hidden"></div>
         </section>
 
         <!-- Result Screen -->
         <section id="result-screen" class="screen">
-            <div class="result-box">
-                <h1 id="result-title">Hebat!</h1>
-                <div class="result-stars" id="result-stars-display">⭐⭐⭐</div>
-                <div class="result-stats">
-                    <p>Skor: <span id="final-score">0</span></p>
+            <div class="result-card">
+                <h1 id="result-title" data-key="well_done">Hebat!</h1>
+                <div class="star-rating" id="result-stars">
+                    <svg viewBox="0 0 24 24" style="width: 60px; fill: #f1c40f;"><path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></svg>
                 </div>
-                <div class="result-actions">
-                    <button id="retry-btn" class="btn-secondary">Cuba Lagi</button>
-                    <button id="map-return-btn" class="btn-primary">Peta Safari</button>
+                <div style="font-size: 1.5rem; margin-bottom: 30px;">
+                    <span data-key="score">Skor</span>: <span id="final-score">0</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <button id="map-return-btn" class="btn-block btn-primary" data-key="continue">TERUSKAN</button>
+                    <button id="retry-btn" class="btn-block btn-secondary" data-key="retry">CUBA LAGI</button>
                 </div>
             </div>
         </section>
     </div>
 
-    <!-- Feedback Overlays -->
-    <div id="overlay-correct" class="overlay hidden">
-        <div class="overlay-content bounce">
-            <span class="feedback-icon">✅</span>
-            <p>BETUL!</p>
-        </div>
-    </div>
-    <div id="overlay-wrong" class="overlay hidden">
-        <div class="overlay-content shake">
-            <span class="feedback-icon">❌</span>
-            <p>CUBA LAGI</p>
+    <!-- Feedback Overlay -->
+    <div id="feedback-overlay" class="feedback-overlay">
+        <div class="feedback-card">
+            <div id="feedback-icon" style="font-size: 5rem; margin-bottom: 10px;">✅</div>
+            <h2 id="feedback-text" style="font-weight: 900;">BETUL!</h2>
         </div>
     </div>
 
