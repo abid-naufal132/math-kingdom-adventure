@@ -81,7 +81,11 @@ const translations = {
         badge_novice: "Permulaan Matematik",
         badge_explorer: "Penjelajah Safari",
         badge_master: "Raja Strategi",
-        badge_collector: "Pengumpul Bintang"
+        badge_collector: "Pengumpul Bintang",
+        confirm_home_title: "Kembali?",
+        confirm_home_msg: "Adakah anda mahu berhenti bermain dan kembali ke menu utama?",
+        yes: "YA",
+        no: "TIDAK"
     },
     en: {
         choose_avatar: "Choose Hero",
@@ -134,7 +138,11 @@ const translations = {
         badge_novice: "Math Novice",
         badge_explorer: "Safari Explorer",
         badge_master: "Streak Master",
-        badge_collector: "Star Collector"
+        badge_collector: "Star Collector",
+        confirm_home_title: "Go Home?",
+        confirm_home_msg: "Do you want to stop playing and return to the main menu?",
+        yes: "YES",
+        no: "NO"
     }
 };
 
@@ -165,6 +173,7 @@ const gameState = {
     currentScore: 0,
     currentQuestionIndex: 0,
     questionsPerLevel: 5,
+    isGameActive: false,
     wrongAttempts: 0,
     currentQuestion: null,
 
@@ -669,12 +678,28 @@ const GameManager = {
         }
     },
 
+    handleHomeClick() {
+        if (gameState.isGameActive) {
+            document.getElementById('confirm-overlay').classList.add('active');
+        } else {
+            this.goHome();
+        }
+    },
+
+    goHome() {
+        document.getElementById('confirm-overlay').classList.remove('active');
+        if (this.autoContinueInterval) clearInterval(this.autoContinueInterval);
+        gameState.isGameActive = false;
+        this.showScreen('splash-screen');
+    },
+
     startLevel() {
         this.updateTheme();
         gameState.currentScore = 0;
         gameState.currentQuestionIndex = 0;
         gameState.wrongAttempts = 0;
         gameState.streak = 0;
+        gameState.isGameActive = true;
         this.nextQuestion();
         this.showScreen('game-screen');
     },
@@ -798,12 +823,13 @@ const GameManager = {
         let bonusStars = resultStars === 3 ? 50 : (resultStars === 2 ? 20 : 10);
         StarManager.addStars(bonusStars);
 
-        const isFinalLevel = gameState.selectedLevel === 3;
+        const totalLevels = Object.keys(gameState.levelConfig).length;
+        const isFinalLevel = gameState.selectedLevel === totalLevels;
         const hasPassed = resultStars >= 1;
 
         if (hasPassed) {
             const nextLv = gameState.selectedLevel + 1;
-            if (nextLv <= 3 && !gameState.unlockedLevels.includes(nextLv)) {
+            if (nextLv <= totalLevels && !gameState.unlockedLevels.includes(nextLv)) {
                 gameState.unlockedLevels.push(nextLv);
             }
             if (resultStars === 3) this.unlockRandomAnimal();
@@ -819,6 +845,7 @@ const GameManager = {
         if (gameState.stats.history.length > 10) gameState.stats.history.pop();
 
         this.checkBadges();
+        gameState.isGameActive = false;
         SaveSystem.save();
 
         const resultTitle = document.getElementById('result-title');
@@ -844,7 +871,7 @@ const GameManager = {
         this.renderResultScreen(resultStars);
         this.showScreen('result-screen');
         AudioManager.playSFX('complete');
-        if (stars >= 1) CelebrationManager.triggerConfetti();
+        if (resultStars >= 1) CelebrationManager.triggerConfetti();
     },
 
     autoContinueInterval: null,
@@ -957,26 +984,35 @@ const GameManager = {
         document.getElementById('buy-hint-btn').onclick = () => this.buyHint();
         document.getElementById('map-return-btn').onclick = () => {
             if (this.autoContinueInterval) clearInterval(this.autoContinueInterval);
-            if (gameState.levelRatings[gameState.selectedLevel] >= 1 && gameState.selectedLevel < 3) {
-                const currentLevel = gameState.selectedLevel;
-                const nextLevel = currentLevel + 1;
+            const currentLevel = gameState.selectedLevel;
+            const nextLevel = currentLevel + 1;
+            const totalLevels = Object.keys(gameState.levelConfig).length;
 
-                if (gameState.unlockedLevels.includes(nextLevel)) {
-                    gameState.selectedLevel = nextLevel;
-                    gameState.currentQuestionIndex = 0;
-                    this.showScreen('map-screen');
-                    // Automatically transition to the next level after showing the map briefly
-                    setTimeout(() => {
-                        if (gameState.currentScreen === 'map-screen' && gameState.selectedLevel === nextLevel) {
-                            this.startLevel();
-                        }
-                    }, 2000);
-                } else {
-                    this.showScreen('level-selection-screen');
+            if (gameState.levelRatings[currentLevel] >= 1 && nextLevel <= totalLevels) {
+                // Unlock next level if not already
+                if (!gameState.unlockedLevels.includes(nextLevel)) {
+                    gameState.unlockedLevels.push(nextLevel);
                 }
+                gameState.selectedLevel = nextLevel;
+                gameState.currentQuestionIndex = 0;
+                this.showScreen('map-screen');
+                // Automatically transition to the next level after showing the map briefly
+                setTimeout(() => {
+                    if (gameState.currentScreen === 'map-screen' && gameState.selectedLevel === nextLevel) {
+                        this.startLevel();
+                    }
+                }, 2000);
             } else {
                 this.showScreen('level-selection-screen');
             }
+        };
+
+        // Unified Home button logic
+        document.querySelectorAll('.home-btn').forEach(b => b.onclick = () => this.handleHomeClick());
+        document.getElementById('exit-game-btn').onclick = () => this.handleHomeClick();
+        document.getElementById('confirm-yes-btn').onclick = () => this.goHome();
+        document.getElementById('confirm-no-btn').onclick = () => {
+            document.getElementById('confirm-overlay').classList.remove('active');
         };
 
         document.getElementById('accessibility-btn').onclick = () => this.showScreen('accessibility-screen');
