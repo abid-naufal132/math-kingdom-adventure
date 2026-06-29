@@ -4,13 +4,18 @@
  */
 
 const SVGS = {
-    lion: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><circle cx="12" cy="12" r="3"/><path d="M12 7v2m0 6v2m-5-5h2m6 0h2m-7.1-4.9.7.7m4.8 4.8.7.7m-6.2 0-.7.7m4.8-4.8-.7.7"/></svg>`,
-    monkey: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"/><path d="M9 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm6 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/><path d="M8 15h8"/><path d="M12 15v1"/></svg>`,
-    zebra: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M3 7h18M3 11h18M3 15h18M3 19h18"/></svg>`,
-    elephant: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    lion: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="15" y="15" width="70" height="70" rx="20" fill="#f39c12"/><path d="M10 10 H90 V40 H10 Z" fill="#e67e22" rx="10"/><circle cx="35" cy="45" r="5" fill="#2d3436"/><circle cx="65" cy="45" r="5" fill="#2d3436"/><rect x="40" y="60" width="20" height="10" rx="5" fill="#2d3436"/></svg>`,
+    monkey: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="60" height="60" rx="25" fill="#d35400"/><circle cx="20" cy="50" r="12" fill="#d35400"/><circle cx="80" cy="50" r="12" fill="#d35400"/><rect x="30" y="35" width="40" height="40" rx="15" fill="#edbb99"/><circle cx="40" cy="45" r="4" fill="#2d3436"/><circle cx="60" cy="45" r="4" fill="#2d3436"/><path d="M40 65 Q50 75 60 65" stroke="#2d3436" stroke-width="3" stroke-linecap="round"/></svg>`,
+    zebra: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="15" width="60" height="70" rx="15" fill="#ffffff" stroke="#2d3436" stroke-width="2"/><path d="M20 30 H50" stroke="#2d3436" stroke-width="6"/><path d="M50 45 H80" stroke="#2d3436" stroke-width="6"/><path d="M20 60 H50" stroke="#2d3436" stroke-width="6"/><path d="M50 75 H80" stroke="#2d3436" stroke-width="6"/><circle cx="35" cy="35" r="4" fill="#2d3436"/><circle cx="65" cy="35" r="4" fill="#2d3436"/></svg>`,
+    elephant: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="15" y="25" width="70" height="60" rx="20" fill="#95a5a6"/><circle cx="10" cy="45" r="15" fill="#7f8c8d"/><circle cx="90" cy="45" r="15" fill="#7f8c8d"/><rect x="42" y="55" width="16" height="35" rx="8" fill="#7f8c8d"/><circle cx="35" cy="45" r="5" fill="#2d3436"/><circle cx="65" cy="45" r="5" fill="#2d3436"/></svg>`,
+    giraffe: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="10" width="40" height="80" rx="15" fill="#f1c40f"/><circle cx="40" cy="30" r="4" fill="#2d3436"/><circle cx="60" cy="30" r="4" fill="#2d3436"/><rect x="35" y="45" width="10" height="10" rx="3" fill="#d35400"/><rect x="55" y="60" width="12" height="12" rx="4" fill="#d35400"/><rect x="40" y="75" width="8" height="8" rx="2" fill="#d35400"/></svg>`,
+    parrot: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="25" y="20" width="50" height="60" rx="25" fill="#e74c3c"/><rect x="40" y="45" width="20" height="25" rx="10" fill="#f1c40f"/><circle cx="40" cy="35" r="4" fill="#2d3436"/><circle cx="60" cy="35" r="4" fill="#2d3436"/><path d="M75 40 L85 60 L75 80 Z" fill="#3498db"/></svg>`,
+    turtle: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="30" width="60" height="50" rx="25" fill="#27ae60"/><rect x="35" y="25" width="30" height="20" rx="10" fill="#2ecc71"/><circle cx="42" cy="32" r="3" fill="#2d3436"/><circle cx="58" cy="32" r="3" fill="#2d3436"/><path d="M35 50 H65 M40 60 H60 M45 70 H55" stroke="#1e8449" stroke-width="4" stroke-linecap="round"/></svg>`,
+    rhino: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="15" y="25" width="70" height="60" rx="20" fill="#bdc3c7"/><path d="M50 45 L50 25 L60 45 Z" fill="#ecf0f1"/><circle cx="35" cy="50" r="5" fill="#2d3436"/><circle cx="65" cy="50" r="5" fill="#2d3436"/></svg>`,
+    hippo: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="15" y="25" width="70" height="60" rx="30" fill="#9b59b6"/><rect x="30" y="55" width="40" height="25" rx="10" fill="#8e44ad"/><circle cx="35" cy="45" r="5" fill="#2d3436"/><circle cx="65" cy="45" r="5" fill="#2d3436"/></svg>`,
     check: `<svg viewBox="0 0 24 24" fill="none" stroke="#00b894" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`,
     cross: `<svg viewBox="0 0 24 24" fill="none" stroke="#d63031" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`,
-    star: `<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`
+    star: `<svg viewBox="0 0 24 24" fill="#f1c40f" stroke="#f39c12" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`
 };
 
 const translations = {
@@ -39,7 +44,9 @@ const translations = {
         text_size: "Saiz Teks",
         voice_toggle: "Suara",
         dashboard_title: "Dashboard Guru",
-        hint_prefix: "Petunjuk: ",
+        star_hint: "Petunjuk Bintang: ",
+        buy_hint: "Guna 10 Bintang",
+        not_enough_stars: "Bintang tidak cukup!",
         total_questions: "Jumlah Soalan",
         accuracy: "Ketepatan",
         time_spent: "Masa Digunakan",
@@ -74,7 +81,9 @@ const translations = {
         text_size: "Text Size",
         voice_toggle: "Voice",
         dashboard_title: "Teacher Dashboard",
-        hint_prefix: "Hint: ",
+        star_hint: "Star Hint: ",
+        buy_hint: "Use 10 Stars",
+        not_enough_stars: "Not enough stars!",
         total_questions: "Total Questions",
         accuracy: "Accuracy",
         time_spent: "Time Spent",
@@ -102,11 +111,20 @@ const LanguageManager = {
         document.querySelectorAll('[data-key]').forEach(el => {
             const key = el.getAttribute('data-key');
             if (translations[this.current][key]) {
-                el.innerText = translations[this.current][key];
+                // Handle complex translations with SVGs or multiple children
+                if (key === 'buy_hint') {
+                    const span = el.querySelector('span') || el;
+                    span.innerText = translations[this.current][key];
+                } else {
+                    el.innerText = translations[this.current][key];
+                }
             }
         });
         const langToggle = document.getElementById('lang-toggle');
         if (langToggle) langToggle.innerText = translations[this.current].lang_btn;
+
+        // Update star balance across all screens
+        updateStarBalanceUI();
 
         // Update specific buttons that might not use data-key
         const dashBtn = document.getElementById('open-dashboard-btn');
@@ -224,7 +242,9 @@ const gameState = {
     selectedAvatar: 'lion',
     selectedLevel: 1,
     unlockedLevels: [1],
-    stars: { 1: 0, 2: 0, 3: 0 },
+    levelRatings: { 1: 0, 2: 0, 3: 0 },
+    starCurrency: 0,
+    streak: 0,
     animals: [],
 
     accessibility: {
@@ -256,6 +276,26 @@ const gameState = {
         const saved = localStorage.getItem('mathSafariData_v2');
         if (saved) {
             const data = JSON.parse(saved);
+
+            // Migration for old data format
+            if (data.stars && !data.levelRatings) {
+                data.levelRatings = data.stars;
+                delete data.stars;
+            }
+
+            // Ensure starCurrency and streak are initialized
+            if (data.starCurrency === undefined) data.starCurrency = 0;
+            if (data.streak === undefined) data.streak = 0;
+
+            // Migrate animal emojis to keys if necessary
+            if (data.animals) {
+                const emojiMap = {
+                    '🦁': 'lion', '🐒': 'monkey', '🦓': 'zebra', '🐘': 'elephant',
+                    '🦒': 'giraffe', '🦜': 'parrot', '🐢': 'turtle', '🦏': 'rhino', '🦛': 'hippo'
+                };
+                data.animals = data.animals.map(a => emojiMap[a] || a);
+            }
+
             Object.assign(this, data);
 
             // Apply accessibility settings on load
@@ -270,7 +310,8 @@ const gameState = {
     save() {
         const data = {
             unlockedLevels: this.unlockedLevels,
-            stars: this.stars,
+            levelRatings: this.levelRatings,
+            starCurrency: this.starCurrency,
             selectedAvatar: this.selectedAvatar,
             animals: this.animals,
             accessibility: this.accessibility,
@@ -359,8 +400,11 @@ function renderQuestion() {
     document.getElementById('question-text').innerText = currentQuestion.text;
     document.getElementById('level-label').innerText = `${LanguageManager.get('level_label')} ${gameState.selectedLevel}`;
     document.getElementById('progress-bar').style.width = `${(gameState.currentQuestionIndex / gameState.questionsPerLevel) * 100}%`;
-    document.getElementById('game-score-count').innerText = gameState.score;
+    // Update star balance display
+    updateStarBalanceUI();
     document.getElementById('hint-box').classList.add('hidden');
+    const buyHintBtn = document.getElementById('buy-hint-btn');
+    if (buyHintBtn) buyHintBtn.disabled = false;
 
     const container = document.getElementById('options-container');
     container.innerHTML = '';
@@ -388,6 +432,14 @@ function checkAnswer(val) {
 
     if (isCorrect) {
         gameState.score += 10;
+        gameState.starCurrency += 2;
+        gameState.streak++;
+
+        // Streak bonus
+        if (gameState.streak > 0 && gameState.streak % 3 === 0) {
+            gameState.starCurrency += 5;
+        }
+
         gameState.stats.correctAnswers++;
         AudioManager.playSFX('correct');
         icon.innerHTML = SVGS.check;
@@ -395,15 +447,14 @@ function checkAnswer(val) {
         SpeechManager.speak(LanguageManager.get('correct'));
         gameState.currentQuestionIndex++;
         gameState.wrongAttempts = 0;
+        updateStarBalanceUI();
     } else {
         AudioManager.playSFX('wrong');
         icon.innerHTML = SVGS.cross;
         text.innerText = LanguageManager.get('wrong');
         SpeechManager.speak(LanguageManager.get('wrong'));
         gameState.wrongAttempts++;
-        if (gameState.wrongAttempts >= 2) {
-            showHint();
-        }
+        gameState.streak = 0;
     }
 
     gameState.stats.totalQuestions++;
@@ -414,11 +465,38 @@ function checkAnswer(val) {
     }, 1200);
 }
 
-function showHint() {
-    const hintBox = document.getElementById('hint-box');
-    const hintText = document.getElementById('hint-text');
-    hintBox.classList.remove('hidden');
-    hintText.innerText = `${LanguageManager.get('hint_prefix')}${currentQuestion.answer}`;
+function buyHint() {
+    if (gameState.starCurrency >= 10) {
+        gameState.starCurrency -= 10;
+        updateStarBalanceUI();
+        AudioManager.playSFX('click');
+
+        const hintBox = document.getElementById('hint-box');
+        const hintText = document.getElementById('hint-text');
+        hintBox.classList.remove('hidden');
+        hintText.innerText = `${LanguageManager.get('star_hint')}${currentQuestion.answer}`;
+
+        // Disable hint button once used for this question
+        const buyHintBtn = document.getElementById('buy-hint-btn');
+        if (buyHintBtn) buyHintBtn.disabled = true;
+    } else {
+        const hintText = document.getElementById('hint-text');
+        const hintBox = document.getElementById('hint-box');
+        hintBox.classList.remove('hidden');
+        hintText.innerText = LanguageManager.get('not_enough_stars');
+        setTimeout(() => {
+            if (gameState.starCurrency < 10) hintBox.classList.add('hidden');
+        }, 2000);
+    }
+}
+
+function updateStarBalanceUI() {
+    const counts = document.querySelectorAll('.star-balance-count');
+    counts.forEach(el => {
+        el.innerText = gameState.starCurrency;
+        el.classList.add('animate-pop');
+        setTimeout(() => el.classList.remove('animate-pop'), 300);
+    });
 }
 
 function endLevel() {
@@ -434,7 +512,15 @@ function endLevel() {
     }
 
     document.getElementById('final-score').innerText = gameState.score;
-    gameState.stars[gameState.selectedLevel] = Math.max(gameState.stars[gameState.selectedLevel], resultStars);
+    gameState.levelRatings[gameState.selectedLevel] = Math.max(gameState.levelRatings[gameState.selectedLevel], resultStars);
+
+    // Star Currency rewards based on performance
+    let bonusStars = 0;
+    if (resultStars === 1) bonusStars = 10;
+    else if (resultStars === 2) bonusStars = 20;
+    else if (resultStars === 3) bonusStars = 50;
+
+    gameState.starCurrency += bonusStars;
 
     if (resultStars >= 1) {
         const nextLv = gameState.selectedLevel + 1;
@@ -444,14 +530,14 @@ function endLevel() {
 
         // Auto-unlock an animal if 3 stars
         if (resultStars === 3) {
-            const potentialAnimals = ['🦒', '🐘', '🦓', '🐒', '🦁', '🦒', '🦏', '🦛'];
-            const animal = potentialAnimals[Math.floor(Math.random() * potentialAnimals.length)];
-            if (!gameState.animals.includes(animal)) {
-                gameState.animals.push(animal);
+            const potentialAnimals = ['lion', 'monkey', 'zebra', 'elephant', 'giraffe', 'parrot', 'turtle', 'rhino', 'hippo'];
+            const animalKey = potentialAnimals[Math.floor(Math.random() * potentialAnimals.length)];
+            if (!gameState.animals.includes(animalKey)) {
+                gameState.animals.push(animalKey);
                 document.getElementById('reward-display').innerHTML = `
-                    <div class="card" style="display: inline-block; animation: popIn 0.5s ease;">
-                        <div style="font-size: 3rem;">${animal}</div>
-                        <p style="font-weight: 900;">UNLOCKED!</p>
+                    <div class="card" style="display: inline-block; animation: popIn 0.5s ease; border-color: var(--accent-color);">
+                        <div style="width: 80px; height: 80px; margin: 0 auto;">${SVGS[animalKey]}</div>
+                        <p style="font-weight: 900; margin-top: 10px; color: var(--accent-shadow);">UNLOCKED!</p>
                     </div>
                 `;
             }
@@ -463,6 +549,7 @@ function endLevel() {
     gameState.save();
     showScreen('result-screen');
     AudioManager.playSFX('complete');
+    updateStarBalanceUI();
 }
 
 function bindEvents() {
@@ -488,8 +575,10 @@ function bindEvents() {
     document.getElementById('replay-voice-btn').onclick = () => speakQuestion();
     document.getElementById('play-level-btn').onclick = () => startLevel();
     document.getElementById('retry-btn').onclick = () => startLevel();
+    const buyHintBtn = document.getElementById('buy-hint-btn');
+    if (buyHintBtn) buyHintBtn.onclick = () => buyHint();
     document.getElementById('map-return-btn').onclick = () => {
-        if (gameState.stars[gameState.selectedLevel] >= 1 && gameState.selectedLevel < 3) {
+        if (gameState.levelRatings[gameState.selectedLevel] >= 1 && gameState.selectedLevel < 3) {
             // Auto transition to next level if current one just completed
             gameState.selectedLevel++;
             showScreen('map-screen');
@@ -564,9 +653,12 @@ function renderDashboard() {
             <div><strong>${LanguageManager.get('total_questions')}:</strong> ${gameState.stats.totalQuestions}</div>
             <div><strong>${LanguageManager.get('accuracy')}:</strong> ${accuracy}%</div>
             <div><strong>${LanguageManager.get('time_spent')}:</strong> ${timeMinutes} min</div>
-            <div><strong>Stars:</strong> ${Object.values(gameState.stars).reduce((a,b)=>a+b, 0)}</div>
+            <div><strong>Star Balance:</strong> ${gameState.starCurrency}</div>
             <div style="border-top: 1px solid #eee; padding-top: 10px;">
-                <strong>${LanguageManager.get('choose_avatar')}:</strong> ${gameState.animals.join(' ')}
+                <strong>Animals:</strong>
+                <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px;">
+                    ${gameState.animals.map(a => `<div style="width: 30px; height: 30px;">${SVGS[a]}</div>`).join('')}
+                </div>
             </div>
         </div>
     `;
@@ -603,7 +695,7 @@ function renderMap() {
 
     // Level progress step: 0 to 5
     // We use the score/star logic or just a simplified step
-    const currentStars = gameState.stars[gameState.selectedLevel] || 0;
+    const currentStars = gameState.levelRatings[gameState.selectedLevel] || 0;
     const currentStep = currentStars > 0 ? (currentStars === 3 ? 5 : currentStars * 1.5) : 1;
 
     for(let i=1; i<=5; i++) {
@@ -624,7 +716,7 @@ function renderMap() {
         }
     }
 
-    document.getElementById('map-stars-count').innerText = Object.values(gameState.stars).reduce((a, b) => a + b, 0);
+    updateStarBalanceUI();
 }
 
 window.onload = () => {

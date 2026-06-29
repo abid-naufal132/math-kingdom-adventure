@@ -104,7 +104,7 @@ body {
     top: 0;
     left: 0;
     overflow-y: auto;
-    background: var(--bg-light);
+    background: linear-gradient(180deg, var(--bg-safari) 0%, var(--bg-light) 100%);
     z-index: 10;
 }
 
@@ -125,8 +125,8 @@ h2 { font-size: 1.2rem; font-weight: 700; color: #636e72; }
 /* Buttons - Roblox Block Style */
 .btn-block {
     border: none;
-    border-radius: var(--border-radius-md);
-    padding: 20px 32px;
+    border-radius: var(--border-radius-lg);
+    padding: 20px 24px;
     font-size: 1.25rem;
     font-weight: 900;
     color: var(--text-light);
@@ -140,6 +140,12 @@ h2 { font-size: 1.2rem; font-weight: 700; color: #636e72; }
     text-transform: uppercase;
     width: 100%;
     border: var(--border-width) solid rgba(0,0,0,0.1);
+}
+
+.btn-block:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    filter: grayscale(0.5);
 }
 
 .btn-primary {
@@ -187,7 +193,7 @@ h2 { font-size: 1.2rem; font-weight: 700; color: #636e72; }
     height: 56px;
     background: var(--card-bg);
     border: var(--border-width) solid #dfe6e9;
-    border-radius: 16px;
+    border-radius: var(--border-radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -222,7 +228,7 @@ h2 { font-size: 1.2rem; font-weight: 700; color: #636e72; }
 /* Level Cards */
 .level-card {
     background: var(--card-bg);
-    border-radius: var(--border-radius-md);
+    border-radius: var(--border-radius-lg);
     padding: 20px;
     display: flex;
     align-items: center;
@@ -417,7 +423,18 @@ h2 { font-size: 1.2rem; font-weight: 700; color: #636e72; }
 
 @keyframes popIn {
     0% { transform: scale(0.5); opacity: 0; }
+    80% { transform: scale(1.1); opacity: 1; }
     100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-pop {
+    animation: starPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes starPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
 }
 
 /* Accessibility settings */
