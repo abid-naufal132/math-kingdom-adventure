@@ -85,7 +85,30 @@ const translations = {
         confirm_home_title: "Kembali?",
         confirm_home_msg: "Adakah anda mahu berhenti bermain dan kembali ke menu utama?",
         yes: "YA",
-        no: "TIDAK"
+        no: "TIDAK",
+        learning_title: "Mari Belajar",
+        start_quiz: "MULA KUIZ",
+        next: "SETERUSNYA",
+        prev: "KEMBALI",
+        replay_audio: "DENGAR LAGI",
+        lets_practice: "Mari Cuba!",
+        practice_correct: "Bagus! Jawapan yang betul.",
+        practice_wrong: "Cuba lagi! Perhatikan betul-betul.",
+        lvl1_learn_1: "Mari belajar menambah! Menambah bermaksud kita mengumpulkan semua benda.",
+        lvl1_learn_2: "Mari kira singa ini. 1 singa tambah 2 singa jadi berapa?",
+        lvl1_learn_3: "Lihat pada garis nombor. Dari 2, kita lompat 3 langkah ke depan. Kita sampai ke nombor 5!",
+        lvl1_practice_1: "1 + 1 sama dengan berapa?",
+        lvl1_practice_2: "3 + 2 sama dengan berapa?",
+        lvl2_learn_1: "Mari belajar menolak! Menolak bermaksud kita membuang atau mengurangkan benda.",
+        lvl2_learn_2: "Mari kira monyet ini. 5 monyet tolak 2 monyet tinggal berapa?",
+        lvl2_learn_3: "Lihat pada garis nombor. Dari 10, kita lompat 4 langkah ke belakang. Kita sampai ke nombor 6!",
+        lvl2_practice_1: "2 - 1 sama dengan berapa?",
+        lvl2_practice_2: "5 - 3 sama dengan berapa?",
+        lvl3_learn_1: "Sekarang kita akan campurkan tambah dan tolak! Ingat: tambah itu kumpul, tolak itu buang.",
+        lvl3_learn_2: "Mari kita cuba satu soalan tambah. 10 + 5 jadi berapa?",
+        lvl3_learn_3: "Seterusnya satu soalan tolak. 15 - 5 tinggal berapa?",
+        lvl3_practice_1: "10 + 10 sama dengan berapa?",
+        lvl3_practice_2: "20 - 10 sama dengan berapa?"
     },
     en: {
         choose_avatar: "Choose Hero",
@@ -142,7 +165,30 @@ const translations = {
         confirm_home_title: "Go Home?",
         confirm_home_msg: "Do you want to stop playing and return to the main menu?",
         yes: "YES",
-        no: "NO"
+        no: "NO",
+        learning_title: "Let's Learn",
+        start_quiz: "START QUIZ",
+        next: "NEXT",
+        prev: "PREV",
+        replay_audio: "REPLAY",
+        lets_practice: "Let's Try!",
+        practice_correct: "Great! That's correct.",
+        practice_wrong: "Try again! Look closely.",
+        lvl1_learn_1: "Let's learn addition! Adding means putting things together.",
+        lvl1_learn_2: "Let's count these lions. 1 lion plus 2 lions equals how many?",
+        lvl1_learn_3: "Look at the number line. From 2, we jump 3 steps forward. We reach number 5!",
+        lvl1_practice_1: "What is 1 + 1?",
+        lvl1_practice_2: "What is 3 + 2?",
+        lvl2_learn_1: "Let's learn subtraction! Subtracting means taking things away.",
+        lvl2_learn_2: "Let's count these monkeys. 5 monkeys minus 2 monkeys equals how many?",
+        lvl2_learn_3: "Look at the number line. From 10, we jump 4 steps backward. We reach number 6!",
+        lvl2_practice_1: "What is 2 - 1?",
+        lvl2_practice_2: "What is 5 - 3?",
+        lvl3_learn_1: "Now we will mix addition and subtraction! Remember: plus is together, minus is take away.",
+        lvl3_learn_2: "Let's try an addition question. What is 10 + 5?",
+        lvl3_learn_3: "Now for a subtraction question. What is 15 - 5?",
+        lvl3_practice_1: "What is 10 + 10?",
+        lvl3_practice_2: "What is 20 - 10?"
     }
 };
 
@@ -153,6 +199,7 @@ const gameState = {
     unlockedLevels: [1],
     levelRatings: { 1: 0, 2: 0, 3: 0 },
     starCurrency: 0,
+    completedLearning: [],
     lastRewardDate: null,
     streak: 0,
     animals: [],
@@ -190,6 +237,30 @@ const gameState = {
         3: { max: 20, ops: ['+', '-'] }
     },
 
+    learningConfig: {
+        1: [
+            { type: 'text', textKey: 'lvl1_learn_1' },
+            { type: 'counting', textKey: 'lvl1_learn_2', animal: 'lion', a: 1, b: 2, op: '+' },
+            { type: 'numberline', textKey: 'lvl1_learn_3', start: 2, steps: 3, op: '+' },
+            { type: 'practice', textKey: 'lvl1_practice_1', a: 1, b: 1, op: '+', answer: 2, options: [1, 2, 3, 4] },
+            { type: 'practice', textKey: 'lvl1_practice_2', a: 3, b: 2, op: '+', answer: 5, options: [4, 5, 6, 7] }
+        ],
+        2: [
+            { type: 'text', textKey: 'lvl2_learn_1' },
+            { type: 'counting', textKey: 'lvl2_learn_2', animal: 'monkey', a: 5, b: 2, op: '-' },
+            { type: 'numberline', textKey: 'lvl2_learn_3', start: 10, steps: 4, op: '-' },
+            { type: 'practice', textKey: 'lvl2_practice_1', a: 2, b: 1, op: '-', answer: 1, options: [0, 1, 2, 3] },
+            { type: 'practice', textKey: 'lvl2_practice_2', a: 5, b: 3, op: '-', answer: 2, options: [1, 2, 3, 4] }
+        ],
+        3: [
+            { type: 'text', textKey: 'lvl3_learn_1' },
+            { type: 'counting', textKey: 'lvl3_learn_2', animal: 'zebra', a: 10, b: 5, op: '+' },
+            { type: 'counting', textKey: 'lvl3_learn_3', animal: 'zebra', a: 15, b: 5, op: '-' },
+            { type: 'practice', textKey: 'lvl3_practice_1', a: 10, b: 10, op: '+', answer: 20, options: [10, 15, 18, 20] },
+            { type: 'practice', textKey: 'lvl3_practice_2', a: 20, b: 10, op: '-', answer: 10, options: [5, 10, 15, 20] }
+        ]
+    },
+
     currentScreen: 'splash-screen'
 };
 
@@ -200,6 +271,7 @@ const SaveSystem = {
         const data = {
             unlockedLevels: gameState.unlockedLevels,
             levelRatings: gameState.levelRatings,
+            completedLearning: gameState.completedLearning,
             starCurrency: gameState.starCurrency,
             lastRewardDate: gameState.lastRewardDate,
             selectedAvatar: gameState.selectedAvatar,
@@ -303,7 +375,7 @@ const SpeechManager = {
 
         // Enforce the "kosong" rule in Malay speech
         if (LanguageManager.current === 'ms') {
-            speechText = speechText.replace(/\b0\b/g, "kosong");
+            speechText = speechText.replace(/(^|[^0-9])0([^0-9]|$)/g, "$1kosong$2");
         }
 
         const utterance = new SpeechSynthesisUtterance(speechText);
@@ -492,6 +564,180 @@ const StarManager = {
 };
 
 /**
+ * LEARNING MANAGER
+ */
+const LearningManager = {
+    currentLevel: 1,
+    currentStepIndex: 0,
+    steps: [],
+
+    start(level) {
+        this.currentLevel = level;
+        this.currentStepIndex = 0;
+        this.steps = gameState.learningConfig[level];
+        CelebrationManager.clearAll();
+        GameManager.showScreen('learning-screen');
+        this.renderStep();
+    },
+
+    renderStep() {
+        const step = this.steps[this.currentStepIndex];
+        const container = document.getElementById('learning-content-area');
+        const nextBtn = document.getElementById('next-learn-btn');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const progressBar = document.getElementById('learning-progress-bar');
+
+        if (!container) return;
+
+        progressBar.style.width = `${((this.currentStepIndex + 1) / this.steps.length) * 100}%`;
+
+        let html = `<h2 style="font-size: 1.5rem; margin-bottom: 20px; color: var(--secondary-color); line-height: 1.4;">${LanguageManager.get(step.textKey)}</h2>`;
+
+        if (step.type === 'counting') {
+            html += this.generateCountingHtml(step);
+        } else if (step.type === 'numberline') {
+            html += this.generateNumberLineHtml(step);
+        } else if (step.type === 'practice') {
+            html += this.generatePracticeHtml(step);
+        }
+
+        container.innerHTML = html;
+
+        // Navigation logic
+        const isLastStep = this.currentStepIndex === this.steps.length - 1;
+        if (isLastStep) {
+            nextBtn.classList.add('hidden');
+            startQuizBtn.classList.remove('hidden');
+        } else {
+            nextBtn.classList.remove('hidden');
+            startQuizBtn.classList.add('hidden');
+        }
+
+        document.getElementById('prev-learn-btn').disabled = this.currentStepIndex === 0;
+
+        this.playNarration();
+    },
+
+    generateCountingHtml(step) {
+        let html = '<div class="animal-counting-area" style="text-align: center;">';
+
+        // First group
+        html += '<div class="animal-group">';
+        for (let i = 0; i < step.a; i++) {
+            html += `<div class="animal-item" style="animation-delay: ${i * 0.1}s">${SVGS[step.animal]}</div>`;
+        }
+        html += '</div>';
+
+        // Operator & Numbers
+        html += `
+            <div style="display: flex; justify-content: center; align-items: center; gap: 20px; font-size: 2.5rem; font-weight: 900; margin: 15px 0;">
+                <span>${step.a}</span>
+                <span style="color: var(--danger-color);">${step.op}</span>
+                <span>${step.b}</span>
+            </div>
+        `;
+
+        // Second group
+        html += '<div class="animal-group">';
+        for (let i = 0; i < step.b; i++) {
+            html += `<div class="animal-item" style="animation-delay: ${(step.a + i) * 0.1}s">${SVGS[step.animal]}</div>`;
+        }
+        html += '</div>';
+
+        html += '</div>';
+        return html;
+    },
+
+    generateNumberLineHtml(step) {
+        const max = gameState.levelConfig[this.currentLevel].max;
+        let marksHtml = '';
+        for (let i = 0; i <= max; i++) {
+            marksHtml += `<div class="nl-mark">${i}</div>`;
+        }
+
+        const startPerc = (step.start / max) * 100;
+        const endValue = step.op === '+' ? step.start + step.steps : step.start - step.steps;
+        const endPerc = (endValue / max) * 100;
+
+        const left = Math.min(startPerc, endPerc);
+        const width = Math.abs(startPerc - endPerc);
+
+        return `
+            <div class="number-line-container">
+                <div class="nl-jump-container">
+                    <div class="nl-jump-arc" style="left: ${left}%; width: ${width}%; height: 60px; top: -50px; border-color: var(--secondary-color);"></div>
+                </div>
+                <div class="number-line-marks">
+                    ${marksHtml}
+                </div>
+                <div style="margin-top: 30px; font-weight: 900; font-size: 1.5rem;">
+                    ${step.start} ${step.op} ${step.steps} = ${endValue}
+                </div>
+            </div>
+        `;
+    },
+
+    generatePracticeHtml(step) {
+        let optionsHtml = '';
+        step.options.forEach(opt => {
+            optionsHtml += `<button class="practice-opt-btn" onclick="LearningManager.checkPractice(${opt})">${opt}</button>`;
+        });
+
+        return `
+            <div class="practice-area">
+                <h3 data-key="lets_practice" style="margin-bottom: 15px; color: var(--primary-color);">${LanguageManager.get('lets_practice')}</h3>
+                <div style="font-size: 2.5rem; font-weight: 900; margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 15px;">
+                    ${step.a} ${step.op} ${step.b} = ?
+                </div>
+                <div class="practice-grid">
+                    ${optionsHtml}
+                </div>
+                <div id="practice-feedback" class="practice-feedback hidden"></div>
+            </div>
+        `;
+    },
+
+    checkPractice(val) {
+        const step = this.steps[this.currentStepIndex];
+        const feedback = document.getElementById('practice-feedback');
+        const isCorrect = val === step.answer;
+
+        feedback.classList.remove('hidden', 'correct', 'wrong');
+        if (isCorrect) {
+            feedback.innerText = LanguageManager.get('practice_correct');
+            feedback.classList.add('correct');
+            AudioManager.playSFX('correct');
+            SpeechManager.speak(LanguageManager.get('practice_correct'));
+            CelebrationManager.triggerStars(3);
+        } else {
+            feedback.innerText = LanguageManager.get('practice_wrong');
+            feedback.classList.add('wrong');
+            AudioManager.playSFX('wrong');
+            SpeechManager.speak(LanguageManager.get('practice_wrong'));
+        }
+    },
+
+    nextStep() {
+        if (this.currentStepIndex < this.steps.length - 1) {
+            this.currentStepIndex++;
+            this.renderStep();
+        }
+    },
+
+    prevStep() {
+        if (this.currentStepIndex > 0) {
+            this.currentStepIndex--;
+            this.renderStep();
+        }
+    },
+
+    playNarration() {
+        const step = this.steps[this.currentStepIndex];
+        SpeechManager.speak(LanguageManager.get(step.textKey));
+    }
+};
+
+/**
  * CELEBRATION MANAGER
  */
 const CelebrationManager = {
@@ -524,6 +770,9 @@ const CelebrationManager = {
             container.appendChild(p);
             setTimeout(() => p.remove(), 4000);
         }
+    },
+    clearAll() {
+        document.querySelectorAll('.confetti, .celebration-star').forEach(el => el.remove());
     }
 };
 
@@ -551,6 +800,7 @@ const LevelManager = {
             if (!isLocked) {
                 card.onclick = () => {
                     gameState.selectedLevel = lv;
+                    GameManager.updateTheme(); // Update background immediately
                     GameManager.showScreen('map-screen');
                     this.renderMap();
                 };
@@ -695,6 +945,7 @@ const GameManager = {
 
     startLevel() {
         this.updateTheme();
+        CelebrationManager.clearAll();
         gameState.currentScore = 0;
         gameState.currentQuestionIndex = 0;
         gameState.wrongAttempts = 0;
@@ -794,26 +1045,26 @@ const GameManager = {
     },
 
     checkBadges() {
-        const unlocked = [];
+        const newlyUnlocked = [];
         if (!gameState.badges.includes('novice') && gameState.stats.correctAnswers >= 5) {
-            unlocked.push('novice');
+            newlyUnlocked.push('novice');
         }
         if (!gameState.badges.includes('explorer') && gameState.unlockedLevels.includes(2)) {
-            unlocked.push('explorer');
+            newlyUnlocked.push('explorer');
         }
         if (!gameState.badges.includes('master') && gameState.streak >= 5) {
-            unlocked.push('master');
+            newlyUnlocked.push('master');
         }
         if (!gameState.badges.includes('collector') && gameState.starCurrency >= 100) {
-            unlocked.push('collector');
+            newlyUnlocked.push('collector');
         }
 
-        unlocked.forEach(b => {
+        newlyUnlocked.forEach(b => {
             gameState.badges.push(b);
             AudioManager.playSFX('star');
-            // Visual notification could be added here
         });
-        if (unlocked.length > 0) SaveSystem.save();
+        if (newlyUnlocked.length > 0) SaveSystem.save();
+        return newlyUnlocked;
     },
 
     endLevel() {
@@ -844,7 +1095,7 @@ const GameManager = {
         });
         if (gameState.stats.history.length > 10) gameState.stats.history.pop();
 
-        this.checkBadges();
+        const newlyUnlocked = this.checkBadges();
         gameState.isGameActive = false;
         SaveSystem.save();
 
@@ -868,14 +1119,14 @@ const GameManager = {
             retryBtn.classList.remove('hidden');
         }
 
-        this.renderResultScreen(resultStars);
+        this.renderResultScreen(resultStars, newlyUnlocked);
         this.showScreen('result-screen');
         AudioManager.playSFX('complete');
         if (resultStars >= 1) CelebrationManager.triggerConfetti();
     },
 
     autoContinueInterval: null,
-    renderResultScreen(stars) {
+    renderResultScreen(stars, newlyUnlocked = []) {
         const starContainer = document.getElementById('result-stars');
         starContainer.innerHTML = '';
         for(let i=0; i<3; i++) {
@@ -886,11 +1137,28 @@ const GameManager = {
         }
         document.getElementById('final-score').innerText = formatNum(gameState.currentScore);
 
+        // Achievement Display
+        const rewardDisplay = document.getElementById('reward-display');
+        if (newlyUnlocked.length > 0) {
+            let badgeHtml = `<div style="margin-top: 10px; font-weight: 700; color: var(--secondary-color);">${LanguageManager.get('badges_label')}!</div><div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">`;
+            newlyUnlocked.forEach(b => {
+                badgeHtml += `
+                    <div style="text-align: center; animation: starSpin 0.6s ease-out;">
+                        <div style="width: 50px; height: 50px; margin: 0 auto;">${SVGS['badge' + b.charAt(0).toUpperCase() + b.slice(1)]}</div>
+                        <p style="font-size: 0.7rem; font-weight: 900;">${LanguageManager.get('badge_' + b)}</p>
+                    </div>
+                `;
+            });
+            badgeHtml += '</div>';
+            rewardDisplay.innerHTML += badgeHtml;
+        }
+
         // Auto-continue logic
         const timerEl = document.getElementById('auto-continue-timer');
         if (this.autoContinueInterval) clearInterval(this.autoContinueInterval);
 
-        const isFinalLevel = gameState.selectedLevel === 3;
+        const totalLevels = Object.keys(gameState.levelConfig).length;
+        const isFinalLevel = gameState.selectedLevel === totalLevels;
         const hasPassed = stars >= 1;
 
         if (hasPassed && !isFinalLevel) {
@@ -979,8 +1247,20 @@ const GameManager = {
         document.getElementById('lang-toggle').onclick = () => LanguageManager.toggle();
         document.getElementById('main-lang-toggle').onclick = () => LanguageManager.toggle();
         document.getElementById('replay-voice-btn').onclick = () => this.speakQuestion();
-        document.getElementById('play-level-btn').onclick = () => this.startLevel();
-        document.getElementById('retry-btn').onclick = () => this.startLevel();
+        document.getElementById('play-level-btn').onclick = () => LearningManager.start(gameState.selectedLevel);
+        document.getElementById('retry-btn').onclick = () => LearningManager.start(gameState.selectedLevel);
+
+        document.getElementById('next-learn-btn').onclick = () => LearningManager.nextStep();
+        document.getElementById('prev-learn-btn').onclick = () => LearningManager.prevStep();
+        document.getElementById('replay-learn-audio-btn').onclick = () => LearningManager.playNarration();
+        document.getElementById('exit-learning-btn').onclick = () => this.handleHomeClick();
+        document.getElementById('start-quiz-btn').onclick = () => {
+            if (!gameState.completedLearning.includes(gameState.selectedLevel)) {
+                gameState.completedLearning.push(gameState.selectedLevel);
+                SaveSystem.save();
+            }
+            this.startLevel();
+        };
         document.getElementById('buy-hint-btn').onclick = () => this.buyHint();
         document.getElementById('map-return-btn').onclick = () => {
             if (this.autoContinueInterval) clearInterval(this.autoContinueInterval);
@@ -989,19 +1269,15 @@ const GameManager = {
             const totalLevels = Object.keys(gameState.levelConfig).length;
 
             if (gameState.levelRatings[currentLevel] >= 1 && nextLevel <= totalLevels) {
-                // Unlock next level if not already
+                // Unlock next level persistently
                 if (!gameState.unlockedLevels.includes(nextLevel)) {
                     gameState.unlockedLevels.push(nextLevel);
                 }
                 gameState.selectedLevel = nextLevel;
                 gameState.currentQuestionIndex = 0;
-                this.showScreen('map-screen');
-                // Automatically transition to the next level after showing the map briefly
-                setTimeout(() => {
-                    if (gameState.currentScreen === 'map-screen' && gameState.selectedLevel === nextLevel) {
-                        this.startLevel();
-                    }
-                }, 2000);
+                SaveSystem.save();
+                this.updateTheme();
+                LearningManager.start(nextLevel);
             } else {
                 this.showScreen('level-selection-screen');
             }

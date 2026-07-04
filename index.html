@@ -85,6 +85,37 @@
             </div>
         </section>
 
+        <!-- Learning Screen -->
+        <section id="learning-screen" class="screen">
+            <div class="top-nav">
+                <button id="exit-learning-btn" class="icon-btn">
+                    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                </button>
+                <div class="learning-progress-container progress-container">
+                    <div id="learning-progress-bar" class="progress-fill"></div>
+                </div>
+                <h2 data-key="learning_title" style="margin: 0; font-size: 1rem;">BELAJAR</h2>
+            </div>
+            <div id="learning-content-area" class="card" style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; overflow-y: auto;">
+                <!-- Content injected by LearningManager -->
+            </div>
+            <div class="learning-nav" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+                <button id="prev-learn-btn" class="btn-block btn-secondary" style="padding: 15px; font-size: 1rem;">
+                    <span data-key="prev">KEMBALI</span>
+                </button>
+                <button id="next-learn-btn" class="btn-block btn-primary" style="padding: 15px; font-size: 1rem;">
+                    <span data-key="next">TERUS</span>
+                </button>
+                <button id="start-quiz-btn" class="btn-block btn-accent hidden" style="grid-column: span 2; padding: 15px; font-size: 1rem;">
+                    <span data-key="start_quiz">MULA KUIZ</span>
+                </button>
+                <button id="replay-learn-audio-btn" class="btn-block btn-secondary" style="grid-column: span 2; padding: 12px; font-size: 0.9rem; background: #a29bfe; border-color: #6c5ce7;">
+                    <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: white; stroke: none;"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                    <span data-key="replay_audio">DENGAR LAGI</span>
+                </button>
+            </div>
+        </section>
+
         <!-- Map Screen -->
         <section id="map-screen" class="screen">
             <div class="top-nav">
