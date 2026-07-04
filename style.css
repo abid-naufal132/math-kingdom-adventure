@@ -602,3 +602,117 @@ body.reduced-motion * {
 .btn-block:active, .opt-btn:active {
     transform: translateY(4px) scale(0.98);
 }
+
+/* Learning Mode UI */
+.animal-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.animal-item {
+    width: 50px;
+    height: 50px;
+    animation: animalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+}
+
+@keyframes animalPop {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+}
+
+.number-line-container {
+    margin: 30px 0;
+    padding: 20px 0;
+    position: relative;
+    border-bottom: 4px solid var(--text-dark);
+}
+
+.number-line-marks {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.nl-mark {
+    position: relative;
+    font-weight: 900;
+    font-size: 0.9rem;
+}
+
+.nl-mark::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 10px;
+    background: var(--text-dark);
+}
+
+.nl-jump-container {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    pointer-events: none;
+}
+
+.nl-jump-arc {
+    position: absolute;
+    border: 3px solid var(--secondary-color);
+    border-bottom: none;
+    border-radius: 50% 50% 0 0;
+    animation: jumpArc 0.6s ease-out forwards;
+}
+
+@keyframes jumpArc {
+    from { transform: scaleX(0); opacity: 0; }
+    to { transform: scaleX(1); opacity: 1; }
+}
+
+.practice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.practice-opt-btn {
+    padding: 15px;
+    font-size: 1.5rem;
+    font-weight: 900;
+    background: white;
+    border: 3px solid #dfe6e9;
+    border-radius: 15px;
+    box-shadow: 0 4px 0 #dfe6e9;
+    cursor: pointer;
+}
+
+.practice-opt-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #dfe6e9;
+}
+
+.practice-feedback {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 700;
+    text-align: center;
+    animation: popIn 0.3s ease-out;
+}
+
+.practice-feedback.correct {
+    background: #d1f2eb;
+    color: var(--primary-color);
+}
+
+.practice-feedback.wrong {
+    background: #fadbd8;
+    color: var(--danger-color);
+}
