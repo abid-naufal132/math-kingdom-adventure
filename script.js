@@ -68,6 +68,10 @@ const translations = {
         on: "HIDUP",
         loading: "Sila tunggu...",
         collection: "Buku Koleksi",
+        unlocked: "DIBUKA",
+        locked: "TERKUNCI",
+        completed: "SELESAI",
+        play: "MAIN",
         treasure_found: "Tahniah! Anda jumpa peti harta karun!",
         bgm_toggle: "Muzik Latar",
         bgm_volume: "Volume Muzik",
@@ -159,6 +163,10 @@ const translations = {
         on: "ON",
         loading: "Loading...",
         collection: "Collection Book",
+        unlocked: "UNLOCKED",
+        locked: "LOCKED",
+        completed: "COMPLETED",
+        play: "PLAY",
         treasure_found: "Congratulations! You found a treasure chest!",
         bgm_toggle: "Background Music",
         bgm_volume: "Music Volume",
@@ -962,18 +970,26 @@ const LevelManager = {
         const container = document.getElementById('level-list');
         if (!container) return;
         container.innerHTML = '';
-        [1, 2, 3].forEach(lv => {
+        const levelCount = Object.keys(gameState.levelConfig).length;
+        for (let lv = 1; lv <= levelCount; lv++) {
             const isLocked = !gameState.unlockedLevels.includes(lv);
+            const isCompleted = gameState.levelRatings[lv] > 0;
             const card = document.createElement('button');
-            card.className = `level-card ${isLocked ? 'locked' : ''}`;
-            card.setAttribute('aria-label', `Level ${lv}`);
+            card.className = `level-card ${isLocked ? 'locked' : ''} ${isCompleted ? 'completed' : ''}`;
+            card.setAttribute('aria-label', `${LanguageManager.get('level_label')} ${lv}`);
             if (isLocked) card.setAttribute('disabled', 'true');
+
+            const badgeContent = isCompleted ? SVGS.check : formatNum(lv);
+            const statusLabel = isLocked ? LanguageManager.get('locked') : (isCompleted ? LanguageManager.get('completed') : LanguageManager.get('play'));
+
             card.innerHTML = `
-                <div class="level-badge">${formatNum(lv)}</div>
-                <div class="level-info" style="text-align: left;">
+                <div class="level-badge">${badgeContent}</div>
+                <div class="level-info" style="text-align: left; flex-grow: 1;">
+                    <div style="font-size: 0.8rem; font-weight: 900; color: var(--secondary-color);">${LanguageManager.get('level_label')} ${lv}</div>
                     <h3 data-key="lvl${lv}_title">${LanguageManager.get('lvl'+lv+'_title')}</h3>
-                    <p data-key="lvl${lv}_desc">${LanguageManager.get('lvl'+lv+'_desc')}</p>
+                    <p data-key="lvl${lv}_desc" style="font-size: 0.9rem; opacity: 0.8;">${LanguageManager.get('lvl'+lv+'_desc')}</p>
                 </div>
+                <div class="level-status-tag" style="font-size: 0.7rem; font-weight: 900; padding: 4px 8px; border-radius: 10px; background: #dfe6e9;">${statusLabel}</div>
             `;
             if (!isLocked) {
                 card.onclick = () => {
@@ -982,7 +998,7 @@ const LevelManager = {
                 };
             }
             container.appendChild(card);
-        });
+        }
     },
     renderMap() {
         const container = document.getElementById('safari-path');
@@ -1048,28 +1064,6 @@ const LevelManager = {
  * GAME MANAGER
  */
 const GameManager = {
-    proceedToNextLevel() {
-        if (this.autoContinueInterval) clearInterval(this.autoContinueInterval);
-
-        const currentLevel = gameState.selectedLevel;
-        const nextLevel = currentLevel + 1;
-        const totalLevels = Object.keys(gameState.levelConfig).length;
-
-        if (gameState.levelRatings[currentLevel] >= 1 && nextLevel <= totalLevels) {
-            // Unlock next level persistently
-            if (!gameState.unlockedLevels.includes(nextLevel)) {
-                gameState.unlockedLevels.push(nextLevel);
-            }
-            gameState.selectedLevel = nextLevel;
-            gameState.currentQuestionIndex = 0;
-            SaveSystem.save();
-            this.updateTheme();
-            LearningManager.start(nextLevel);
-        } else {
-            this.showScreen('level-selection-screen');
-        }
-    },
-
     checkDailyReward() {
         const today = new Date().toDateString();
         if (gameState.lastRewardDate !== today) {
@@ -1269,7 +1263,6 @@ const GameManager = {
             if (gameState.currentQuestionIndex === 3 || gameState.currentQuestionIndex === 5) {
                 const bonus = gameState.currentQuestionIndex === 3 ? 10 : 25;
                 StarManager.addStars(bonus);
-                setTimeout(() => GuideManager.speak('treasure_found'), 1000);
             }
         } else {
             AudioManager.playSFX('wrong');
@@ -1331,7 +1324,6 @@ const GameManager = {
         StarManager.addStars(bonusStars);
 
         const totalLevels = Object.keys(gameState.levelConfig).length;
-        const isFinalLevel = gameState.selectedLevel === totalLevels;
         const hasPassed = resultStars >= 1;
 
         if (hasPassed) {
@@ -1341,6 +1333,8 @@ const GameManager = {
             }
             if (resultStars === 3) this.unlockRandomAnimal();
         }
+
+        const isFinalLevel = gameState.selectedLevel === totalLevels;
 
         // Record history
         gameState.stats.history.unshift({
@@ -1443,7 +1437,7 @@ const GameManager = {
             rewardDisplay.innerHTML = `
                 <div class="card" style="display: inline-block; border-color: var(--accent-color); animation: starSpin 0.6s ease-out;">
                     <div style="width: 80px; height: 80px; margin: 0 auto;">${SVGS[animal]}</div>
-                    <p style="font-weight: 900; margin-top: 10px; color: var(--accent-shadow);">UNLOCKED!</p>
+                    <p style="font-weight: 900; margin-top: 10px; color: var(--accent-shadow);">${LanguageManager.get('unlocked')}!</p>
                 </div>
             `;
             AudioManager.playSFX('star');
@@ -1628,13 +1622,19 @@ const GameManager = {
 
         allAnimals.forEach(animal => {
             const isUnlocked = gameState.animals.includes(animal);
-            const item = document.createElement('div');
-            item.className = `collection-item ${isUnlocked ? '' : 'locked'}`;
-            item.innerHTML = `
-                <div style="width: 100%; height: 80px;">${SVGS[animal]}</div>
-                <p style="font-weight: 900; margin-top: 5px; font-size: 0.8rem;">${isUnlocked ? animal.toUpperCase() : '???'}</p>
+            const card = document.createElement('div');
+            card.className = `collection-card ${isUnlocked ? '' : 'locked'}`;
+
+            const animalName = isUnlocked ? animal.toUpperCase() : '???';
+            const statusLabel = isUnlocked ? LanguageManager.get('unlocked') : LanguageManager.get('locked');
+            const statusClass = isUnlocked ? 'status-unlocked' : 'status-locked';
+
+            card.innerHTML = `
+                <div class="collection-animal-svg">${SVGS[animal]}</div>
+                <h3 style="font-size: 1rem; margin: 0;">${animalName}</h3>
+                <div class="collection-status ${statusClass}">${statusLabel}</div>
             `;
-            container.appendChild(item);
+            container.appendChild(card);
         });
     },
 
