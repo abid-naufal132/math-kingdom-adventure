@@ -441,16 +441,36 @@ const SpeechManager = {
  * AUDIO MANAGER
  */
 const AudioManager = {
-    bgmStarted: false,
     audioCtx: null,
+    bgmGain: null,
+    masterSfxGain: null,
+    currentBgmType: null,
+    bgmInterval: null,
+    isFading: false,
 
     init() {
-        // Initialized on first user interaction to comply with browser policies
+        // Initialized on first user interaction
     },
 
     createContext() {
         if (!this.audioCtx) {
             this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            this.bgmGain = this.audioCtx.createGain();
+            this.bgmGain.connect(this.audioCtx.destination);
+            this.updateBgmVolume();
+
+            this.masterSfxGain = this.audioCtx.createGain();
+            this.masterSfxGain.connect(this.audioCtx.destination);
+        }
+        if (this.audioCtx.state === 'suspended') {
+            this.audioCtx.resume();
+        }
+    },
+
+    updateBgmVolume() {
+        if (this.bgmGain && this.audioCtx) {
+            const targetVol = gameState.accessibility.bgmEnabled ? gameState.accessibility.bgmVolume * 0.4 : 0;
+            this.bgmGain.gain.setTargetAtTime(targetVol, this.audioCtx.currentTime, 0.1);
         }
     },
 
@@ -479,9 +499,7 @@ const AudioManager = {
         gain.gain.setValueAtTime(gameState.accessibility.sfxVolume * 0.2, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
 
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-
+        osc.connect(this.masterSfxGain);
         osc.start();
         osc.stop(ctx.currentTime + duration);
     },
@@ -495,55 +513,93 @@ const AudioManager = {
             osc.frequency.setValueAtTime(f, ctx.currentTime + i * step);
             gain.gain.setValueAtTime(gameState.accessibility.sfxVolume * 0.2, ctx.currentTime + i * step);
             gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * step + 0.3);
-            osc.connect(gain);
-            gain.connect(ctx.destination);
+            osc.connect(this.masterSfxGain);
             osc.start(ctx.currentTime + i * step);
             osc.stop(ctx.currentTime + i * step + 0.3);
         });
     },
 
-    startBGM() {
-        if (this.bgmStarted || !gameState.accessibility.bgmEnabled) return;
+    fadeToTrack(type) {
+        if (this.currentBgmType === type || this.isFading) return;
         this.createContext();
-        this.bgmStarted = true;
-        this.playBGMLoop();
+
+        this.isFading = true;
+        const fadeTime = 1.0;
+
+        // Fade out
+        if (this.bgmGain) {
+            this.bgmGain.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + fadeTime);
+        }
+
+        setTimeout(() => {
+            if (this.bgmInterval) clearInterval(this.bgmInterval);
+            this.currentBgmType = type;
+            this.startBgmLoop(type);
+
+            // Fade in
+            if (this.bgmGain) {
+                const targetVol = gameState.accessibility.bgmEnabled ? gameState.accessibility.bgmVolume * 0.4 : 0;
+                this.bgmGain.gain.exponentialRampToValueAtTime(Math.max(0.001, targetVol), this.audioCtx.currentTime + fadeTime);
+            }
+            this.isFading = false;
+        }, fadeTime * 1000);
     },
 
-    playBGMLoop() {
+    startBgmLoop(type) {
+        const tracks = {
+            menu: { notes: [261.63, 329.63, 392.00, 349.23], tempo: 110, type: 'sine' }, // C4, E4, G4, F4
+            learning: { notes: [329.63, 392.00, 440.00, 329.63], tempo: 90, type: 'triangle' }, // E4, G4, A4, E4
+            quiz: { notes: [392.00, 440.00, 523.25, 493.88], tempo: 130, type: 'sine' }, // G4, A4, C5, B4
+            celebration: { notes: [523.25, 659.25, 783.99, 1046.50], tempo: 150, type: 'sine' } // C5, E5, G5, C6
+        };
+
+        const config = tracks[type] || tracks.menu;
         const ctx = this.audioCtx;
-        const playNote = (freq, time, duration, vol) => {
-            if (!gameState.accessibility.bgmEnabled) return;
+        const quarter = 60 / config.tempo;
+
+        const playNote = (freq, time) => {
             const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'sine';
+            const g = ctx.createGain();
+            osc.type = config.type;
             osc.frequency.setValueAtTime(freq, time);
-            gain.gain.setValueAtTime(0, time);
-            gain.gain.linearRampToValueAtTime(vol * gameState.accessibility.bgmVolume, time + 0.1);
-            gain.gain.exponentialRampToValueAtTime(0.01, time + duration);
-            osc.connect(gain);
-            gain.connect(ctx.destination);
+            g.gain.setValueAtTime(0, time);
+            g.gain.linearRampToValueAtTime(0.1, time + 0.1);
+            g.gain.exponentialRampToValueAtTime(0.001, time + quarter * 0.9);
+            osc.connect(g);
+            g.connect(this.bgmGain);
             osc.start(time);
-            osc.stop(time + duration);
+            osc.stop(time + quarter);
         };
 
-        const tempo = 120;
-        const quarter = 60 / tempo;
-        let nextTime = ctx.currentTime + 0.5;
-
-        const loop = () => {
-            if (!this.bgmStarted) return;
-            const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
-            for (let i = 0; i < 8; i++) {
-                playNote(notes[i % 4], nextTime + i * quarter, quarter * 0.8, 0.05);
+        let nextTime = ctx.currentTime + 0.1;
+        const schedule = () => {
+            for (let i = 0; i < 4; i++) {
+                playNote(config.notes[i], nextTime + i * quarter);
             }
-            nextTime += 8 * quarter;
-            setTimeout(loop, 8 * quarter * 1000 - 100);
+            nextTime += 4 * quarter;
         };
-        loop();
+
+        schedule();
+        this.bgmInterval = setInterval(() => {
+            if (ctx.currentTime > nextTime - quarter * 2) {
+                schedule();
+            }
+        }, quarter * 2000);
+    },
+
+    startBGM() {
+        if (this.currentBgmType || !gameState.accessibility.bgmEnabled) return;
+        this.fadeToTrack('menu');
     },
 
     stopBGM() {
-        this.bgmStarted = false;
+        if (this.bgmGain && this.audioCtx) {
+            this.bgmGain.gain.setTargetAtTime(0, this.audioCtx.currentTime, 0.5);
+        }
+        setTimeout(() => {
+            if (this.bgmInterval) clearInterval(this.bgmInterval);
+            this.currentBgmType = null;
+        }, 600);
     }
 };
 
@@ -1074,6 +1130,18 @@ const GameManager = {
             this.updateTheme();
             target.classList.add('active');
             gameState.currentScreen = screenId;
+
+            // Handle BGM transitions
+            if (screenId === 'learning-screen') {
+                AudioManager.fadeToTrack('learning');
+            } else if (screenId === 'game-screen' || screenId === 'map-screen') {
+                AudioManager.fadeToTrack('quiz');
+            } else if (screenId === 'result-screen') {
+                AudioManager.fadeToTrack('celebration');
+            } else {
+                AudioManager.fadeToTrack('menu');
+            }
+
             if (screenId === 'level-selection-screen') LevelManager.renderLevelList();
             if (screenId === 'map-screen') {
                 LevelManager.renderMap();
@@ -1496,10 +1564,12 @@ const GameManager = {
             } else {
                 AudioManager.stopBGM();
             }
+            AudioManager.updateBgmVolume();
             SaveSystem.save();
         };
         document.getElementById('bgm-slider').oninput = (e) => {
             gameState.accessibility.bgmVolume = parseFloat(e.target.value);
+            AudioManager.updateBgmVolume();
             SaveSystem.save();
         };
         document.getElementById('sfx-slider').oninput = (e) => {
