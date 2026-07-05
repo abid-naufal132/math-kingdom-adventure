@@ -21,7 +21,8 @@ const SVGS = {
     check: `<svg viewBox="0 0 24 24" fill="none" stroke="#00b894" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`,
     cross: `<svg viewBox="0 0 24 24" fill="none" stroke="#d63031" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`,
     star: `<svg viewBox="0 0 24 24" fill="#f1c40f" stroke="#f39c12" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
-    starEmpty: `<svg viewBox="0 0 24 24" fill="none" stroke="#dfe6e9" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`
+    starEmpty: `<svg viewBox="0 0 24 24" fill="none" stroke="#dfe6e9" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
+    guide: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="35" r="25" fill="#ffeaa7"/><path d="M50 60 L20 90 H80 Z" fill="#fab1a0"/><rect x="40" y="25" width="20" height="10" rx="5" fill="#55efc4"/><circle cx="40" cy="35" r="3" fill="#2d3436"/><circle cx="60" cy="35" r="3" fill="#2d3436"/><path d="M45 45 Q50 50 55 45" stroke="#2d3436" stroke-width="2" stroke-linecap="round"/></svg>`
 };
 
 /* --- UTILITIES --- */
@@ -49,26 +50,30 @@ const translations = {
         wrong: "Cuba lagi! 🌟",
         level_label: "TAHAP",
         lang_btn: "BM",
-        accessibility: "Aksesibilitas",
+        accessibility: "Aksesibiliti",
         high_contrast: "Kontras Tinggi",
-        dyslexia_font: "Font Disleksia",
+        dyslexia_font: "Fon Mesra Disleksia",
         text_size: "Saiz Teks",
-        voice_toggle: "Suara",
-        dashboard_title: "Dashboard Guru",
+        voice_toggle: "Suara Narasi",
+        dashboard_title: "Papan Pemuka Guru",
         star_hint: "Petunjuk Bintang: ",
         buy_hint: "Guna 10 Bintang",
         not_enough_stars: "Bintang tidak cukup!",
         total_questions: "Jumlah Soalan",
         accuracy: "Ketepatan",
         time_spent: "Masa Digunakan",
-        reset_data: "RESET DATA",
+        reset_data: "SET SEMULA DATA",
         stats: "STATISTIK",
-        off: "TUTUP",
-        on: "BUKA",
-        loading: "Memuat...",
+        off: "MATI",
+        on: "HIDUP",
+        loading: "Sila tunggu...",
+        collection: "Buku Koleksi",
+        treasure_found: "Tahniah! Anda jumpa peti harta karun!",
         bgm_toggle: "Muzik Latar",
         bgm_volume: "Volume Muzik",
         sfx_volume: "Volume Kesan Bunyi",
+        narration_volume: "Volume Narasi",
+        speech_speed: "Kelajuan Suara",
         reduced_motion: "Kurangkan Animasi",
         minutes_label: "min",
         star_balance: "Baki Bintang",
@@ -94,21 +99,28 @@ const translations = {
         lets_practice: "Mari Cuba!",
         practice_correct: "Bagus! Jawapan yang betul.",
         practice_wrong: "Cuba lagi! Perhatikan betul-betul.",
-        lvl1_learn_1: "Mari belajar menambah! Menambah bermaksud kita mengumpulkan semua benda.",
-        lvl1_learn_2: "Mari kira singa ini. 1 singa tambah 2 singa jadi berapa?",
-        lvl1_learn_3: "Lihat pada garis nombor. Dari 2, kita lompat 3 langkah ke depan. Kita sampai ke nombor 5!",
-        lvl1_practice_1: "1 + 1 sama dengan berapa?",
-        lvl1_practice_2: "3 + 2 sama dengan berapa?",
-        lvl2_learn_1: "Mari belajar menolak! Menolak bermaksud kita membuang atau mengurangkan benda.",
-        lvl2_learn_2: "Mari kira monyet ini. 5 monyet tolak 2 monyet tinggal berapa?",
-        lvl2_learn_3: "Lihat pada garis nombor. Dari 10, kita lompat 4 langkah ke belakang. Kita sampai ke nombor 6!",
-        lvl2_practice_1: "2 - 1 sama dengan berapa?",
-        lvl2_practice_2: "5 - 3 sama dengan berapa?",
-        lvl3_learn_1: "Sekarang kita akan campurkan tambah dan tolak! Ingat: tambah itu kumpul, tolak itu buang.",
-        lvl3_learn_2: "Mari kita cuba satu soalan tambah. 10 + 5 jadi berapa?",
-        lvl3_learn_3: "Seterusnya satu soalan tolak. 15 - 5 tinggal berapa?",
-        lvl3_practice_1: "10 + 10 sama dengan berapa?",
-        lvl3_practice_2: "20 - 10 sama dengan berapa?"
+        wp_add_1: "Ada {a} epal, tambah {b} epal. Berapa semuanya?",
+        wp_add_2: "Ibu beri {a} guli, ayah beri {b} guli. Berapa semuanya?",
+        wp_sub_1: "Ada {a} burung, {b} terbang jauh. Berapa yang tinggal?",
+        wp_sub_2: "Ada {a} biskut, kita makan {b} biskut. Berapa yang tinggal?",
+        lvl1_obj: "Hari ini kita akan belajar menambah nombor 0 hingga 10!",
+        lvl1_learn_1: "Menambah bermaksud kita mengumpulkan semua benda menjadi lebih banyak.",
+        lvl1_learn_2: "Mari kira singa yang comel ini. 1 singa tambah 2 singa jadi berapa ya?",
+        lvl1_learn_3: "Gunakan garis nombor! Dari nombor 2, kita lompat 3 langkah ke depan. Sekarang kita di nombor 5!",
+        lvl1_practice_1: "Ada 1 epal, tambah lagi 1 epal. Berapa semuanya?",
+        lvl1_practice_2: "Ada 3 guli, tambah lagi 2 guli. Berapa semuanya?",
+        lvl2_obj: "Hari ini kita akan belajar menolak nombor 0 hingga 15!",
+        lvl2_learn_1: "Menolak bermaksud kita membuang atau mengurangkan benda menjadi sedikit.",
+        lvl2_learn_2: "Mari kira monyet ini. Ada 5 monyet, 2 monyet sudah pergi. Tinggal berapa?",
+        lvl2_learn_3: "Gunakan garis nombor! Dari nombor 10, kita lompat 4 langkah ke belakang. Sekarang kita di nombor 6!",
+        lvl2_practice_1: "Ada 2 roti, makan 1 roti. Tinggal berapa?",
+        lvl2_practice_2: "Ada 5 pensel, hilang 3 pensel. Tinggal berapa?",
+        lvl3_obj: "Hari ini kita akan belajar tambah dan tolak nombor 0 hingga 20!",
+        lvl3_learn_1: "Ingat ya kawan-kawan! Tambah itu kumpul semua, tolak itu buang sedikit.",
+        lvl3_learn_2: "Mari cuba soalan tambah besar. 10 tambah 5 jadi berapa?",
+        lvl3_learn_3: "Mari cuba soalan tolak pula. 15 tolak 5 tinggal berapa?",
+        lvl3_practice_1: "Ibu beli 10 telur, ayah beli lagi 10 telur. Berapa telur semuanya?",
+        lvl3_practice_2: "Ada 20 burung, 10 burung terbang jauh. Berapa burung yang tinggal?"
     },
     en: {
         choose_avatar: "Choose Hero",
@@ -146,9 +158,13 @@ const translations = {
         off: "OFF",
         on: "ON",
         loading: "Loading...",
+        collection: "Collection Book",
+        treasure_found: "Congratulations! You found a treasure chest!",
         bgm_toggle: "Background Music",
         bgm_volume: "Music Volume",
         sfx_volume: "SFX Volume",
+        narration_volume: "Narration Volume",
+        speech_speed: "Speech Speed",
         reduced_motion: "Reduced Motion",
         minutes_label: "min",
         star_balance: "Star Balance",
@@ -174,21 +190,28 @@ const translations = {
         lets_practice: "Let's Try!",
         practice_correct: "Great! That's correct.",
         practice_wrong: "Try again! Look closely.",
-        lvl1_learn_1: "Let's learn addition! Adding means putting things together.",
-        lvl1_learn_2: "Let's count these lions. 1 lion plus 2 lions equals how many?",
+        wp_add_1: "There are {a} apples, add {b} apples. How many in total?",
+        wp_add_2: "Mom gives {a} marbles, Dad gives {b} marbles. How many in total?",
+        wp_sub_1: "There are {a} birds, {b} fly away. How many are left?",
+        wp_sub_2: "There are {a} cookies, eat {b} cookies. How many are left?",
+        lvl1_obj: "Today we will learn how to add numbers from 0 to 10!",
+        lvl1_learn_1: "Adding means putting things together to get more.",
+        lvl1_learn_2: "Let's count these cute lions. 1 lion plus 2 lions equals how many?",
         lvl1_learn_3: "Look at the number line. From 2, we jump 3 steps forward. We reach number 5!",
-        lvl1_practice_1: "What is 1 + 1?",
-        lvl1_practice_2: "What is 3 + 2?",
-        lvl2_learn_1: "Let's learn subtraction! Subtracting means taking things away.",
-        lvl2_learn_2: "Let's count these monkeys. 5 monkeys minus 2 monkeys equals how many?",
+        lvl1_practice_1: "There is 1 apple, add 1 more apple. How many apples now?",
+        lvl1_practice_2: "There are 3 marbles, add 2 more marbles. How many marbles now?",
+        lvl2_obj: "Today we will learn how to subtract numbers from 0 to 15!",
+        lvl2_learn_1: "Subtracting means taking things away to get less.",
+        lvl2_learn_2: "Let's count these monkeys. There are 5 monkeys, 2 monkeys went away. How many are left?",
         lvl2_learn_3: "Look at the number line. From 10, we jump 4 steps backward. We reach number 6!",
-        lvl2_practice_1: "What is 2 - 1?",
-        lvl2_practice_2: "What is 5 - 3?",
-        lvl3_learn_1: "Now we will mix addition and subtraction! Remember: plus is together, minus is take away.",
-        lvl3_learn_2: "Let's try an addition question. What is 10 + 5?",
-        lvl3_learn_3: "Now for a subtraction question. What is 15 - 5?",
-        lvl3_practice_1: "What is 10 + 10?",
-        lvl3_practice_2: "What is 20 - 10?"
+        lvl2_practice_1: "There are 2 buns, eat 1 bun. How many are left?",
+        lvl2_practice_2: "There are 5 pencils, lose 3 pencils. How many are left?",
+        lvl3_obj: "Today we will learn addition and subtraction from 0 to 20!",
+        lvl3_learn_1: "Remember friends! Plus means more, minus means less.",
+        lvl3_learn_2: "Let's try a big addition. What is 10 plus 5?",
+        lvl3_learn_3: "Now for a big subtraction. What is 15 minus 5?",
+        lvl3_practice_1: "Mom buys 10 eggs, Dad buys 10 more. How many eggs in total?",
+        lvl3_practice_2: "There are 20 birds, 10 birds fly away. How many birds left?"
     }
 };
 
@@ -214,7 +237,8 @@ const gameState = {
         bgmVolume: 0.3,
         bgmEnabled: true,
         sfxVolume: 0.5,
-        voiceEnabled: true
+        voiceEnabled: true,
+        narrationVolume: 1.0
     },
 
     currentScore: 0,
@@ -239,23 +263,30 @@ const gameState = {
 
     learningConfig: {
         1: [
+            { type: 'objective', textKey: 'lvl1_obj' },
             { type: 'text', textKey: 'lvl1_learn_1' },
             { type: 'counting', textKey: 'lvl1_learn_2', animal: 'lion', a: 1, b: 2, op: '+' },
+            { type: 'guided', textKey: 'lvl1_practice_1', a: 1, b: 1, op: '+', answer: 2 },
             { type: 'numberline', textKey: 'lvl1_learn_3', start: 2, steps: 3, op: '+' },
             { type: 'practice', textKey: 'lvl1_practice_1', a: 1, b: 1, op: '+', answer: 2, options: [1, 2, 3, 4] },
             { type: 'practice', textKey: 'lvl1_practice_2', a: 3, b: 2, op: '+', answer: 5, options: [4, 5, 6, 7] }
         ],
         2: [
+            { type: 'objective', textKey: 'lvl2_obj' },
             { type: 'text', textKey: 'lvl2_learn_1' },
             { type: 'counting', textKey: 'lvl2_learn_2', animal: 'monkey', a: 5, b: 2, op: '-' },
+            { type: 'guided', textKey: 'lvl2_practice_1', a: 2, b: 1, op: '-', answer: 1 },
             { type: 'numberline', textKey: 'lvl2_learn_3', start: 10, steps: 4, op: '-' },
             { type: 'practice', textKey: 'lvl2_practice_1', a: 2, b: 1, op: '-', answer: 1, options: [0, 1, 2, 3] },
             { type: 'practice', textKey: 'lvl2_practice_2', a: 5, b: 3, op: '-', answer: 2, options: [1, 2, 3, 4] }
         ],
         3: [
+            { type: 'objective', textKey: 'lvl3_obj' },
             { type: 'text', textKey: 'lvl3_learn_1' },
             { type: 'counting', textKey: 'lvl3_learn_2', animal: 'zebra', a: 10, b: 5, op: '+' },
+            { type: 'guided', textKey: 'lvl3_practice_1', a: 10, b: 10, op: '+', answer: 20 },
             { type: 'counting', textKey: 'lvl3_learn_3', animal: 'zebra', a: 15, b: 5, op: '-' },
+            { type: 'guided', textKey: 'lvl3_practice_2', a: 20, b: 10, op: '-', answer: 10 },
             { type: 'practice', textKey: 'lvl3_practice_1', a: 10, b: 10, op: '+', answer: 20, options: [10, 15, 18, 20] },
             { type: 'practice', textKey: 'lvl3_practice_2', a: 20, b: 10, op: '-', answer: 10, options: [5, 10, 15, 20] }
         ]
@@ -286,8 +317,16 @@ const SaveSystem = {
         const saved = localStorage.getItem(this.KEY);
         if (saved) {
             const data = JSON.parse(saved);
+            // Safe merge to preserve new default settings
+            if (data.accessibility) {
+                Object.assign(gameState.accessibility, data.accessibility);
+                delete data.accessibility;
+            }
+            if (data.stats) {
+                Object.assign(gameState.stats, data.stats);
+                delete data.stats;
+            }
             Object.assign(gameState, data);
-            // Apply loaded settings
             this.applySettings();
         }
     },
@@ -309,10 +348,15 @@ const SaveSystem = {
 const LanguageManager = {
     current: 'ms',
     init() {
+        const savedLang = localStorage.getItem('selectedLanguage');
+        if (savedLang) {
+            this.current = savedLang;
+        }
         this.updateUI();
     },
     set(lang) {
         this.current = lang;
+        localStorage.setItem('selectedLanguage', lang);
         this.updateUI();
     },
     toggle() {
@@ -373,13 +417,16 @@ const SpeechManager = {
 
         let speechText = text.toString();
 
-        // Enforce the "kosong" rule in Malay speech
+        // Enforce the "kosong" rule in Malay speech and "zero" in English
         if (LanguageManager.current === 'ms') {
             speechText = speechText.replace(/(^|[^0-9])0([^0-9]|$)/g, "$1kosong$2");
+        } else {
+            speechText = speechText.replace(/(^|[^0-9])0([^0-9]|$)/g, "$1zero$2");
         }
 
         const utterance = new SpeechSynthesisUtterance(speechText);
         utterance.rate = gameState.accessibility.speechSpeed || 1.0;
+        utterance.volume = gameState.accessibility.narrationVolume !== undefined ? gameState.accessibility.narrationVolume : 1.0;
         if (LanguageManager.current === 'ms') {
             utterance.voice = this.voice;
             utterance.lang = 'ms-MY';
@@ -520,7 +567,20 @@ const QuestionGenerator = {
         }
 
         const options = this.generateOptions(answer, config.max);
-        return { a, b, op, answer, options, text: `${formatNum(a)} ${op} ${formatNum(b)}` };
+
+        // Randomly decide if it's a word problem (30% chance for level 2+, 0% for level 1)
+        const isWordProblem = level > 1 && Math.random() < 0.3;
+        let text = `${formatNum(a)} ${op} ${formatNum(b)}`;
+        let narration = text;
+
+        if (isWordProblem) {
+            const key = op === '+' ? `wp_add_${Math.floor(Math.random() * 2) + 1}` : `wp_sub_${Math.floor(Math.random() * 2) + 1}`;
+            const template = LanguageManager.get(key);
+            text = template.replace('{a}', formatNum(a)).replace('{b}', formatNum(b));
+            narration = text;
+        }
+
+        return { a, b, op, answer, options, text, narration, isWordProblem };
     },
 
     generateOptions(correct, max) {
@@ -593,10 +653,19 @@ const LearningManager = {
 
         let html = `<h2 style="font-size: 1.5rem; margin-bottom: 20px; color: var(--secondary-color); line-height: 1.4;">${LanguageManager.get(step.textKey)}</h2>`;
 
-        if (step.type === 'counting') {
+        if (step.type === 'objective') {
+            html = `
+                <div class="objective-card text-center" style="animation: popIn 0.5s ease-out;">
+                    <div style="width: 100px; height: 100px; margin: 0 auto 20px;">${SVGS.badgeExplorer}</div>
+                    <h2 style="font-size: 1.8rem; color: var(--primary-color);">${LanguageManager.get(step.textKey)}</h2>
+                </div>
+            `;
+        } else if (step.type === 'counting') {
             html += this.generateCountingHtml(step);
         } else if (step.type === 'numberline') {
             html += this.generateNumberLineHtml(step);
+        } else if (step.type === 'guided') {
+            html += this.generateGuidedHtml(step);
         } else if (step.type === 'practice') {
             html += this.generatePracticeHtml(step);
         }
@@ -677,6 +746,22 @@ const LearningManager = {
         `;
     },
 
+    generateGuidedHtml(step) {
+        return `
+            <div class="guided-area text-center">
+                <div style="font-size: 3rem; font-weight: 900; margin-bottom: 20px;">
+                    ${step.a} ${step.op} ${step.b} = <span style="color: var(--success-color); animation: pulse 1s infinite;">${step.answer}</span>
+                </div>
+                <div class="card" style="background: #e3f2fd; border-color: #2196f3;">
+                    <p style="font-size: 1.2rem; font-weight: 700;">${LanguageManager.get('lets_practice')}</p>
+                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px;">
+                        ${Array.from({length: step.answer}, (_, i) => `<div class="hint-star" style="width: 30px; height: 30px; animation-delay: ${i * 0.1}s;">${SVGS.star}</div>`).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+
     generatePracticeHtml(step) {
         let optionsHtml = '';
         step.options.forEach(opt => {
@@ -734,6 +819,43 @@ const LearningManager = {
     playNarration() {
         const step = this.steps[this.currentStepIndex];
         SpeechManager.speak(LanguageManager.get(step.textKey));
+    }
+};
+
+/**
+ * GUIDE MANAGER
+ */
+const GuideManager = {
+    speak(textKey, containerId = 'app-container') {
+        const text = LanguageManager.get(textKey);
+        this.showBubble(text, containerId);
+        SpeechManager.speak(text);
+    },
+
+    showBubble(text, containerId) {
+        this.hideBubble();
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        const bubble = document.createElement('div');
+        bubble.id = 'guide-bubble-container';
+        bubble.className = 'guide-bubble-anim';
+        bubble.innerHTML = `
+            <div class="guide-character">${SVGS.guide}</div>
+            <div class="guide-bubble">
+                <p>${text}</p>
+            </div>
+        `;
+        container.appendChild(bubble);
+        if (!gameState.accessibility.reducedMotion) {
+            setTimeout(() => bubble.classList.add('active'), 50);
+        } else {
+            bubble.classList.add('active');
+        }
+    },
+
+    hideBubble() {
+        const existing = document.getElementById('guide-bubble-container');
+        if (existing) existing.remove();
     }
 };
 
@@ -831,7 +953,12 @@ const LevelManager = {
                 node.className = 'node';
                 if (i < currentStep) node.classList.add('completed');
                 if (i === currentStep) node.classList.add('current');
-                node.innerText = formatNum(i);
+
+                if (i === 3 || i === 5) {
+                    node.innerHTML = `<div class="chest-icon" style="width: 40px; height: 40px; animation: bounce 1s infinite alternate;">${SVGS.badgeCollector}</div>`;
+                } else {
+                    node.innerText = formatNum(i);
+                }
                 container.appendChild(node);
             }
         }
@@ -898,6 +1025,8 @@ const GameManager = {
         const motionBtn = document.getElementById('toggle-motion');
         const bgmSlider = document.getElementById('bgm-slider');
         const sfxSlider = document.getElementById('sfx-slider');
+        const narrationSlider = document.getElementById('narration-slider');
+        const speechSpeedSlider = document.getElementById('speech-speed-slider');
 
         if (contrastBtn) contrastBtn.innerText = acc.highContrast ? LanguageManager.get('on') : LanguageManager.get('off');
         if (dyslexiaBtn) dyslexiaBtn.innerText = acc.dyslexiaFont ? LanguageManager.get('on') : LanguageManager.get('off');
@@ -906,6 +1035,8 @@ const GameManager = {
         if (motionBtn) motionBtn.innerText = acc.reducedMotion ? LanguageManager.get('on') : LanguageManager.get('off');
         if (bgmSlider) bgmSlider.value = acc.bgmVolume;
         if (sfxSlider) sfxSlider.value = acc.sfxVolume;
+        if (narrationSlider) narrationSlider.value = acc.narrationVolume || 1.0;
+        if (speechSpeedSlider) speechSpeedSlider.value = acc.speechSpeed || 1.0;
     },
 
     updateTheme() {
@@ -940,7 +1071,29 @@ const GameManager = {
         document.getElementById('confirm-overlay').classList.remove('active');
         if (this.autoContinueInterval) clearInterval(this.autoContinueInterval);
         gameState.isGameActive = false;
+        if (typeof GuideManager !== 'undefined') GuideManager.hideBubble();
         this.showScreen('splash-screen');
+    },
+
+    proceedToNextLevel() {
+        if (this.autoContinueInterval) clearInterval(this.autoContinueInterval);
+        const currentLevel = gameState.selectedLevel;
+        const nextLevel = currentLevel + 1;
+        const totalLevels = Object.keys(gameState.levelConfig).length;
+
+        if (gameState.levelRatings[currentLevel] >= 1 && nextLevel <= totalLevels) {
+            // Unlock next level persistently
+            if (!gameState.unlockedLevels.includes(nextLevel)) {
+                gameState.unlockedLevels.push(nextLevel);
+            }
+            gameState.selectedLevel = nextLevel;
+            gameState.currentQuestionIndex = 0;
+            SaveSystem.save();
+            this.updateTheme();
+            LearningManager.start(nextLevel);
+        } else {
+            this.showScreen('level-selection-screen');
+        }
     },
 
     startLevel() {
@@ -989,9 +1142,13 @@ const GameManager = {
 
     speakQuestion() {
         const q = gameState.currentQuestion;
-        const opStr = q.op === '+' ? (LanguageManager.current === 'ms' ? 'tambah' : 'plus') : (LanguageManager.current === 'ms' ? 'tolak' : 'minus');
-        const eqStr = LanguageManager.current === 'ms' ? 'sama dengan berapa?' : 'equals what?';
-        SpeechManager.speak(`${q.a} ${opStr} ${q.b} ${eqStr}`);
+        if (q.isWordProblem) {
+            SpeechManager.speak(q.narration);
+        } else {
+            const opStr = q.op === '+' ? (LanguageManager.current === 'ms' ? 'tambah' : 'plus') : (LanguageManager.current === 'ms' ? 'tolak' : 'minus');
+            const eqStr = LanguageManager.current === 'ms' ? 'sama dengan berapa?' : 'equals what?';
+            SpeechManager.speak(`${q.a} ${opStr} ${q.b} ${eqStr}`);
+        }
     },
 
     checkAnswer(val) {
@@ -1015,6 +1172,13 @@ const GameManager = {
             gameState.wrongAttempts = 0;
             CelebrationManager.triggerStars(5);
             this.checkBadges();
+
+            // Treasure Chest Reward
+            if (gameState.currentQuestionIndex === 3 || gameState.currentQuestionIndex === 5) {
+                const bonus = gameState.currentQuestionIndex === 3 ? 10 : 25;
+                StarManager.addStars(bonus);
+                setTimeout(() => GuideManager.speak('treasure_found'), 1000);
+            }
         } else {
             AudioManager.playSFX('wrong');
             icon.innerHTML = SVGS.cross;
@@ -1262,26 +1426,7 @@ const GameManager = {
             this.startLevel();
         };
         document.getElementById('buy-hint-btn').onclick = () => this.buyHint();
-        document.getElementById('map-return-btn').onclick = () => {
-            if (this.autoContinueInterval) clearInterval(this.autoContinueInterval);
-            const currentLevel = gameState.selectedLevel;
-            const nextLevel = currentLevel + 1;
-            const totalLevels = Object.keys(gameState.levelConfig).length;
-
-            if (gameState.levelRatings[currentLevel] >= 1 && nextLevel <= totalLevels) {
-                // Unlock next level persistently
-                if (!gameState.unlockedLevels.includes(nextLevel)) {
-                    gameState.unlockedLevels.push(nextLevel);
-                }
-                gameState.selectedLevel = nextLevel;
-                gameState.currentQuestionIndex = 0;
-                SaveSystem.save();
-                this.updateTheme();
-                LearningManager.start(nextLevel);
-            } else {
-                this.showScreen('level-selection-screen');
-            }
-        };
+        document.getElementById('map-return-btn').onclick = () => this.proceedToNextLevel();
 
         // Unified Home button logic
         document.querySelectorAll('.home-btn').forEach(b => b.onclick = () => this.handleHomeClick());
@@ -1337,6 +1482,14 @@ const GameManager = {
             gameState.accessibility.sfxVolume = parseFloat(e.target.value);
             SaveSystem.save();
         };
+        document.getElementById('narration-slider').oninput = (e) => {
+            gameState.accessibility.narrationVolume = parseFloat(e.target.value);
+            SaveSystem.save();
+        };
+        document.getElementById('speech-speed-slider').oninput = (e) => {
+            gameState.accessibility.speechSpeed = parseFloat(e.target.value);
+            SaveSystem.save();
+        };
         document.getElementById('toggle-motion').onclick = () => {
             gameState.accessibility.reducedMotion = !gameState.accessibility.reducedMotion;
             SaveSystem.applySettings();
@@ -1366,6 +1519,29 @@ const GameManager = {
         document.getElementById('practice-mode-btn').onclick = () => {
             this.showScreen('level-selection-screen');
         };
+
+        document.getElementById('open-collection-btn-splash').onclick = () => {
+            this.renderCollection();
+            this.showScreen('collection-screen');
+        };
+    },
+
+    renderCollection() {
+        const container = document.getElementById('collection-grid');
+        if (!container) return;
+        container.innerHTML = '';
+        const allAnimals = ['lion', 'monkey', 'zebra', 'elephant', 'giraffe', 'parrot', 'turtle', 'rhino', 'hippo'];
+
+        allAnimals.forEach(animal => {
+            const isUnlocked = gameState.animals.includes(animal);
+            const item = document.createElement('div');
+            item.className = `collection-item ${isUnlocked ? '' : 'locked'}`;
+            item.innerHTML = `
+                <div style="width: 100%; height: 80px;">${SVGS[animal]}</div>
+                <p style="font-weight: 900; margin-top: 5px; font-size: 0.8rem;">${isUnlocked ? animal.toUpperCase() : '???'}</p>
+            `;
+            container.appendChild(item);
+        });
     },
 
     buyHint() {
@@ -1378,9 +1554,19 @@ const GameManager = {
             const answer = gameState.currentQuestion.answer;
             const levelMax = gameState.levelConfig[gameState.selectedLevel].max;
 
+            const q = gameState.currentQuestion;
             hintText.innerHTML = `
                 <div>${LanguageManager.get('star_hint')}${formatNum(answer)}</div>
-                <div class="star-hint-container">
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                    <div style="display: flex; justify-content: center; gap: 5px; flex-wrap: wrap;">
+                        ${Array.from({length: q.a}, (_, i) => `<div style="width: 25px; height: 25px;">${SVGS[gameState.selectedAvatar]}</div>`).join('')}
+                    </div>
+                    <div style="font-weight: 900; color: var(--danger-color);">${q.op}</div>
+                    <div style="display: flex; justify-content: center; gap: 5px; flex-wrap: wrap;">
+                        ${Array.from({length: q.b}, (_, i) => `<div style="width: 25px; height: 25px;">${SVGS[gameState.selectedAvatar]}</div>`).join('')}
+                    </div>
+                </div>
+                <div class="star-hint-container" style="border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px;">
                     ${Array.from({length: levelMax}, (_, i) => `
                         <div class="hint-star" style="animation-delay: ${i * 0.05}s">
                             ${i < answer ? SVGS.star : SVGS.starEmpty}
