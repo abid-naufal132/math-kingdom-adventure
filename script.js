@@ -800,9 +800,7 @@ const LevelManager = {
             if (!isLocked) {
                 card.onclick = () => {
                     gameState.selectedLevel = lv;
-                    GameManager.updateTheme(); // Update background immediately
-                    GameManager.showScreen('map-screen');
-                    this.renderMap();
+                    LearningManager.start(lv);
                 };
             }
             container.appendChild(card);
@@ -867,6 +865,28 @@ const LevelManager = {
  * GAME MANAGER
  */
 const GameManager = {
+    proceedToNextLevel() {
+        if (this.autoContinueInterval) clearInterval(this.autoContinueInterval);
+
+        const currentLevel = gameState.selectedLevel;
+        const nextLevel = currentLevel + 1;
+        const totalLevels = Object.keys(gameState.levelConfig).length;
+
+        if (gameState.levelRatings[currentLevel] >= 1 && nextLevel <= totalLevels) {
+            // Unlock next level persistently
+            if (!gameState.unlockedLevels.includes(nextLevel)) {
+                gameState.unlockedLevels.push(nextLevel);
+            }
+            gameState.selectedLevel = nextLevel;
+            gameState.currentQuestionIndex = 0;
+            SaveSystem.save();
+            this.updateTheme();
+            LearningManager.start(nextLevel);
+        } else {
+            this.showScreen('level-selection-screen');
+        }
+    },
+
     checkDailyReward() {
         const today = new Date().toDateString();
         if (gameState.lastRewardDate !== today) {
@@ -924,7 +944,11 @@ const GameManager = {
             target.classList.add('active');
             gameState.currentScreen = screenId;
             if (screenId === 'level-selection-screen') LevelManager.renderLevelList();
-            if (screenId === 'map-screen') LevelManager.renderMap();
+            if (screenId === 'map-screen') {
+                LevelManager.renderMap();
+                const playBtn = document.getElementById('play-level-btn');
+                if (playBtn) playBtn.classList.toggle('hidden', gameState.isGameActive);
+            }
         }
     },
 
@@ -1169,7 +1193,7 @@ const GameManager = {
                 timerEl.innerText = `${LanguageManager.get('auto_continue')} ${timeLeft}s...`;
                 if (timeLeft <= 0) {
                     clearInterval(this.autoContinueInterval);
-                    document.getElementById('map-return-btn').click();
+                    this.proceedToNextLevel();
                 }
             }, 1000);
         } else {
@@ -1262,26 +1286,7 @@ const GameManager = {
             this.startLevel();
         };
         document.getElementById('buy-hint-btn').onclick = () => this.buyHint();
-        document.getElementById('map-return-btn').onclick = () => {
-            if (this.autoContinueInterval) clearInterval(this.autoContinueInterval);
-            const currentLevel = gameState.selectedLevel;
-            const nextLevel = currentLevel + 1;
-            const totalLevels = Object.keys(gameState.levelConfig).length;
-
-            if (gameState.levelRatings[currentLevel] >= 1 && nextLevel <= totalLevels) {
-                // Unlock next level persistently
-                if (!gameState.unlockedLevels.includes(nextLevel)) {
-                    gameState.unlockedLevels.push(nextLevel);
-                }
-                gameState.selectedLevel = nextLevel;
-                gameState.currentQuestionIndex = 0;
-                SaveSystem.save();
-                this.updateTheme();
-                LearningManager.start(nextLevel);
-            } else {
-                this.showScreen('level-selection-screen');
-            }
-        };
+        document.getElementById('map-return-btn').onclick = () => this.proceedToNextLevel();
 
         // Unified Home button logic
         document.querySelectorAll('.home-btn').forEach(b => b.onclick = () => this.handleHomeClick());
