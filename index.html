@@ -68,7 +68,7 @@
 
         #app-container {
             width: 100%;
-            max-width: 900px;
+            max-width: 920px;
             min-height: 90vh;
             background-color: var(--bg-color);
             border-radius: 28px;
@@ -154,19 +154,19 @@
 
         .nav-btn {
             flex: 1;
-            min-width: 140px;
-            padding: 12px 15px;
+            min-width: 120px;
+            padding: 12px 10px;
             background: #b2bec3;
             border: none;
             border-radius: 16px 16px 0 0;
             font-weight: 900;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #2d3436;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             transition: all 0.2s;
         }
 
@@ -275,6 +275,62 @@
             display: inline-block;
         }
 
+        /* Stage Selector Bar */
+        .stage-selector-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .stage-card-btn {
+            flex: 1;
+            min-width: 140px;
+            background: #ffffff;
+            border: 3px solid #b2bec3;
+            border-radius: 16px;
+            padding: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stage-card-btn.active {
+            border-color: var(--secondary-color);
+            background: #e3f2fd;
+            box-shadow: 0 4px 0 var(--secondary-color);
+        }
+
+        .stage-card-btn.locked {
+            opacity: 0.6;
+            background: #f1f2f6;
+            cursor: not-allowed;
+        }
+
+        .stage-title-text {
+            font-size: 0.9rem;
+            font-weight: 900;
+            color: var(--text-main);
+        }
+
+        .stage-desc-text {
+            font-size: 0.75rem;
+            color: #636e72;
+        }
+
+        .stage-status-badge {
+            font-size: 0.7rem;
+            font-weight: 900;
+            padding: 2px 8px;
+            border-radius: 8px;
+            background: #dfe6e9;
+            margin-top: 2px;
+        }
+
         /* Interactive Subtraction Machine View Styles */
         .question-header {
             background: #ffffff;
@@ -294,6 +350,19 @@
             align-items: center;
             gap: 12px;
             font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 900;
+        }
+
+        .missing-box {
+            display: inline-block;
+            min-width: 60px;
+            height: 60px;
+            border: 4px dashed var(--secondary-color);
+            border-radius: 12px;
+            background: #e3f2fd;
+            text-align: center;
+            line-height: 52px;
+            color: var(--secondary-color);
             font-weight: 900;
         }
 
@@ -377,8 +446,8 @@
         }
 
         .interactive-sharpener {
-            width: 75px;
-            height: 75px;
+            width: 70px;
+            height: 70px;
             cursor: grab;
             transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
@@ -548,18 +617,82 @@
             box-shadow: 0 6px 0 #0984e3;
         }
 
+        /* Trophy & Badges Gallery */
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .badge-card {
+            background: #ffffff;
+            border: 4px solid #dfe6e9;
+            border-radius: 24px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.2s;
+            position: relative;
+            box-shadow: 0 8px 0 #dfe6e9;
+        }
+
+        .badge-card.unlocked {
+            border-color: var(--accent-yellow);
+            box-shadow: 0 8px 0 var(--accent-shadow);
+            background: linear-gradient(180deg, #fffdf0 0%, #ffffff 100%);
+            cursor: pointer;
+        }
+
+        .badge-card.unlocked:hover {
+            transform: translateY(-4px);
+        }
+
+        .badge-card.locked {
+            opacity: 0.55;
+            filter: grayscale(1);
+        }
+
+        .badge-icon {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+        }
+
+        .badge-title {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .badge-desc {
+            font-size: 0.85rem;
+            color: #636e72;
+            margin-bottom: 12px;
+        }
+
+        .badge-status-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 900;
+        }
+
+        .badge-status-tag.unlocked { background: #d1f2eb; color: #00b894; }
+        .badge-status-tag.locked { background: #dfe6e9; color: #636e72; }
+
         /* Feedback Overlay */
         .feedback-overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.75);
             display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 100;
             border-radius: inherit;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(5px);
         }
 
         .feedback-overlay.active {
@@ -572,7 +705,7 @@
             border-radius: 28px;
             padding: 35px 25px;
             text-align: center;
-            max-width: 350px;
+            max-width: 420px;
             width: 90%;
             border: 6px solid var(--accent-yellow);
             box-shadow: 0 15px 30px rgba(0,0,0,0.3);
@@ -647,16 +780,13 @@
             color: #2d3436;
         }
 
-        .tag-status {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 900;
+        /* Confetti Canvas Container */
+        #confetti-canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 99;
         }
-
-        .tag-status.pass { background: #d1f2eb; color: #00b894; }
-        .tag-status.warn { background: #ffeaa7; color: #d63031; }
 
         /* Speech Visual Fallback & Highlight Cues */
         .speech-highlight {
@@ -679,6 +809,8 @@
 <body>
 
     <div id="app-container">
+        <canvas id="confetti-canvas"></canvas>
+
         <!-- Top Bar Header -->
         <header>
             <div class="brand-title">
@@ -718,8 +850,11 @@
             <button class="nav-btn" id="tab-game" role="tab" aria-selected="false" onclick="switchTab('game')">
                 ✏️ <span data-key="tab_game">Mesin Pengasah</span>
             </button>
+            <button class="nav-btn" id="tab-badges" role="tab" aria-selected="false" onclick="switchTab('badges')">
+                🏆 <span data-key="tab_badges">Trofi & Lencana</span>
+            </button>
             <button class="nav-btn" id="tab-teacher" role="tab" aria-selected="false" onclick="switchTab('teacher')">
-                📊 <span data-key="tab_teacher">Papan Guru & Portfolio</span>
+                📊 <span data-key="tab_teacher">Papan Guru</span>
             </button>
         </nav>
 
@@ -787,11 +922,35 @@
             <!-- ================= VIEW 2: INTERACTIVE SUBTRACTION MACHINE ================= -->
             <section id="view-game" class="view-panel" role="tabpanel">
 
+                <!-- Stage Selection & Multi-stage Progression Header -->
+                <div class="stage-selector-bar">
+                    <button class="stage-card-btn active" id="stage-btn-1" onclick="selectStage(1)">
+                        <span style="font-size: 1.3rem;">⭐</span>
+                        <span class="stage-title-text" data-key="stage1_title">Stage 1: Asas (1 - 5)</span>
+                        <span class="stage-desc-text" data-key="stage1_desc">Visual 1-ke-1</span>
+                        <span class="stage-status-badge" id="stage-status-1">Aktif</span>
+                    </button>
+
+                    <button class="stage-card-btn locked" id="stage-btn-2" onclick="selectStage(2)">
+                        <span style="font-size: 1.3rem;">🎯</span>
+                        <span class="stage-title-text" data-key="stage2_title">Stage 2: Pertengahan (1 - 7)</span>
+                        <span class="stage-desc-text" data-key="stage2_desc">Cari Nombor</span>
+                        <span class="stage-status-badge" id="stage-status-2">🔒 Terkunci</span>
+                    </button>
+
+                    <button class="stage-card-btn locked" id="stage-btn-3" onclick="selectStage(3)">
+                        <span style="font-size: 1.3rem;">👑</span>
+                        <span class="stage-title-text" data-key="stage3_title">Stage 3: Lanjutan (1 - 10)</span>
+                        <span class="stage-desc-text" data-key="stage3_desc">Manipulatif Tulen</span>
+                        <span class="stage-status-badge" id="stage-status-3">🔒 Terkunci</span>
+                    </button>
+                </div>
+
                 <!-- Stage & Level Progression Bar -->
                 <div style="margin-bottom: 12px; background: #ffffff; padding: 10px 15px; border-radius: 16px; border: 3px solid #dfe6e9; display: flex; align-items: center; justify-content: space-between; gap: 15px;">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <span style="font-size: 1.1rem;">🏆</span>
-                        <span id="game-q-number-label" style="font-size: 1rem; font-weight: 900; color: var(--secondary-color);">Tahap 1 / 5</span>
+                        <span id="game-q-number-label" style="font-size: 1rem; font-weight: 900; color: var(--secondary-color);">Soalan 1 / 5</span>
                     </div>
                     <div style="flex: 1; max-width: 300px; height: 16px; background: #dfe6e9; border-radius: 10px; overflow: hidden; border: 2px solid #b2bec3;">
                         <div id="stage-progress-fill" style="width: 20%; height: 100%; background: linear-gradient(90deg, #00b894, #55efc4); transition: width 0.4s ease-in-out;"></div>
@@ -801,15 +960,8 @@
                 <!-- Question Header -->
                 <div class="question-header">
                     <div>
-                        <div class="equation-display">
-                            <span id="num-a">5</span>
-                            <div class="minus-badge-container">
-                                <span class="minus-symbol-badge">-</span>
-                                <span class="tag-remove" data-key="tag_remove">BUANG / REMOVE</span>
-                            </div>
-                            <span id="num-b">2</span>
-                            <span>=</span>
-                            <span style="color: var(--secondary-color); font-weight: 900;">?</span>
+                        <div class="equation-display" id="equation-display-box">
+                            <!-- Injected dynamically based on stage -->
                         </div>
                     </div>
 
@@ -867,7 +1019,7 @@
 
                 <!-- Answer Selection -->
                 <div class="card answer-section">
-                    <div class="answer-title" data-key="answer_title">Berapakah pengasah yang tinggal? Pilih jawapan:</div>
+                    <div class="answer-title" id="answer-title-text" data-key="answer_title">Berapakah pengasah yang tinggal? Pilih jawapan:</div>
                     <div class="options-grid" id="options-container">
                         <!-- Option buttons generated by JS -->
                     </div>
@@ -886,7 +1038,48 @@
             </section>
 
 
-            <!-- ================= VIEW 3: TEACHER DASHBOARD & PORTFOLIO ================= -->
+            <!-- ================= VIEW 3: TROPHY & BADGES GALLERY ================= -->
+            <section id="view-badges" class="view-panel" role="tabpanel">
+                <div class="card text-center" style="background: linear-gradient(135deg, #fff9db 0%, #ffffff 100%); border-color: var(--accent-yellow);">
+                    <h2 style="color: #d35400; font-size: 1.6rem; margin-bottom: 8px;" data-key="gallery_welcome_title">🏆 Galeri Trofi & Lencana Pencapaian</h2>
+                    <p style="font-size: 1.1rem; color: #555;" data-key="gallery_welcome_desc">Selesaikan setiap Tahap Operasi Tolak untuk membukan Lencana Khas MBPK!</p>
+                </div>
+
+                <div class="badges-grid">
+                    <!-- Badge 1 -->
+                    <div class="badge-card locked" id="gallery-badge-1" onclick="playBadgeAudio(1)">
+                        <div class="badge-icon">⭐</div>
+                        <div class="badge-title" data-key="b1_title">Lencana Bintang Pengasah</div>
+                        <div class="badge-desc" data-key="b1_desc">Selesaikan Stage 1 (Nombor 1 hingga 5). Penguasaan asas visual.</div>
+                        <span class="badge-status-tag locked" id="b1-status-tag" data-key="tag_locked">🔒 Terkunci</span>
+                    </div>
+
+                    <!-- Badge 2 -->
+                    <div class="badge-card locked" id="gallery-badge-2" onclick="playBadgeAudio(2)">
+                        <div class="badge-icon">🎯</div>
+                        <div class="badge-title" data-key="b2_title">Lencana Pakar Tolak</div>
+                        <div class="badge-desc" data-key="b2_desc">Selesaikan Stage 2 (Nombor 1 hingga 7). Mahir konsep nombor hilang.</div>
+                        <span class="badge-status-tag locked" id="b2-status-tag" data-key="tag_locked">🔒 Terkunci</span>
+                    </div>
+
+                    <!-- Badge 3 -->
+                    <div class="badge-card locked" id="gallery-badge-3" onclick="playBadgeAudio(3)">
+                        <div class="badge-icon">👑</div>
+                        <div class="badge-title" data-key="b3_title">Lencana Wira Matematik</div>
+                        <div class="badge-desc" data-key="b3_desc">Selesaikan Stage 3 (Nombor 1 hingga 10). Wira sejati Operasi Tolak!</div>
+                        <span class="badge-status-tag locked" id="b3-status-tag" data-key="tag_locked">🔒 Terkunci</span>
+                    </div>
+                </div>
+
+                <div class="card text-center" style="margin-top: 10px;">
+                    <button class="btn-action" onclick="switchTab('game')">
+                        ✏️ <span data-key="btn_play_now">Bermain & Kumpul Lencana!</span>
+                    </button>
+                </div>
+            </section>
+
+
+            <!-- ================= VIEW 4: TEACHER DASHBOARD & PORTFOLIO ================= -->
             <section id="view-teacher" class="view-panel" role="tabpanel">
                 <div class="dashboard-header">
                     <h2 style="color: var(--accent-yellow); margin-bottom: 5px;" data-key="teacher_title">📊 Papan Pemuka Guru & Portfolio Pembelajaran</h2>
@@ -1012,24 +1205,24 @@
             </div>
         </div>
 
-        <!-- Victory / Reward Screen Overlay -->
-        <div id="victory-overlay" class="feedback-overlay">
-            <div class="feedback-card" style="max-width: 450px; border-color: var(--primary-color);">
-                <div style="font-size: 4rem; margin-bottom: 10px; animation: pulse 1s infinite alternate;">🏆</div>
-                <h2 style="font-weight: 900; font-size: 2rem; color: var(--primary-color); margin-bottom: 8px;" data-key="victory_title">TAHNIAH! KAMU HEBAT!</h2>
-                <p style="font-size: 1.1rem; color: #2d3436; margin-bottom: 15px;" data-key="victory_desc">Kamu telah berjaya menyempurnakan kesemua 5 Tahap Operasi Tolak!</p>
+        <!-- Stage Completion / Badge Reward Screen Overlay -->
+        <div id="badge-reward-overlay" class="feedback-overlay">
+            <div class="feedback-card" style="max-width: 450px; border-color: var(--accent-yellow);">
+                <div id="reward-badge-icon" style="font-size: 4rem; margin-bottom: 10px; animation: pulse 1s infinite alternate;">⭐</div>
+                <h2 id="reward-stage-title" style="font-weight: 900; font-size: 1.8rem; color: var(--primary-color); margin-bottom: 8px;">STAGE 1 SELESAI!</h2>
+                <p id="reward-audio-praise" style="font-size: 1.1rem; color: #2d3436; margin-bottom: 15px;">Tahniah! Anda telah menguasai Stage 1!</p>
 
                 <div style="background: #fff9db; border: 3px solid #f1c40f; border-radius: 16px; padding: 15px; margin-bottom: 20px; text-align: center;">
-                    <div style="font-size: 1.2rem; font-weight: 900; color: #d35400;" data-key="badge_earned_title">🎖️ LENCANA DIBUKA!</div>
-                    <p style="font-size: 1rem; font-weight: 700; color: #2d3436; margin-top: 5px;" data-key="badge_earned_name">Master Pengasah Ajaib (Operasi Tolak)</p>
+                    <div style="font-size: 1.1rem; font-weight: 900; color: #d35400;" data-key="badge_earned_title">🎖️ LENCANA DIBUKA!</div>
+                    <p id="reward-badge-name" style="font-size: 1.2rem; font-weight: 900; color: #2d3436; margin-top: 5px;">Lencana Bintang Pengasah</p>
                 </div>
 
                 <div style="display: flex; gap: 10px;">
-                    <button class="btn-action" style="flex: 1;" onclick="restartGameFromStageOne()">
-                        🔄 <span data-key="btn_play_again">Main Semula</span>
+                    <button class="btn-action" style="flex: 1;" onclick="proceedToNextStage()">
+                        🚀 <span id="reward-next-btn-text" data-key="btn_next_stage">Tahap Seterusnya</span>
                     </button>
-                    <button class="btn-action reset" style="flex: 1;" onclick="switchTab('teacher')">
-                        📊 <span data-key="btn_view_portfolio">Portfolio Guru</span>
+                    <button class="btn-action reset" style="flex: 1;" onclick="closeRewardOverlayAndGallery()">
+                        🏆 <span data-key="btn_view_trophies">Tengok Trofi</span>
                     </button>
                 </div>
             </div>
@@ -1100,8 +1293,6 @@
             </svg>`;
         }
 
-        const SHARPENER_SVG = getSharpenerSVG(0, 'default');
-
         const STAR_SVG = `
         <svg width="60" height="60" viewBox="0 0 24 24" fill="#f1c40f" stroke="#f39c12" stroke-width="2">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -1118,14 +1309,32 @@
             ms: {
                 tab_learn: "Mod Belajar",
                 tab_game: "Mesin Pengasah",
-                tab_teacher: "Papan Guru & Portfolio",
-                stage_label: "Tahap",
-                victory_title: "TAHNIAH! KAMU HEBAT!",
-                victory_desc: "Kamu telah berjaya menyempurnakan kesemua 5 Tahap Operasi Tolak!",
+                tab_badges: "Trofi & Lencana",
+                tab_teacher: "Papan Guru",
+                stage_label: "Soalan",
+                stage1_title: "Stage 1: Asas (1 - 5)",
+                stage1_desc: "Visual 1-ke-1",
+                stage2_title: "Stage 2: Pertengahan (1 - 7)",
+                stage2_desc: "Cari Nombor",
+                stage3_title: "Stage 3: Lanjutan (1 - 10)",
+                stage3_desc: "Manipulatif Tulen",
                 badge_earned_title: "🎖️ LENCANA DIBUKA!",
-                badge_earned_name: "Master Pengasah Ajaib (Operasi Tolak)",
                 btn_play_again: "Main Semula",
                 btn_view_portfolio: "Portfolio Guru",
+                btn_next_stage: "Tahap Seterusnya",
+                btn_view_trophies: "Tengok Trofi",
+                btn_play_now: "Bermain & Kumpul Lencana!",
+                gallery_welcome_title: "🏆 Galeri Trofi & Lencana Pencapaian",
+                gallery_welcome_desc: "Selesaikan setiap Tahap Operasi Tolak untuk membuka Lencana Khas MBPK!",
+                b1_title: "Lencana Bintang Pengasah",
+                b1_desc: "Selesaikan Stage 1 (Nombor 1 hingga 5). Penguasaan asas visual.",
+                b2_title: "Lencana Pakar Tolak",
+                b2_desc: "Selesaikan Stage 2 (Nombor 1 hingga 7). Mahir konsep nombor hilang.",
+                b3_title: "Lencana Wira Matematik",
+                b3_desc: "Selesaikan Stage 3 (Nombor 1 hingga 10). Wira sejati Operasi Tolak!",
+                tag_active: "Aktif",
+                tag_unlocked: "✅ Dibuka",
+                tag_locked: "🔒 Terkunci",
                 learn_welcome_title: "Mari Kenali Operasi Tolak (-)!",
                 learn_welcome_desc: "Belajar beza antara Tambah (+) dan Tolak (-) menggunakan pengasah pensel kesukaan kamu.",
                 step1_title: "Langkah 1: Bezakan (+) dan (-)",
@@ -1186,14 +1395,32 @@
             en: {
                 tab_learn: "Learning Mode",
                 tab_game: "Sharpener Machine",
-                tab_teacher: "Teacher & Portfolio",
-                stage_label: "Stage",
-                victory_title: "CONGRATULATIONS! YOU ARE AWESOME!",
-                victory_desc: "You have successfully completed all 5 Subtraction Stages!",
+                tab_badges: "Trophies & Badges",
+                tab_teacher: "Teacher Board",
+                stage_label: "Question",
+                stage1_title: "Stage 1: Basic (1 - 5)",
+                stage1_desc: "1-to-1 Visual",
+                stage2_title: "Stage 2: Intermediate (1 - 7)",
+                stage2_desc: "Missing Number",
+                stage3_title: "Stage 3: Advanced (1 - 10)",
+                stage3_desc: "Pure Manipulative",
                 badge_earned_title: "🎖️ BADGE UNLOCKED!",
-                badge_earned_name: "Magic Sharpener Master (Subtraction)",
                 btn_play_again: "Play Again",
                 btn_view_portfolio: "Teacher Portfolio",
+                btn_next_stage: "Next Stage",
+                btn_view_trophies: "View Badges",
+                btn_play_now: "Play & Collect Badges!",
+                gallery_welcome_title: "🏆 Trophy & Badge Achievements Gallery",
+                gallery_welcome_desc: "Complete each Subtraction Stage to unlock Special Education Badges!",
+                b1_title: "Sharpening Star Badge",
+                b1_desc: "Complete Stage 1 (Numbers 1 to 5). Basic visual mastery.",
+                b2_title: "Subtraction Master Badge",
+                b2_desc: "Complete Stage 2 (Numbers 1 to 7). Missing number concept mastery.",
+                b3_title: "Math Hero Crown Badge",
+                b3_desc: "Complete Stage 3 (Numbers 1 to 10). True Subtraction Math Hero!",
+                tag_active: "Active",
+                tag_unlocked: "✅ Unlocked",
+                tag_locked: "🔒 Locked",
                 learn_welcome_title: "Let's Learn Subtraction (-)!",
                 learn_welcome_desc: "Learn the difference between Addition (+) and Subtraction (-) using your favorite pencil sharpeners.",
                 step1_title: "Step 1: Differentiate (+) and (-)",
@@ -1259,10 +1486,14 @@
             highContrast: false,
             ttsEnabled: true,
             sfxEnabled: true,
-            currentQuestionIndex: 1,
+            currentStage: 1, // 1, 2, or 3
+            currentQuestionIndex: 1, // 1 to 5 questions per stage
+            unlockedStages: [1], // Stages unlocked by progression
+            unlockedBadges: { stage1: false, stage2: false, stage3: false },
             lastAnswerWasCorrect: false,
             numA: 5,
             numB: 2,
+            missingType: 'result', // 'result', 'operandB', 'operandA'
             targetDiscardCount: 2,
             currentDiscardedCount: 0,
 
@@ -1270,7 +1501,7 @@
             stats: {
                 totalAnswered: 0,
                 correctCount: 0,
-                confusionCount: 0 // Times picked (a + b) instead of (a - b)
+                confusionCount: 0
             }
         };
 
@@ -1303,7 +1534,6 @@
                 this.initCtx();
                 if ('speechSynthesis' in window) {
                     window.speechSynthesis.resume();
-                    // Play a silent short utterance to prime Web Speech API on iOS / Safari / Chrome autoplay restrictions
                     const dummyUtterance = new SpeechSynthesisUtterance('');
                     dummyUtterance.volume = 0;
                     window.speechSynthesis.speak(dummyUtterance);
@@ -1326,7 +1556,6 @@
                         this.voices = window.speechSynthesis.getVoices();
                     }
                 }
-                // Match Malay locale (ms-MY, ms_MY, ms)
                 return this.voices.find(v => /^ms[-_]MY$/i.test(v.lang) || v.lang === 'ms-MY' || v.lang === 'ms_MY' || v.lang.startsWith('ms'));
             },
             getEnglishVoice() {
@@ -1357,9 +1586,9 @@
                     osc.stop(now + 0.1);
                 } else if (type === 'correct') {
                     osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(523.25, now); // C5
-                    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
-                    osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.1);
+                    osc.frequency.setValueAtTime(783.99, now + 0.2);
                     gain.gain.setValueAtTime(0.3, now);
                     gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
                     osc.start(now);
@@ -1412,14 +1641,10 @@
 
                 if (appState.currentLang === 'ms') {
                     const malayVoice = this.getMalayVoice();
-                    if (!malayVoice) {
-                        console.warn('Native ms-MY voice unavailable. Falling back gracefully to visual text highlight without foreign accent.');
-                        return;
-                    }
                     const utterance = new SpeechSynthesisUtterance(cleanText);
-                    utterance.voice = malayVoice;
+                    if (malayVoice) utterance.voice = malayVoice;
                     utterance.lang = 'ms-MY';
-                    utterance.rate = 0.85; // Slower rate for special education accessibility
+                    utterance.rate = 0.85;
                     window.speechSynthesis.speak(utterance);
                 } else {
                     const englishVoice = this.getEnglishVoice();
@@ -1432,12 +1657,62 @@
             }
         };
 
+        /* --- CONFETTI CELEBRATION ENGINE --- */
+        function runConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+
+            const particles = [];
+            const colors = ['#f1c40f', '#e74c3c', '#3498db', '#2ecc71', '#9b59b6', '#e67e22'];
+
+            for (let i = 0; i < 80; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    r: Math.random() * 8 + 4,
+                    d: Math.random() * 80,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    tilt: Math.random() * 10 - 10,
+                    tiltAngle: 0,
+                    tiltAngleIncremental: Math.random() * 0.07 + 0.05
+                });
+            }
+
+            let animationFrame;
+            let start = Date.now();
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach((p) => {
+                    p.tiltAngle += p.tiltAngleIncremental;
+                    p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
+                    p.tilt = Math.sin(p.tiltAngle) * 15;
+
+                    ctx.beginPath();
+                    ctx.lineWidth = p.r;
+                    ctx.strokeStyle = p.color;
+                    ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+                    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+                    ctx.stroke();
+                });
+
+                if (Date.now() - start < 4500) {
+                    animationFrame = requestAnimationFrame(draw);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            draw();
+        }
+
         /* --- INITIALIZATION & EVENT LISTENERS --- */
         window.addEventListener('DOMContentLoaded', () => {
             loadSavedData();
             AudioEngine.initVoices();
 
-            // Bind global user interaction triggers to bypass browser autoplay restriction
             const unlockHandler = () => {
                 AudioEngine.unlockAudio();
                 document.removeEventListener('click', unlockHandler);
@@ -1449,12 +1724,31 @@
             initVisuals();
             generateNewQuestion();
             updateDashboardMetrics();
+            updateBadgesGalleryUI();
 
-            document.getElementById('lang-toggle-btn').addEventListener('click', toggleLanguage);
-            document.getElementById('contrast-toggle-btn').addEventListener('click', toggleContrast);
-            document.getElementById('tts-toggle-btn').addEventListener('click', toggleTTS);
-            document.getElementById('sfx-toggle-btn').addEventListener('click', toggleSFX);
+            document.getElementById('lang-toggle-btn').addEventListener('click', () => {
+                toggleLanguage();
+                speakButton(appState.currentLang === 'ms' ? 'Tukar ke Bahasa Melayu' : 'Switched to English');
+            });
+            document.getElementById('contrast-toggle-btn').addEventListener('click', () => {
+                toggleContrast();
+                speakButton(appState.currentLang === 'ms' ? 'Mod Kontras Tinggi' : 'High Contrast Mode');
+            });
+            document.getElementById('tts-toggle-btn').addEventListener('click', () => {
+                toggleTTS();
+                speakButton(appState.currentLang === 'ms' ? 'Suara Narasi' : 'Voice Narration');
+            });
+            document.getElementById('sfx-toggle-btn').addEventListener('click', () => {
+                toggleSFX();
+                speakButton(appState.currentLang === 'ms' ? 'Kesan Bunyi' : 'Sound Effects');
+            });
         });
+
+        /* --- AUDIO BUTTON CLICK VOICE HELPER --- */
+        function speakButton(phraseBM, phraseEN = null) {
+            const textToSpeak = appState.currentLang === 'ms' ? phraseBM : (phraseEN || phraseBM);
+            AudioEngine.speak(textToSpeak);
+        }
 
         /* --- TAB SWITCHING --- */
         function switchTab(tabKey) {
@@ -1475,17 +1769,21 @@
             }
 
             if (tabKey === 'learn') {
-                AudioEngine.speak(translations[appState.currentLang].learn_welcome_title);
+                speakButton('Mod Belajar', 'Learning Mode');
             } else if (tabKey === 'game') {
+                speakButton('Mesin Pengasah', 'Sharpener Machine');
                 speakCurrentQuestion();
+            } else if (tabKey === 'badges') {
+                speakButton('Trofi dan Lencana', 'Trophies and Badges');
+                updateBadgesGalleryUI();
             } else if (tabKey === 'teacher') {
+                speakButton('Papan Guru dan Portfolio', 'Teacher Board and Portfolio');
                 updateDashboardMetrics();
             }
         }
 
         /* --- VISUAL INJECTIONS & DEMO --- */
         function initVisuals() {
-            // Populate Guided Learning Visuals
             const addVisual = document.getElementById('learn-add-visual');
             addVisual.innerHTML = `${getSharpenerSVG(0, 'add-1')} ${getSharpenerSVG(1, 'add-2')} ${getSharpenerSVG(2, 'add-3')} <span style="font-size:2rem; font-weight:900; color:var(--addition-green)">+</span> ${getSharpenerSVG(3, 'add-4')} ${getSharpenerSVG(4, 'add-5')}`;
 
@@ -1515,16 +1813,58 @@
 
         function runGuidedDemoSpeech() {
             AudioEngine.speak(appState.currentLang === 'ms'
-                ? 'Operasi tolak bermaksud membuang barang. Ada 4 pengasah, buang 1 pengasah ke dalam tong, tinggal 3 pengasah.'
-                : 'Subtraction means discarding items. 4 sharpeners minus 1 sharpener discarded equals 3 sharpeners left.');
+                ? 'Mari semak penerangan! Operasi tolak bermaksud membuang barang. Ada 4 pengasah, buang 1 pengasah ke dalam tong, tinggal 3 pengasah.'
+                : 'Let\'s review! Subtraction means discarding items. 4 sharpeners minus 1 sharpener discarded equals 3 sharpeners left.');
         }
 
-        /* --- INTERACTIVE SUBTRACTION MACHINE LOGIC --- */
-        function updateStageUI() {
-            const stageLabel = translations[appState.currentLang].stage_label || (appState.currentLang === 'ms' ? 'Tahap' : 'Stage');
+        /* --- MULTI-STAGE SELECTION & PROGRESSION --- */
+        function selectStage(stageNum) {
+            if (!appState.unlockedStages.includes(stageNum)) {
+                AudioEngine.playSFX('wrong');
+                speakButton('Tahap ini masih terkunci! Selesaikan tahap sebelumnya.', 'This stage is still locked! Complete the previous stage first.');
+                return;
+            }
+
+            appState.currentStage = stageNum;
+            appState.currentQuestionIndex = 1;
+            updateStageSelectorUI();
+            generateNewQuestion();
+
+            const stageNamesBM = ['Stage 1: Asas Nombor 1 hingga 5', 'Stage 2: Pertengahan Nombor 1 hingga 7', 'Stage 3: Lanjutan Nombor 1 hingga 10'];
+            const stageNamesEN = ['Stage 1: Basic Numbers 1 to 5', 'Stage 2: Intermediate Numbers 1 to 7', 'Stage 3: Advanced Numbers 1 to 10'];
+            speakButton(stageNamesBM[stageNum - 1], stageNamesEN[stageNum - 1]);
+        }
+
+        function updateStageSelectorUI() {
+            for (let i = 1; i <= 3; i++) {
+                const btn = document.getElementById(`stage-btn-${i}`);
+                const statusBadge = document.getElementById(`stage-status-${i}`);
+                const isUnlocked = appState.unlockedStages.includes(i);
+                const isActive = appState.currentStage === i;
+
+                btn.className = `stage-card-btn ${isActive ? 'active' : ''} ${!isUnlocked ? 'locked' : ''}`;
+
+                if (isActive) {
+                    statusBadge.innerText = translations[appState.currentLang].tag_active || 'Aktif';
+                    statusBadge.style.background = '#00b894';
+                    statusBadge.style.color = '#ffffff';
+                } else if (isUnlocked) {
+                    statusBadge.innerText = translations[appState.currentLang].tag_unlocked || '✅ Dibuka';
+                    statusBadge.style.background = '#d1f2eb';
+                    statusBadge.style.color = '#00b894';
+                } else {
+                    statusBadge.innerText = translations[appState.currentLang].tag_locked || '🔒 Terkunci';
+                    statusBadge.style.background = '#dfe6e9';
+                    statusBadge.style.color = '#636e72';
+                }
+            }
+        }
+
+        function updateStageProgressHeaderUI() {
             const qNumLabel = document.getElementById('game-q-number-label');
             if (qNumLabel) {
-                qNumLabel.innerText = `${stageLabel} ${appState.currentQuestionIndex} / 5`;
+                const qWord = translations[appState.currentLang].stage_label || 'Soalan';
+                qNumLabel.innerText = `Stage ${appState.currentStage} | ${qWord} ${appState.currentQuestionIndex} / 5`;
             }
             const progressFill = document.getElementById('stage-progress-fill');
             if (progressFill) {
@@ -1533,22 +1873,84 @@
             }
         }
 
+        /* --- QUESTION GENERATION ACCORDING TO STAGES --- */
         function generateNewQuestion() {
-            // Generate random subtraction where a >= b, range 1-10 suitable for special ed baseline
-            appState.numA = Math.floor(Math.random() * 6) + 3; // 3 to 8
-            appState.numB = Math.floor(Math.random() * appState.numA) + 1; // 1 to numA
+            // Stage 1: Basic Visual Subtraction (Numbers 1-5)
+            // Stage 2: Intermediate Subtraction (Numbers 1-7, missing numbers)
+            // Stage 3: Advanced Subtraction (Numbers 1-10, pure manipulative practice)
+
+            if (appState.currentStage === 1) {
+                appState.numA = Math.floor(Math.random() * 5) + 1; // 1 to 5
+                appState.numB = Math.floor(Math.random() * appState.numA) + 1; // 1 to numA
+                appState.missingType = 'result';
+            } else if (appState.currentStage === 2) {
+                appState.numA = Math.floor(Math.random() * 7) + 1; // 1 to 7
+                appState.numB = Math.floor(Math.random() * appState.numA) + 1; // 1 to numA
+                const types = ['result', 'operandB'];
+                appState.missingType = types[Math.floor(Math.random() * types.length)];
+            } else { // Stage 3
+                appState.numA = Math.floor(Math.random() * 10) + 1; // 1 to 10
+                appState.numB = Math.floor(Math.random() * appState.numA) + 1; // 1 to numA
+                appState.missingType = 'result';
+            }
+
             appState.targetDiscardCount = appState.numB;
             appState.currentDiscardedCount = 0;
 
-            document.getElementById('num-a').innerText = appState.numA;
-            document.getElementById('num-b').innerText = appState.numB;
-            document.getElementById('pool-count-label').innerText = `${appState.numA} ${appState.currentLang === 'ms' ? 'pengasah' : 'sharpeners'}`;
-            document.getElementById('target-discard-display').innerText = appState.numB;
-
-            updateStageUI();
+            renderEquationHeaderUI();
+            updateStageProgressHeaderUI();
             resetCurrentQuestionWorkspace();
             renderAnswerOptions();
             speakCurrentQuestion();
+        }
+
+        function renderEquationHeaderUI() {
+            const container = document.getElementById('equation-display-box');
+            if (!container) return;
+
+            const valA = appState.numA;
+            const valB = appState.numB;
+            const valRes = valA - valB;
+
+            if (appState.missingType === 'operandB') {
+                container.innerHTML = `
+                    <span>${valA}</span>
+                    <div class="minus-badge-container">
+                        <span class="minus-symbol-badge">-</span>
+                        <span class="tag-remove" data-key="tag_remove">BUANG / REMOVE</span>
+                    </div>
+                    <span class="missing-box">?</span>
+                    <span>=</span>
+                    <span style="color: var(--secondary-color); font-weight: 900;">${valRes}</span>
+                `;
+            } else {
+                container.innerHTML = `
+                    <span>${valA}</span>
+                    <div class="minus-badge-container">
+                        <span class="minus-symbol-badge">-</span>
+                        <span class="tag-remove" data-key="tag_remove">BUANG / REMOVE</span>
+                    </div>
+                    <span>${valB}</span>
+                    <span>=</span>
+                    <span class="missing-box">?</span>
+                `;
+            }
+
+            const answerTitle = document.getElementById('answer-title-text');
+            if (answerTitle) {
+                if (appState.missingType === 'operandB') {
+                    answerTitle.innerText = appState.currentLang === 'ms'
+                        ? `Berapakah pengasah yang mesti dibuang? Pilih jawapan:`
+                        : `How many sharpeners must be discarded? Select answer:`;
+                } else {
+                    answerTitle.innerText = appState.currentLang === 'ms'
+                        ? `Berapakah pengasah yang tinggal? Pilih jawapan:`
+                        : `How many sharpeners are left? Select answer:`;
+                }
+            }
+
+            document.getElementById('pool-count-label').innerText = `${appState.numA} ${appState.currentLang === 'ms' ? 'pengasah' : 'sharpeners'}`;
+            document.getElementById('target-discard-display').innerText = appState.numB;
         }
 
         function resetCurrentQuestionWorkspace() {
@@ -1567,12 +1969,10 @@
                 item.setAttribute('aria-label', `Pengasah pensel ${i + 1}`);
                 item.innerHTML = getSharpenerSVG(i, `q-pool-${i}`);
 
-                // Drag and drop event bindings
                 item.addEventListener('dragstart', (e) => {
                     e.dataTransfer.setData('text/plain', item.id);
                 });
 
-                // Click to discard support for tactile accessibility
                 item.addEventListener('click', () => {
                     discardSharpenerItem(item);
                 });
@@ -1599,6 +1999,8 @@
             const items = document.querySelectorAll('.interactive-sharpener:not(.discarded)');
             if (items.length > 0) {
                 discardSharpenerItem(items[0]);
+            } else {
+                speakButton('Semua pengasah telah dibuang ke dalam tong!', 'All sharpeners have been discarded!');
             }
         }
 
@@ -1629,14 +2031,21 @@
         }
 
         function renderAnswerOptions() {
-            const correctAnswer = appState.numA - appState.numB;
-            const confusionAnswer = appState.numA + appState.numB; // Diagnostic answer (adding instead of subtracting)
+            let correctAnswer;
+            if (appState.missingType === 'operandB') {
+                correctAnswer = appState.numB;
+            } else {
+                correctAnswer = appState.numA - appState.numB;
+            }
+
+            const confusionAnswer = appState.numA + appState.numB;
 
             const optionsSet = new Set([correctAnswer]);
             optionsSet.add(confusionAnswer);
 
+            const maxLimit = appState.currentStage === 1 ? 6 : (appState.currentStage === 2 ? 8 : 12);
             while (optionsSet.size < 4) {
-                let dummy = Math.floor(Math.random() * 12);
+                let dummy = Math.floor(Math.random() * maxLimit);
                 if (dummy !== correctAnswer) optionsSet.add(dummy);
             }
 
@@ -1648,7 +2057,15 @@
                 const btn = document.createElement('button');
                 btn.className = 'btn-option';
                 btn.innerText = optVal;
-                btn.onclick = () => checkAnswer(optVal, correctAnswer, confusionAnswer);
+                btn.onclick = () => {
+                    const optWord = numberToWords(optVal, appState.currentLang);
+                    const phraseBM = `Jawapan anda ialah ${optWord}`;
+                    const phraseEN = `Your answer is ${optWord}`;
+                    speakButton(phraseBM, phraseEN);
+                    setTimeout(() => {
+                        checkAnswer(optVal, correctAnswer, confusionAnswer);
+                    }, 800);
+                };
                 container.appendChild(btn);
             });
         }
@@ -1661,7 +2078,7 @@
                 appState.stats.correctCount++;
                 AudioEngine.playSFX('correct');
                 showFeedback(true, appState.currentLang === 'ms' ? 'SYABAS! BETUL!' : 'WELL DONE! CORRECT!',
-                    `${appState.numA} - ${appState.numB} = ${correctVal}`);
+                    `${appState.numA} - ${appState.numB} = ${appState.numA - appState.numB}`);
             } else {
                 appState.lastAnswerWasCorrect = false;
                 if (chosenVal === confusionVal) {
@@ -1670,8 +2087,8 @@
                 AudioEngine.playSFX('wrong');
                 showFeedback(false, appState.currentLang === 'ms' ? 'CUBA LAGI!' : 'TRY AGAIN!',
                     appState.currentLang === 'ms'
-                        ? `Ingat: TOLAK (-) bermaksud BUANG pengasah! ${appState.numA} buang ${appState.numB} tinggal ${correctVal}.`
-                        : `Remember: MINUS (-) means DISCARD sharpeners! ${appState.numA} minus ${appState.numB} equals ${correctVal}.`);
+                        ? `Ingat: TOLAK (-) bermaksud BUANG pengasah! ${appState.numA} buang ${appState.numB} tinggal ${appState.numA - appState.numB}.`
+                        : `Remember: MINUS (-) means DISCARD sharpeners! ${appState.numA} minus ${appState.numB} equals ${appState.numA - appState.numB}.`);
             }
 
             saveData();
@@ -1697,7 +2114,7 @@
 
             if (appState.lastAnswerWasCorrect) {
                 if (appState.currentQuestionIndex >= 5) {
-                    showVictoryOverlay();
+                    handleStageCompletion();
                     return;
                 } else {
                     appState.currentQuestionIndex++;
@@ -1706,30 +2123,131 @@
             generateNewQuestion();
         }
 
-        function showVictoryOverlay() {
+        /* --- STAGE COMPLETION & BADGE REWARD SYSTEM --- */
+        function handleStageCompletion() {
             AudioEngine.playSFX('correct');
-            const victoryOverlay = document.getElementById('victory-overlay');
-            victoryOverlay.classList.add('active');
 
-            const speechText = appState.currentLang === 'ms'
-                ? 'Tahniah! Kamu hebat! Kamu telah berjaya menyempurnakan kesemua 5 Tahap Operasi Tolak!'
-                : 'Congratulations! You are awesome! You completed all 5 Subtraction Stages!';
-            AudioEngine.speak(speechText);
+            const stageNum = appState.currentStage;
+            const badgeKey = `stage${stageNum}`;
+            appState.unlockedBadges[badgeKey] = true;
+
+            // Unlock next stage if available
+            if (stageNum < 3 && !appState.unlockedStages.includes(stageNum + 1)) {
+                appState.unlockedStages.push(stageNum + 1);
+            }
+
+            saveData();
+            updateStageSelectorUI();
+            updateBadgesGalleryUI();
+
+            const overlay = document.getElementById('badge-reward-overlay');
+            const badgeIcon = document.getElementById('reward-badge-icon');
+            const stageTitle = document.getElementById('reward-stage-title');
+            const audioPraise = document.getElementById('reward-audio-praise');
+            const badgeName = document.getElementById('reward-badge-name');
+
+            if (stageNum === 1) {
+                badgeIcon.innerText = '⭐';
+                stageTitle.innerText = appState.currentLang === 'ms' ? 'STAGE 1 SELESAI!' : 'STAGE 1 COMPLETE!';
+                badgeName.innerText = appState.currentLang === 'ms' ? 'Lencana Bintang Pengasah' : 'Sharpening Star Badge';
+                const praiseText = appState.currentLang === 'ms'
+                    ? 'Tahniah! Anda telah menguasai Stage 1!'
+                    : 'Congratulations! You have mastered Stage 1!';
+                audioPraise.innerText = praiseText;
+                AudioEngine.speak(praiseText);
+            } else if (stageNum === 2) {
+                badgeIcon.innerText = '🎯';
+                stageTitle.innerText = appState.currentLang === 'ms' ? 'STAGE 2 SELESAI!' : 'STAGE 2 COMPLETE!';
+                badgeName.innerText = appState.currentLang === 'ms' ? 'Lencana Pakar Tolak' : 'Subtraction Master Badge';
+                const praiseText = appState.currentLang === 'ms'
+                    ? 'Hebat! Anda semakin mahir!'
+                    : 'Great job! You are getting more skillful!';
+                audioPraise.innerText = praiseText;
+                AudioEngine.speak(praiseText);
+            } else if (stageNum === 3) {
+                badgeIcon.innerText = '👑';
+                stageTitle.innerText = appState.currentLang === 'ms' ? 'STAGE 3 SELESAI!' : 'STAGE 3 COMPLETE!';
+                badgeName.innerText = appState.currentLang === 'ms' ? 'Lencana Wira Matematik' : 'Math Hero Crown Badge';
+                const praiseText = appState.currentLang === 'ms'
+                    ? 'Syabas Wira Matematik! Anda telah menyempurnakan kesemua 3 Stage!'
+                    : 'Bravo Math Hero! You completed all 3 Stages!';
+                audioPraise.innerText = praiseText;
+                AudioEngine.speak(praiseText);
+                runConfetti();
+            }
+
+            overlay.classList.add('active');
         }
 
-        function restartGameFromStageOne() {
-            document.getElementById('victory-overlay').classList.remove('active');
-            appState.currentQuestionIndex = 1;
-            generateNewQuestion();
+        function proceedToNextStage() {
+            document.getElementById('badge-reward-overlay').classList.remove('active');
+            if (appState.currentStage < 3) {
+                selectStage(appState.currentStage + 1);
+            } else {
+                selectStage(1);
+            }
+        }
+
+        function closeRewardOverlayAndGallery() {
+            document.getElementById('badge-reward-overlay').classList.remove('active');
+            switchTab('badges');
+        }
+
+        function playBadgeAudio(badgeNum) {
+            const isUnlocked = appState.unlockedBadges[`stage${badgeNum}`];
+            if (badgeNum === 1) {
+                if (isUnlocked) {
+                    speakButton('Lencana Bintang Pengasah. Tahniah! Anda telah menguasai Stage 1!');
+                } else {
+                    speakButton('Lencana Bintang Pengasah. Selesaikan Stage 1 untuk membuka lencana ini!');
+                }
+            } else if (badgeNum === 2) {
+                if (isUnlocked) {
+                    speakButton('Lencana Pakar Tolak. Hebat! Anda semakin mahir!');
+                } else {
+                    speakButton('Lencana Pakar Tolak. Selesaikan Stage 2 untuk membuka lencana ini!');
+                }
+            } else if (badgeNum === 3) {
+                if (isUnlocked) {
+                    speakButton('Lencana Wira Matematik. Syabas Wira Matematik! Anda telah menguasai semua tahap!');
+                } else {
+                    speakButton('Lencana Wira Matematik. Selesaikan Stage 3 untuk membuka lencana ini!');
+                }
+            }
+        }
+
+        function updateBadgesGalleryUI() {
+            for (let i = 1; i <= 3; i++) {
+                const card = document.getElementById(`gallery-badge-${i}`);
+                const statusTag = document.getElementById(`b${i}-status-tag`);
+                const isUnlocked = appState.unlockedBadges[`stage${i}`];
+
+                if (isUnlocked) {
+                    card.className = 'badge-card unlocked';
+                    statusTag.className = 'badge-status-tag unlocked';
+                    statusTag.innerText = translations[appState.currentLang].tag_unlocked || '✅ Dibuka';
+                } else {
+                    card.className = 'badge-card locked';
+                    statusTag.className = 'badge-status-tag locked';
+                    statusTag.innerText = translations[appState.currentLang].tag_locked || '🔒 Terkunci';
+                }
+            }
         }
 
         function speakCurrentQuestion() {
             const numAWord = numberToWords(appState.numA, appState.currentLang);
             const numBWord = numberToWords(appState.numB, appState.currentLang);
 
-            const questionStr = appState.currentLang === 'ms'
-                ? `Soalan ${appState.currentQuestionIndex}: ${numAWord} tolak ${numBWord} sama dengan berapa? Sila buang ${numBWord} pengasah ke dalam tong.`
-                : `Question ${appState.currentQuestionIndex}: What is ${numAWord} minus ${numBWord}? Discard ${numBWord} sharpeners into the bin.`;
+            let questionStr;
+            if (appState.missingType === 'operandB') {
+                questionStr = appState.currentLang === 'ms'
+                    ? `Stage ${appState.currentStage}, Soalan ${appState.currentQuestionIndex}: ${numAWord} tolak berapa sama dengan ${numberToWords(appState.numA - appState.numB, appState.currentLang)}? Sila buang pengasah ke dalam tong.`
+                    : `Stage ${appState.currentStage}, Question ${appState.currentQuestionIndex}: ${numAWord} minus what equals ${appState.numA - appState.numB}? Discard sharpeners into the bin.`;
+            } else {
+                questionStr = appState.currentLang === 'ms'
+                    ? `Stage ${appState.currentStage}, Soalan ${appState.currentQuestionIndex}: ${numAWord} tolak ${numBWord} sama dengan berapa? Sila buang ${numBWord} pengasah ke dalam tong.`
+                    : `Stage ${appState.currentStage}, Question ${appState.currentQuestionIndex}: What is ${numAWord} minus ${numBWord}? Discard ${numBWord} sharpeners into the bin.`;
+            }
             AudioEngine.speak(questionStr);
         }
 
@@ -1750,8 +2268,13 @@
                 appState.stats.totalAnswered = 0;
                 appState.stats.correctCount = 0;
                 appState.stats.confusionCount = 0;
+                appState.unlockedStages = [1];
+                appState.currentStage = 1;
+                appState.unlockedBadges = { stage1: false, stage2: false, stage3: false };
                 saveData();
                 updateDashboardMetrics();
+                updateStageSelectorUI();
+                updateBadgesGalleryUI();
                 AudioEngine.playSFX('pop');
             }
         }
@@ -1765,7 +2288,6 @@
             appState.currentLang = appState.currentLang === 'ms' ? 'en' : 'ms';
             document.getElementById('lang-btn-text').innerText = appState.currentLang.toUpperCase();
 
-            // Translate UI elements
             document.querySelectorAll('[data-key]').forEach(el => {
                 const key = el.getAttribute('data-key');
                 if (translations[appState.currentLang][key]) {
@@ -1773,8 +2295,9 @@
                 }
             });
 
-            // Update dynamic language labels
-            updateStageUI();
+            updateStageSelectorUI();
+            updateStageProgressHeaderUI();
+            updateBadgesGalleryUI();
 
             const poolCountLabel = document.getElementById('pool-count-label');
             if (poolCountLabel) {
@@ -1826,7 +2349,7 @@
         }
 
         /* --- LOCAL STORAGE SAVE/LOAD --- */
-        const STORAGE_KEY = 'mesin_pengasah_special_ed_v1';
+        const STORAGE_KEY = 'mesin_pengasah_special_ed_v2';
 
         function saveData() {
             const dataToSave = {
@@ -1834,6 +2357,8 @@
                 highContrast: appState.highContrast,
                 ttsEnabled: appState.ttsEnabled,
                 sfxEnabled: appState.sfxEnabled,
+                unlockedStages: appState.unlockedStages,
+                unlockedBadges: appState.unlockedBadges,
                 stats: appState.stats
             };
             localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
@@ -1851,6 +2376,8 @@
                     }
                     if (parsed.ttsEnabled !== undefined) appState.ttsEnabled = parsed.ttsEnabled;
                     if (parsed.sfxEnabled !== undefined) appState.sfxEnabled = parsed.sfxEnabled;
+                    if (parsed.unlockedStages) appState.unlockedStages = parsed.unlockedStages;
+                    if (parsed.unlockedBadges) appState.unlockedBadges = parsed.unlockedBadges;
                     if (parsed.stats) Object.assign(appState.stats, parsed.stats);
                 } catch (e) {
                     console.error('Error loading saved state', e);
