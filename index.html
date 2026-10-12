@@ -647,6 +647,17 @@
         .tag-status.pass { background: #d1f2eb; color: #00b894; }
         .tag-status.warn { background: #ffeaa7; color: #d63031; }
 
+        /* Speech Visual Fallback & Highlight Cues */
+        .speech-highlight {
+            animation: speechPulse 0.8s ease-in-out infinite alternate;
+            border-radius: 12px;
+            box-shadow: 0 0 16px rgba(9, 132, 227, 0.7);
+        }
+        @keyframes speechPulse {
+            from { background-color: rgba(253, 203, 110, 0.2); transform: scale(1); }
+            to { background-color: rgba(253, 203, 110, 0.6); transform: scale(1.02); }
+        }
+
         /* Utilities */
         .hidden { display: none !important; }
         .text-center { text-align: center; }
@@ -887,26 +898,26 @@
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>Item</th>
-                                    <th>Maklumat Terperinci / Data Impak</th>
+                                    <th data-key="th_item">Item</th>
+                                    <th data-key="th_details">Maklumat Terperinci / Data Impak</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><strong>Profil Murid</strong></td>
-                                    <td>Murid PPKI Autisme (Slow Learner profile), tenang, suka meneroka, visual/taktil learner.</td>
+                                    <td><strong data-key="tb_profile_label">Profil Murid</strong></td>
+                                    <td data-key="tb_profile_val">Murid PPKI Autisme (Slow Learner profile), tenang, suka meneroka, visual/taktil learner.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Isu Utama (Baseline Problem)</strong></td>
-                                    <td>Boleh melakukan Operasi Tambah (+), tetapi keliru dengan Operasi Tolak (-), kerap menambah nombor walaupun nampak simbol tolak.</td>
+                                    <td><strong data-key="tb_issue_label">Isu Utama (Baseline Problem)</strong></td>
+                                    <td data-key="tb_issue_val">Boleh melakukan Operasi Tambah (+), tetapi keliru dengan Operasi Tolak (-), kerap menambah nombor walaupun nampak simbol tolak.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Faktor Motivasi Khas</strong></td>
-                                    <td>Sangat meminati & obses dengan <strong>Pengasah Pensel (Pencil Sharpeners)</strong>.</td>
+                                    <td><strong data-key="tb_interest_label">Faktor Motivasi Khas</strong></td>
+                                    <td data-key="tb_interest_val">Sangat meminati & obses dengan Pengasah Pensel (Pencil Sharpeners).</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Intervensi BBB Berinovasi</strong></td>
-                                    <td>Mekanisme manipulatif interaktif "Tong Pengasah" di mana murid secara fizikal/digital melempar/membuang pengasah pensel untuk membina pemahaman konkrit konsep "mengurangkan/membuang".</td>
+                                    <td><strong data-key="tb_intervention_label">Intervensi BBB Berinovasi</strong></td>
+                                    <td data-key="tb_intervention_val">Mekanisme manipulatif interaktif "Tong Pengasah" di mana murid secara fizikal/digital melempar/membuang pengasah pensel untuk membina pemahaman konkrit konsep "mengurangkan/membuang".</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -920,22 +931,22 @@
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>Elemen 3E</th>
-                                    <th>Pelaksanaan Dalam Aplikasi</th>
+                                    <th data-key="th_element">Elemen 3E</th>
+                                    <th data-key="th_implementation">Pelaksanaan Dalam Aplikasi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><strong>Engagement (Keterlibatan)</strong></td>
-                                    <td>Antaramuka berasaskan objek minat khas (pengasah pensel), interaksi drag-and-drop / klik mesra sensori, maklum balas audio-visual bintang & ganjaran.</td>
+                                    <td><strong data-key="tb_engage_label">Engagement (Keterlibatan)</strong></td>
+                                    <td data-key="tb_engage_val">Antaramuka berasaskan objek minat khas (pengasah pensel), interaksi drag-and-drop / klik mesra sensori, maklum balas audio-visual bintang & ganjaran.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Enhancement (Penambahbaikan)</strong></td>
-                                    <td>Panduan langkah demi langkah membezakan (+) dan (-), perbezaan warna merah (Tolak/Buang) vs hijau (Tambah), sokongan narasi audio bwi-bahasa (BM/EN).</td>
+                                    <td><strong data-key="tb_enhance_label">Enhancement (Penambahbaikan)</strong></td>
+                                    <td data-key="tb_enhance_val">Panduan langkah demi langkah membezakan (+) dan (-), perbezaan warna merah (Tolak/Buang) vs hijau (Tambah), sokongan narasi audio dwibahasa (BM/EN).</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Extension (Peluasan)</strong></td>
-                                    <td>Menghubungkan konsep matematik abstrak kepada perbuatan konkrit dalam kehidupan seharian (membuang / mengurangkan barang ke dalam tong).</td>
+                                    <td><strong data-key="tb_extend_label">Extension (Peluasan)</strong></td>
+                                    <td data-key="tb_extend_val">Menghubungkan konsep matematik abstrak kepada perbuatan konkrit dalam kehidupan seharian (membuang / mengurangkan barang ke dalam tong).</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -946,9 +957,9 @@
                 <div class="card">
                     <h3 style="font-size: 1.2rem; color: #6c5ce7; margin-bottom: 10px;" data-key="ethics_section_title">🛡️ Kepatuhan Etika Digital & KMD2</h3>
                     <ul style="padding-left: 20px; line-height: 1.6; font-size: 0.95rem;">
-                        <li><strong>Privasi Data Murid:</strong> Semua data interaksi disimpan secara tempatan (Browser LocalStorage) tanpa mengumpul sebarang maklumat peribadi.</li>
-                        <li><strong>Aksesibiliti & Mesra Sensori:</strong> Memenuhi piawaian WCAG 2.1 AA dengan mod kontras tinggi, fon disleksia, saiz butang besar, dan pengawalan audio.</li>
-                        <li><strong>Inovasi Bahan Bantu Belajar (BBB):</strong> Rekabentuk asal bebas elemen pengiklanan dan pautan luar yang tidak selamat.</li>
+                        <li data-key="eth_privacy"><strong>Privasi Data Murid:</strong> Semua data interaksi disimpan secara tempatan (Browser LocalStorage) tanpa mengumpul sebarang maklumat peribadi.</li>
+                        <li data-key="eth_accessibility"><strong>Aksesibiliti & Mesra Sensori:</strong> Memenuhi piawaian WCAG 2.1 AA dengan mod kontras tinggi, fon disleksia, saiz butang besar, dan pengawalan audio.</li>
+                        <li data-key="eth_innovation"><strong>Inovasi Bahan Bantu Belajar (BBB):</strong> Rekabentuk asal bebas elemen pengiklanan dan pautan luar yang tidak selamat.</li>
                     </ul>
                 </div>
 
@@ -1045,7 +1056,28 @@
                 ethics_section_title: "🛡️ Kepatuhan Etika Digital & KMD2",
                 btn_export_data: "Cetak / Simpan Ringkasan Portfolio",
                 btn_reset_data: "Set Semula Data Prestasi",
-                btn_continue: "TERUSKAN"
+                btn_continue: "TERUSKAN",
+                th_item: "Item",
+                th_details: "Maklumat Terperinci / Data Impak",
+                tb_profile_label: "Profil Murid",
+                tb_profile_val: "Murid PPKI Autisme (Slow Learner profile), tenang, suka meneroka, visual/taktil learner.",
+                tb_issue_label: "Isu Utama (Baseline Problem)",
+                tb_issue_val: "Boleh melakukan Operasi Tambah (+), tetapi keliru dengan Operasi Tolak (-), kerap menambah nombor walaupun nampak simbol tolak.",
+                tb_interest_label: "Faktor Motivasi Khas",
+                tb_interest_val: "Sangat meminati & obses dengan Pengasah Pensel (Pencil Sharpeners).",
+                tb_intervention_label: "Intervensi BBB Berinovasi",
+                tb_intervention_val: "Mekanisme manipulatif interaktif \"Tong Pengasah\" di mana murid secara fizikal/digital melempar/membuang pengasah pensel untuk membina pemahaman konkrit konsep \"mengurangkan/membuang\".",
+                th_element: "Elemen 3E",
+                th_implementation: "Pelaksanaan Dalam Aplikasi",
+                tb_engage_label: "Engagement (Keterlibatan)",
+                tb_engage_val: "Antaramuka berasaskan objek minat khas (pengasah pensel), interaksi drag-and-drop / klik mesra sensori, maklum balas audio-visual bintang & ganjaran.",
+                tb_enhance_label: "Enhancement (Penambahbaikan)",
+                tb_enhance_val: "Panduan langkah demi langkah membezakan (+) dan (-), perbezaan warna merah (Tolak/Buang) vs hijau (Tambah), sokongan narasi audio dwibahasa (BM/EN).",
+                tb_extend_label: "Extension (Peluasan)",
+                tb_extend_val: "Menghubungkan konsep matematik abstrak kepada perbuatan konkrit dalam kehidupan seharian (membuang / mengurangkan barang ke dalam tong).",
+                eth_privacy: "Privasi Data Murid: Semua data interaksi disimpan secara tempatan (Browser LocalStorage) tanpa mengumpul sebarang maklumat peribadi.",
+                eth_accessibility: "Aksesibiliti & Mesra Sensori: Memenuhi piawaian WCAG 2.1 AA dengan mod kontras tinggi, fon disleksia, saiz butang besar, dan pengawalan audio.",
+                eth_innovation: "Inovasi Bahan Bantu Belajar (BBB): Rekabentuk asal bebas elemen pengiklanan dan pautan luar yang tidak selamat."
             },
             en: {
                 tab_learn: "Learning Mode",
@@ -1085,7 +1117,28 @@
                 ethics_section_title: "🛡️ Digital Ethics & KMD2 Compliance",
                 btn_export_data: "Print / Save Portfolio Summary",
                 btn_reset_data: "Reset Performance Data",
-                btn_continue: "CONTINUE"
+                btn_continue: "CONTINUE",
+                th_item: "Item",
+                th_details: "Detailed Information / Impact Data",
+                tb_profile_label: "Student Profile",
+                tb_profile_val: "Special Education (PPKI) Student with Autism (Slow Learner profile), calm, likes to explore, visual/tactile learner.",
+                tb_issue_label: "Primary Issue (Baseline)",
+                tb_issue_val: "Can perform Addition (+), but confused by Subtraction (-), frequently adding numbers despite seeing subtraction symbol.",
+                tb_interest_label: "Special Motivation Factor",
+                tb_interest_val: "Highly obsessed with Pencil Sharpeners.",
+                tb_intervention_label: "Innovative BBB Intervention",
+                tb_intervention_val: "Interactive \"Sharpener Bin\" manipulative mechanism where student actively discards sharpeners to build a concrete understanding of subtraction.",
+                th_element: "3E Element",
+                th_implementation: "Application Implementation",
+                tb_engage_label: "Engagement",
+                tb_engage_val: "Interface based on special interest object (pencil sharpeners), sensory-friendly drag-and-drop / click interaction, audio-visual star rewards.",
+                tb_enhance_label: "Enhancement",
+                tb_enhance_val: "Step-by-step guidance differentiating (+) and (-), color-coding (Red for Subtract vs Green for Add), bilingual voice narration support (BM/EN).",
+                tb_extend_label: "Extension",
+                tb_extend_val: "Connecting abstract math concepts to concrete real-world actions (discarding items into a bin).",
+                eth_privacy: "Student Data Privacy: All interaction data stored locally (Browser LocalStorage) without collecting personal information.",
+                eth_accessibility: "Accessibility & Sensory Friendly: Meets WCAG 2.1 AA standards with high contrast mode, dyslexia font, large buttons, and audio controls.",
+                eth_innovation: "Learning Material Innovation: Original design free from advertising elements and unsafe external links."
             }
         };
 
@@ -1112,10 +1165,39 @@
         /* --- AUDIO SYNTHESIS (WEB AUDIO API & TTS) --- */
         const AudioEngine = {
             ctx: null,
+            voices: [],
             initCtx() {
                 if (!this.ctx) {
                     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
                 }
+            },
+            initVoices() {
+                if ('speechSynthesis' in window) {
+                    this.voices = window.speechSynthesis.getVoices();
+                    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+                        window.speechSynthesis.onvoiceschanged = () => {
+                            this.voices = window.speechSynthesis.getVoices();
+                        };
+                    }
+                }
+            },
+            getMalayVoice() {
+                if (!this.voices || this.voices.length === 0) {
+                    if ('speechSynthesis' in window) {
+                        this.voices = window.speechSynthesis.getVoices();
+                    }
+                }
+                // Strictly filter ONLY native ms-MY or ms_MY voices
+                return this.voices.find(v => /^ms[-_]MY$/i.test(v.lang) || v.lang === 'ms-MY' || v.lang === 'ms_MY');
+            },
+            getEnglishVoice() {
+                if (!this.voices || this.voices.length === 0) {
+                    if ('speechSynthesis' in window) {
+                        this.voices = window.speechSynthesis.getVoices();
+                    }
+                }
+                return this.voices.find(v => /^en[-_](US|GB|AU)$/i.test(v.lang)) ||
+                       this.voices.find(v => v.lang.startsWith('en'));
             },
             playSFX(type) {
                 if (!appState.sfxEnabled) return;
@@ -1153,20 +1235,68 @@
                     osc.stop(now + 0.3);
                 }
             },
-            speak(text) {
-                if (!appState.ttsEnabled || !('speechSynthesis' in window)) return;
+            triggerVisualHighlight(elementOrSelector) {
+                let targetEl = null;
+                if (typeof elementOrSelector === 'string') {
+                    targetEl = document.querySelector(elementOrSelector);
+                } else if (elementOrSelector && elementOrSelector.nodeType) {
+                    targetEl = elementOrSelector;
+                }
+
+                if (!targetEl) {
+                    const activeView = document.querySelector('.view-panel.active');
+                    if (activeView) {
+                        targetEl = activeView.querySelector('.question-header') ||
+                                   activeView.querySelector('#guided-instruction-text') ||
+                                   activeView.querySelector('.card') ||
+                                   activeView;
+                    }
+                }
+
+                if (targetEl) {
+                    document.querySelectorAll('.speech-highlight').forEach(el => el.classList.remove('speech-highlight'));
+                    targetEl.classList.add('speech-highlight');
+                    setTimeout(() => {
+                        targetEl.classList.remove('speech-highlight');
+                    }, 2500);
+                }
+            },
+            speak(text, highlightTarget = null) {
+                if (!appState.ttsEnabled || !('speechSynthesis' in window)) {
+                    this.triggerVisualHighlight(highlightTarget);
+                    return;
+                }
                 window.speechSynthesis.cancel();
                 let cleanText = text.replace(/0/g, appState.currentLang === 'ms' ? 'kosong' : 'zero');
-                const utterance = new SpeechSynthesisUtterance(cleanText);
-                utterance.lang = appState.currentLang === 'ms' ? 'ms-MY' : 'en-US';
-                utterance.rate = 0.9; // Slower rate for special education accessibility
-                window.speechSynthesis.speak(utterance);
+
+                this.triggerVisualHighlight(highlightTarget);
+
+                if (appState.currentLang === 'ms') {
+                    const malayVoice = this.getMalayVoice();
+                    if (!malayVoice) {
+                        console.warn('Native ms-MY voice unavailable. Falling back gracefully to visual text highlight without foreign accent.');
+                        return;
+                    }
+                    const utterance = new SpeechSynthesisUtterance(cleanText);
+                    utterance.voice = malayVoice;
+                    utterance.lang = 'ms-MY';
+                    utterance.rate = 0.85; // Slower rate for special education accessibility
+                    window.speechSynthesis.speak(utterance);
+                } else {
+                    const englishVoice = this.getEnglishVoice();
+                    const utterance = new SpeechSynthesisUtterance(cleanText);
+                    if (englishVoice) utterance.voice = englishVoice;
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.85;
+                    window.speechSynthesis.speak(utterance);
+                }
             }
         };
 
         /* --- INITIALIZATION & EVENT LISTENERS --- */
         window.addEventListener('DOMContentLoaded', () => {
             loadSavedData();
+            AudioEngine.initVoices();
             initVisuals();
             generateNewQuestion();
             updateDashboardMetrics();
@@ -1449,6 +1579,31 @@
                 }
             });
 
+            // Update dynamic language labels
+            const qNumLabel = document.getElementById('game-q-number-label');
+            if (qNumLabel) {
+                qNumLabel.innerText = `${appState.currentLang === 'ms' ? 'SOALAN' : 'QUESTION'} ${appState.currentQuestionIndex} / 5`;
+            }
+
+            const poolCountLabel = document.getElementById('pool-count-label');
+            if (poolCountLabel) {
+                poolCountLabel.innerText = `${appState.numA} ${appState.currentLang === 'ms' ? 'pengasah' : 'sharpeners'}`;
+            }
+
+            document.getElementById('contrast-btn-text').innerText = appState.highContrast
+                ? (appState.currentLang === 'ms' ? 'Kontras: ON' : 'Contrast: ON')
+                : (appState.currentLang === 'ms' ? 'Kontras' : 'Contrast');
+
+            document.getElementById('tts-btn-text').innerText = `${appState.currentLang === 'ms' ? 'Suara' : 'Voice'}: ${appState.ttsEnabled ? 'ON' : 'OFF'}`;
+            document.getElementById('sfx-btn-text').innerText = `SFX: ${appState.sfxEnabled ? 'ON' : 'OFF'}`;
+
+            const guidedText = document.getElementById('guided-instruction-text');
+            if (guidedText) {
+                guidedText.innerText = appState.currentLang === 'ms'
+                    ? 'Contoh: Ada 4 pengasah, buang 1 pengasah!'
+                    : 'Example: 4 sharpeners available, discard 1 sharpener!';
+            }
+
             AudioEngine.playSFX('pop');
             saveData();
         }
@@ -1465,7 +1620,7 @@
 
         function toggleTTS() {
             appState.ttsEnabled = !appState.ttsEnabled;
-            document.getElementById('tts-btn-text').innerText = `Suara: ${appState.ttsEnabled ? 'ON' : 'OFF'}`;
+            document.getElementById('tts-btn-text').innerText = `${appState.currentLang === 'ms' ? 'Suara' : 'Voice'}: ${appState.ttsEnabled ? 'ON' : 'OFF'}`;
             if (!appState.ttsEnabled && 'speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
             }
