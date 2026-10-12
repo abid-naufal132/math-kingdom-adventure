@@ -263,9 +263,16 @@
         }
 
         .sharpener-icon-sm {
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             transition: transform 0.2s;
+            display: inline-block;
+        }
+
+        .op-visual .sharpener-svg {
+            width: 48px;
+            height: 48px;
+            display: inline-block;
         }
 
         /* Interactive Subtraction Machine View Styles */
@@ -376,6 +383,10 @@
             transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             filter: drop-shadow(0 6px 0 rgba(0,0,0,0.15));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px;
         }
 
         .interactive-sharpener:hover, .interactive-sharpener:focus {
@@ -994,16 +1005,73 @@
     <!-- JavaScript Logic embedded for single-file robustness -->
     <script>
         /* --- ASSETS & CONSTANTS --- */
-        const SHARPENER_SVG = `
-        <svg class="sharpener-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="15" y="20" width="70" height="60" rx="16" fill="#fdcb6e" stroke="#d63031" stroke-width="4"/>
-            <rect x="25" y="32" width="50" height="22" rx="8" fill="#2d3436"/>
-            <circle cx="50" cy="43" r="7" fill="#dfe6e9"/>
-            <path d="M20 65 L80 65 L70 75 L30 75 Z" fill="#e17055"/>
-            <rect x="75" y="30" width="8" height="40" rx="3" fill="#b2bec3"/>
-            <circle cx="30" cy="26" r="3" fill="#ffffff"/>
-            <circle cx="70" cy="26" r="3" fill="#ffffff"/>
-        </svg>`;
+        const SHARPENER_COLORS = [
+            { main: '#0984e3', light: '#74b9ff', dark: '#0765af', stroke: '#024278' }, // Vibrant Blue
+            { main: '#d63031', light: '#ff7675', dark: '#b02324', stroke: '#751011' }, // Vivid Red
+            { main: '#00b894', light: '#55efc4', dark: '#008f72', stroke: '#005241' }, // Energetic Green
+            { main: '#fdcb6e', light: '#ffeaa7', dark: '#e1b14c', stroke: '#a37a24' }, // Sunny Yellow
+            { main: '#6c5ce7', light: '#a29bfe', dark: '#4834d4', stroke: '#2e1c9e' }  // Royal Purple
+        ];
+
+        function getSharpenerSVG(colorIndex = 0, customId = null) {
+            const palette = SHARPENER_COLORS[colorIndex % SHARPENER_COLORS.length];
+            const uid = customId || `sh-${Math.floor(Math.random() * 1000000)}`;
+            return `
+            <svg class="sharpener-svg" viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="overflow: visible;">
+                <defs>
+                    <filter id="shadow-${uid}" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="0" dy="5" stdDeviation="3.5" flood-color="#000000" flood-opacity="0.3"/>
+                    </filter>
+                    <linearGradient id="bodyGrad-${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="${palette.light}"/>
+                        <stop offset="50%" stop-color="${palette.main}"/>
+                        <stop offset="100%" stop-color="${palette.dark}"/>
+                    </linearGradient>
+                    <linearGradient id="bladeGrad-${uid}" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#f5f6fa"/>
+                        <stop offset="30%" stop-color="#ffffff"/>
+                        <stop offset="70%" stop-color="#dcdde1"/>
+                        <stop offset="100%" stop-color="#718093"/>
+                    </linearGradient>
+                    <radialGradient id="screwGrad-${uid}" cx="35%" cy="35%" r="65%">
+                        <stop offset="0%" stop-color="#ffffff"/>
+                        <stop offset="60%" stop-color="#b2bec3"/>
+                        <stop offset="100%" stop-color="#636e72"/>
+                    </radialGradient>
+                    <radialGradient id="holeGrad-${uid}" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#000000"/>
+                        <stop offset="75%" stop-color="#1e272e"/>
+                        <stop offset="100%" stop-color="#485460"/>
+                    </radialGradient>
+                </defs>
+                <g filter="url(#shadow-${uid})">
+                    <!-- Plastic Curved Main Casing -->
+                    <rect x="12" y="15" width="76" height="70" rx="18" fill="url(#bodyGrad-${uid})" stroke="${palette.stroke}" stroke-width="2.5"/>
+                    <!-- Specular Curved Highlight -->
+                    <path d="M 22 17 Q 50 14 78 17 Q 82 22 84 32 Q 50 24 16 32 Q 18 22 22 17 Z" fill="#ffffff" opacity="0.45"/>
+                    <path d="M 16 35 L 16 68 Q 18 78 22 81 L 22 35 Z" fill="#ffffff" opacity="0.25"/>
+                    <!-- Center Metallic Blade Chamber Block -->
+                    <rect x="24" y="27" width="52" height="46" rx="8" fill="#1e272e" stroke="#000000" stroke-width="1.5"/>
+                    <!-- Mounted Steel Blade -->
+                    <path d="M 27 31 L 73 31 L 69 45 L 27 45 Z" fill="url(#bladeGrad-${uid})" stroke="#485460" stroke-width="1"/>
+                    <line x1="27" y1="45" x2="69" y2="45" stroke="#ffffff" stroke-width="1.5"/>
+                    <!-- Precision Screws -->
+                    <circle cx="34" cy="37" r="3.5" fill="url(#screwGrad-${uid})" stroke="#2c3e50" stroke-width="0.5"/>
+                    <line x1="32.5" y1="37" x2="35.5" y2="37" stroke="#2d3436" stroke-width="0.8"/>
+                    <line x1="34" y1="35.5" x2="34" y2="38.5" stroke="#2d3436" stroke-width="0.8"/>
+                    <circle cx="64" cy="37" r="3.5" fill="url(#screwGrad-${uid})" stroke="#2c3e50" stroke-width="0.5"/>
+                    <line x1="62.5" y1="37" x2="65.5" y2="37" stroke="#2d3436" stroke-width="0.8"/>
+                    <line x1="64" y1="35.5" x2="64" y2="38.5" stroke="#2d3436" stroke-width="0.8"/>
+                    <!-- Pencil Sharpening Hole -->
+                    <circle cx="50" cy="57" r="11" fill="url(#holeGrad-${uid})" stroke="#718093" stroke-width="2"/>
+                    <circle cx="50" cy="57" r="8.5" fill="#000000"/>
+                    <!-- Bottom Grip/Rib Slot -->
+                    <rect x="32" y="77" width="36" height="4" rx="2" fill="#1e272e" opacity="0.5"/>
+                </g>
+            </svg>`;
+        }
+
+        const SHARPENER_SVG = getSharpenerSVG(0, 'default');
 
         const STAR_SVG = `
         <svg width="60" height="60" viewBox="0 0 24 24" fill="#f1c40f" stroke="#f39c12" stroke-width="2">
@@ -1338,10 +1406,10 @@
         function initVisuals() {
             // Populate Guided Learning Visuals
             const addVisual = document.getElementById('learn-add-visual');
-            addVisual.innerHTML = `${SHARPENER_SVG} ${SHARPENER_SVG} ${SHARPENER_SVG} <span style="font-size:2rem; font-weight:900; color:var(--addition-green)">+</span> ${SHARPENER_SVG} ${SHARPENER_SVG}`;
+            addVisual.innerHTML = `${getSharpenerSVG(0, 'add-1')} ${getSharpenerSVG(1, 'add-2')} ${getSharpenerSVG(2, 'add-3')} <span style="font-size:2rem; font-weight:900; color:var(--addition-green)">+</span> ${getSharpenerSVG(3, 'add-4')} ${getSharpenerSVG(4, 'add-5')}`;
 
             const subVisual = document.getElementById('learn-sub-visual');
-            subVisual.innerHTML = `${SHARPENER_SVG} ${SHARPENER_SVG} ${SHARPENER_SVG} ${SHARPENER_SVG} ${SHARPENER_SVG} <span style="font-size:1.5rem; font-weight:900; color:var(--subtraction-red)">➔ 🗑️ (Buang 2)</span>`;
+            subVisual.innerHTML = `${getSharpenerSVG(0, 'sub-1')} ${getSharpenerSVG(1, 'sub-2')} ${getSharpenerSVG(2, 'sub-3')} ${getSharpenerSVG(3, 'sub-4')} ${getSharpenerSVG(4, 'sub-5')} <span style="font-size:1.5rem; font-weight:900; color:var(--subtraction-red)">➔ 🗑️ (Buang 2)</span>`;
 
             renderGuidedDemo();
         }
@@ -1350,13 +1418,13 @@
             const demoArea = document.getElementById('guided-demo-area');
             demoArea.innerHTML = `
                 <div style="display:flex; gap:8px;">
-                    ${SHARPENER_SVG}${SHARPENER_SVG}${SHARPENER_SVG}
+                    ${getSharpenerSVG(0, 'demo-1')}${getSharpenerSVG(1, 'demo-2')}${getSharpenerSVG(2, 'demo-3')}
                 </div>
                 <div style="background:var(--subtraction-red); color:white; padding:8px 15px; border-radius:12px; font-weight:900;">
                     TOLAK 1 (Buang ke tong) 🗑️
                 </div>
                 <div style="display:flex; gap:8px;">
-                    ${SHARPENER_SVG}
+                    ${getSharpenerSVG(3, 'demo-4')}
                 </div>
                 <div style="font-size:1.4rem; font-weight:900; color:#2d3436;">
                     = 3 pengasah tinggal
@@ -1402,7 +1470,7 @@
                 item.setAttribute('draggable', 'true');
                 item.setAttribute('tabindex', '0');
                 item.setAttribute('aria-label', `Pengasah pensel ${i + 1}`);
-                item.innerHTML = SHARPENER_SVG;
+                item.innerHTML = getSharpenerSVG(i, `q-pool-${i}`);
 
                 // Drag and drop event bindings
                 item.addEventListener('dragstart', (e) => {
