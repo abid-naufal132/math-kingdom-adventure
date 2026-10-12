@@ -1556,6 +1556,7 @@
                         this.voices = window.speechSynthesis.getVoices();
                     }
                 }
+                // Strictly lock onto native Malay voice locales ONLY (ms-MY, ms_MY, or ms)
                 return this.voices.find(v => /^ms[-_]MY$/i.test(v.lang) || v.lang === 'ms-MY' || v.lang === 'ms_MY' || v.lang.startsWith('ms'));
             },
             getEnglishVoice() {
@@ -1641,17 +1642,23 @@
 
                 if (appState.currentLang === 'ms') {
                     const malayVoice = this.getMalayVoice();
+                    // ABSOLUTE BAN ON ENGLISH TTS FOR MALAY TEXT:
+                    // Under NO circumstances fallback to an English TTS engine (e.g. en-US, en-GB) to read Malay words.
+                    if (!malayVoice) {
+                        console.warn('Native Malay voice (ms-MY/ms) not found. English TTS fallback is strictly banned for Malay text.');
+                        return;
+                    }
                     const utterance = new SpeechSynthesisUtterance(cleanText);
-                    if (malayVoice) utterance.voice = malayVoice;
+                    utterance.voice = malayVoice;
                     utterance.lang = 'ms-MY';
-                    utterance.rate = 0.85;
+                    utterance.rate = 0.82; // Speech rate 0.80 - 0.85 tuned for special education clarity
                     window.speechSynthesis.speak(utterance);
                 } else {
                     const englishVoice = this.getEnglishVoice();
                     const utterance = new SpeechSynthesisUtterance(cleanText);
                     if (englishVoice) utterance.voice = englishVoice;
                     utterance.lang = 'en-US';
-                    utterance.rate = 0.85;
+                    utterance.rate = 0.82;
                     window.speechSynthesis.speak(utterance);
                 }
             }
@@ -1914,8 +1921,8 @@
 
             if (appState.missingType === 'operandB') {
                 container.innerHTML = `
-                    <span>${valA}</span>
-                    <div class="minus-badge-container">
+                    <span style="cursor:pointer;" onclick="speakButton('${numberToWords(valA, 'ms')}', '${valA}')">${valA}</span>
+                    <div class="minus-badge-container" style="cursor:pointer;" onclick="speakButton('Tolak', 'Minus')">
                         <span class="minus-symbol-badge">-</span>
                         <span class="tag-remove" data-key="tag_remove">BUANG / REMOVE</span>
                     </div>
@@ -1925,12 +1932,12 @@
                 `;
             } else {
                 container.innerHTML = `
-                    <span>${valA}</span>
-                    <div class="minus-badge-container">
+                    <span style="cursor:pointer;" onclick="speakButton('${numberToWords(valA, 'ms')}', '${valA}')">${valA}</span>
+                    <div class="minus-badge-container" style="cursor:pointer;" onclick="speakButton('Tolak', 'Minus')">
                         <span class="minus-symbol-badge">-</span>
                         <span class="tag-remove" data-key="tag_remove">BUANG / REMOVE</span>
                     </div>
-                    <span>${valB}</span>
+                    <span style="cursor:pointer;" onclick="speakButton('${numberToWords(valB, 'ms')}', '${valB}')">${valB}</span>
                     <span>=</span>
                     <span class="missing-box">?</span>
                 `;
@@ -2151,8 +2158,8 @@
                 stageTitle.innerText = appState.currentLang === 'ms' ? 'STAGE 1 SELESAI!' : 'STAGE 1 COMPLETE!';
                 badgeName.innerText = appState.currentLang === 'ms' ? 'Lencana Bintang Pengasah' : 'Sharpening Star Badge';
                 const praiseText = appState.currentLang === 'ms'
-                    ? 'Tahniah! Anda telah menguasai Stage 1!'
-                    : 'Congratulations! You have mastered Stage 1!';
+                    ? 'Tahniah! Anda telah berjaya menyelesaikan Stage 1!'
+                    : 'Congratulations! You have successfully completed Stage 1!';
                 audioPraise.innerText = praiseText;
                 AudioEngine.speak(praiseText);
             } else if (stageNum === 2) {
@@ -2169,8 +2176,8 @@
                 stageTitle.innerText = appState.currentLang === 'ms' ? 'STAGE 3 SELESAI!' : 'STAGE 3 COMPLETE!';
                 badgeName.innerText = appState.currentLang === 'ms' ? 'Lencana Wira Matematik' : 'Math Hero Crown Badge';
                 const praiseText = appState.currentLang === 'ms'
-                    ? 'Syabas Wira Matematik! Anda telah menyempurnakan kesemua 3 Stage!'
-                    : 'Bravo Math Hero! You completed all 3 Stages!';
+                    ? 'Lencana Wira Matematik! Tahniah Anda telah berjaya menyempurnakan kesemua tahap Operasi Tolak!'
+                    : 'Math Hero Crown Badge! Congratulations, you have mastered all subtraction stages!';
                 audioPraise.innerText = praiseText;
                 AudioEngine.speak(praiseText);
                 runConfetti();
@@ -2197,7 +2204,7 @@
             const isUnlocked = appState.unlockedBadges[`stage${badgeNum}`];
             if (badgeNum === 1) {
                 if (isUnlocked) {
-                    speakButton('Lencana Bintang Pengasah. Tahniah! Anda telah menguasai Stage 1!');
+                    speakButton('Lencana Bintang Pengasah. Tahniah! Anda telah berjaya menyelesaikan Stage 1!');
                 } else {
                     speakButton('Lencana Bintang Pengasah. Selesaikan Stage 1 untuk membuka lencana ini!');
                 }
@@ -2209,7 +2216,7 @@
                 }
             } else if (badgeNum === 3) {
                 if (isUnlocked) {
-                    speakButton('Lencana Wira Matematik. Syabas Wira Matematik! Anda telah menguasai semua tahap!');
+                    speakButton('Lencana Wira Matematik. Tahniah Anda telah berjaya menyempurnakan kesemua tahap Operasi Tolak!');
                 } else {
                     speakButton('Lencana Wira Matematik. Selesaikan Stage 3 untuk membuka lencana ini!');
                 }
