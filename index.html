@@ -1534,8 +1534,9 @@
                 this.initCtx();
                 if ('speechSynthesis' in window) {
                     window.speechSynthesis.resume();
-                    const dummyUtterance = new SpeechSynthesisUtterance('');
-                    dummyUtterance.volume = 0;
+                    const dummyUtterance = new SpeechSynthesisUtterance(' ');
+                    dummyUtterance.volume = 0.01;
+                    dummyUtterance.rate = 1.0;
                     window.speechSynthesis.speak(dummyUtterance);
                 }
                 this.unlocked = true;
@@ -1556,8 +1557,10 @@
                         this.voices = window.speechSynthesis.getVoices();
                     }
                 }
-                // Strictly lock onto native Malay voice locales ONLY (ms-MY, ms_MY, or ms)
-                return this.voices.find(v => /^ms[-_]MY$/i.test(v.lang) || v.lang === 'ms-MY' || v.lang === 'ms_MY' || v.lang.startsWith('ms'));
+                // Search for Malay voice locales (ms-MY, ms_MY, ms), fallback to Indonesian (id-ID, id_ID, id) if ms is absent
+                const msVoice = this.voices.find(v => /^ms[-_]MY$/i.test(v.lang) || v.lang === 'ms-MY' || v.lang === 'ms_MY' || v.lang.startsWith('ms'));
+                if (msVoice) return msVoice;
+                return this.voices.find(v => /^id[-_]ID$/i.test(v.lang) || v.lang === 'id-ID' || v.lang === 'id_ID' || v.lang.startsWith('id'));
             },
             getEnglishVoice() {
                 if (!this.voices || this.voices.length === 0) {
@@ -1636,29 +1639,32 @@
                     return;
                 }
                 window.speechSynthesis.cancel();
+                if (window.speechSynthesis.paused) {
+                    window.speechSynthesis.resume();
+                }
                 let cleanText = text.replace(/0/g, appState.currentLang === 'ms' ? 'kosong' : 'zero');
 
                 this.triggerVisualHighlight(highlightTarget);
 
                 if (appState.currentLang === 'ms') {
                     const malayVoice = this.getMalayVoice();
-                    // ABSOLUTE BAN ON ENGLISH TTS FOR MALAY TEXT:
-                    // Under NO circumstances fallback to an English TTS engine (e.g. en-US, en-GB) to read Malay words.
-                    if (!malayVoice) {
-                        console.warn('Native Malay voice (ms-MY/ms) not found. English TTS fallback is strictly banned for Malay text.');
-                        return;
-                    }
                     const utterance = new SpeechSynthesisUtterance(cleanText);
-                    utterance.voice = malayVoice;
-                    utterance.lang = 'ms-MY';
-                    utterance.rate = 0.82; // Speech rate 0.80 - 0.85 tuned for special education clarity
+                    if (malayVoice) {
+                        utterance.voice = malayVoice;
+                        utterance.lang = malayVoice.lang;
+                    } else {
+                        utterance.lang = 'ms-MY';
+                    }
+                    utterance.rate = 0.80; // Clear and steady rate for special needs learners
+                    utterance.volume = 1.0;
                     window.speechSynthesis.speak(utterance);
                 } else {
                     const englishVoice = this.getEnglishVoice();
                     const utterance = new SpeechSynthesisUtterance(cleanText);
                     if (englishVoice) utterance.voice = englishVoice;
                     utterance.lang = 'en-US';
-                    utterance.rate = 0.82;
+                    utterance.rate = 0.80;
+                    utterance.volume = 1.0;
                     window.speechSynthesis.speak(utterance);
                 }
             }
@@ -1803,17 +1809,33 @@
         function renderGuidedDemo() {
             const demoArea = document.getElementById('guided-demo-area');
             demoArea.innerHTML = `
-                <div style="display:flex; gap:8px;">
-                    ${getSharpenerSVG(0, 'demo-1')}${getSharpenerSVG(1, 'demo-2')}${getSharpenerSVG(2, 'demo-3')}
-                </div>
-                <div style="background:var(--subtraction-red); color:white; padding:8px 15px; border-radius:12px; font-weight:900;">
-                    TOLAK 1 (Buang ke tong) 🗑️
-                </div>
-                <div style="display:flex; gap:8px;">
-                    ${getSharpenerSVG(3, 'demo-4')}
-                </div>
-                <div style="font-size:1.4rem; font-weight:900; color:#2d3436;">
-                    = 3 pengasah tinggal
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%;">
+                    <!-- Concrete 4 Sharpeners initial display -->
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; background: #ffffff; padding: 15px 20px; border-radius: 20px; border: 3px dashed #b2bec3; width: 100%; max-width: 600px;">
+
+                        <!-- 3 Remaining Sharpeners -->
+                        <div style="display: flex; gap: 10px; align-items: center; background: #e6fffa; padding: 8px 12px; border-radius: 16px; border: 2px solid var(--primary-color);">
+                            <div style="width: 50px; height: 50px;">${getSharpenerSVG(0, 'demo-1')}</div>
+                            <div style="width: 50px; height: 50px;">${getSharpenerSVG(1, 'demo-2')}</div>
+                            <div style="width: 50px; height: 50px;">${getSharpenerSVG(2, 'demo-3')}</div>
+                            <span style="font-weight: 900; color: var(--primary-color); font-size: 0.9rem;">(3 Tinggal)</span>
+                        </div>
+
+                        <!-- Minus Arrow Symbol -->
+                        <div style="font-size: 1.8rem; font-weight: 900; color: var(--subtraction-red);">➔</div>
+
+                        <!-- 1 Discarded Sharpener with Red Dashed Container and Bin Arrow -->
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; background: #ffe6e6; padding: 8px 12px; border-radius: 16px; border: 3px dashed var(--subtraction-red); position: relative;">
+                            <span style="background: var(--subtraction-red); color: white; font-size: 0.75rem; font-weight: 900; padding: 2px 8px; border-radius: 8px; text-transform: uppercase;">1 Dibuang</span>
+                            <div style="width: 50px; height: 50px; transform: scale(0.9); opacity: 0.85;">${getSharpenerSVG(3, 'demo-4')}</div>
+                            <span style="font-size: 1.2rem;">🗑️</span>
+                        </div>
+                    </div>
+
+                    <!-- Explicit Equation Label -->
+                    <div style="background: var(--subtraction-red); color: #ffffff; padding: 8px 20px; border-radius: 16px; font-size: 1.3rem; font-weight: 900; box-shadow: 0 4px 0 var(--subtraction-shadow);">
+                        4 Pengasah - 1 Dibuang = 3 Tinggal
+                    </div>
                 </div>
             `;
         }
