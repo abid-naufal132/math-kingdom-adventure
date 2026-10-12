@@ -3,326 +3,1514 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Math Safari Adventure: Kerajaan Nombor</title>
+    <title>Mesin Pengasah Ajaib: Belajar Operasi Tolak | BBB Berinovasi Digital</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* High contrast & sensory-friendly palette */
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #2d3436;
+            --primary-color: #00b894;
+            --primary-shadow: #008f72;
+            --secondary-color: #0984e3;
+            --secondary-shadow: #0765af;
+            --subtraction-red: #d63031;
+            --subtraction-shadow: #b02324;
+            --addition-green: #00b894;
+            --accent-yellow: #fdcb6e;
+            --accent-shadow: #e1b14c;
+            --border-radius: 20px;
+            --focus-outline: 4px solid #0984e3;
+            --font-family: 'Nunito', sans-serif;
+            --base-font-size: 16px;
+        }
+
+        body.high-contrast {
+            --bg-color: #000000;
+            --card-bg: #111111;
+            --text-main: #ffffff;
+            --primary-color: #00ffcc;
+            --primary-shadow: #00b38f;
+            --secondary-color: #3399ff;
+            --secondary-shadow: #0066cc;
+            --subtraction-red: #ff3333;
+            --subtraction-shadow: #cc0000;
+            --addition-green: #00ff66;
+            --accent-yellow: #ffff00;
+            --accent-shadow: #cccc00;
+        }
+
+        body.dyslexia-font {
+            --font-family: 'OpenDyslexic', 'Nunito', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            font-family: var(--font-family);
+        }
+
+        body {
+            background-color: #1e272e;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-size: var(--base-font-size);
+            padding: 10px;
+        }
+
+        #app-container {
+            width: 100%;
+            max-width: 900px;
+            min-height: 90vh;
+            background-color: var(--bg-color);
+            border-radius: 28px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 6px solid #2d3436;
+            position: relative;
+        }
+
+        /* Top Bar Header */
+        header {
+            background: #2d3436;
+            color: #ffffff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .brand-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-title h1 {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            font-weight: 900;
+            color: var(--accent-yellow);
+        }
+
+        .brand-title .badge {
+            background: var(--subtraction-red);
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 900;
+            padding: 4px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .controls-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-ctrl {
+            background: #3d4849;
+            color: #ffffff;
+            border: 2px solid #636e72;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-ctrl:hover, .btn-ctrl:focus {
+            background: #0984e3;
+            border-color: #ffffff;
+            outline: none;
+        }
+
+        /* Main Navigation Tabs */
+        nav.nav-tabs {
+            display: flex;
+            background: #dfe6e9;
+            padding: 8px 12px 0 12px;
+            gap: 8px;
+            border-bottom: 4px solid #b2bec3;
+            overflow-x: auto;
+        }
+
+        .nav-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 12px 15px;
+            background: #b2bec3;
+            border: none;
+            border-radius: 16px 16px 0 0;
+            font-weight: 900;
+            font-size: 0.95rem;
+            color: #2d3436;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-btn.active {
+            background: var(--card-bg);
+            color: var(--secondary-color);
+            border-top: 4px solid var(--secondary-color);
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn:hover:not(.active) {
+            background: #cbd5e1;
+        }
+
+        /* Views Container */
+        main.content-area {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .view-panel {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .view-panel.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards & Container Units */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            border: 4px solid #dfe6e9;
+            box-shadow: 0 8px 0 #dfe6e9;
+        }
+
+        /* Step-by-Step Learning View Styles */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .op-box {
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+            border: 4px solid;
+            position: relative;
+        }
+
+        .op-box.addition {
+            background: #e6fffa;
+            border-color: var(--addition-green);
+        }
+
+        .op-box.subtraction {
+            background: #ffe6e6;
+            border-color: var(--subtraction-red);
+        }
+
+        .op-badge {
+            display: inline-block;
+            font-size: 1.2rem;
+            font-weight: 900;
+            padding: 6px 16px;
+            border-radius: 20px;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .op-badge.add { background: var(--addition-green); }
+        .op-badge.sub { background: var(--subtraction-red); }
+
+        .op-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .sharpener-icon-sm {
+            width: 45px;
+            height: 45px;
+            transition: transform 0.2s;
+        }
+
+        /* Interactive Subtraction Machine View Styles */
+        .question-header {
+            background: #ffffff;
+            border: 4px solid var(--secondary-color);
+            border-radius: 24px;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 8px 0 rgba(9, 132, 227, 0.2);
+        }
+
+        .equation-display {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 900;
+        }
+
+        .minus-badge-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .minus-symbol-badge {
+            background: var(--subtraction-red);
+            color: #ffffff;
+            padding: 4px 16px;
+            border-radius: 16px;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 900;
+            box-shadow: 0 4px 0 var(--subtraction-shadow);
+            line-height: 1;
+        }
+
+        .tag-remove {
+            background: var(--subtraction-red);
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 900;
+            padding: 2px 8px;
+            border-radius: 8px;
+            margin-top: 4px;
+            text-transform: uppercase;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        /* Work Area: Sharpeners & Machine Bin */
+        .subtraction-workspace {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .subtraction-workspace {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sharpener-pool-card {
+            background: #eef2f5;
+            border: 4px dashed #b2bec3;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .pool-title {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--secondary-color);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sharpener-items-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            min-height: 140px;
+            padding: 10px;
+        }
+
+        .interactive-sharpener {
+            width: 75px;
+            height: 75px;
+            cursor: grab;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            filter: drop-shadow(0 6px 0 rgba(0,0,0,0.15));
+        }
+
+        .interactive-sharpener:hover, .interactive-sharpener:focus {
+            transform: scale(1.15) translateY(-5px);
+            outline: none;
+        }
+
+        .interactive-sharpener:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+
+        .interactive-sharpener.discarded {
+            opacity: 0.2;
+            transform: scale(0.5) rotate(45deg);
+            pointer-events: none;
+            filter: grayscale(1);
+        }
+
+        /* Sharpener Bin / Machine Unit */
+        .sharpener-bin-card {
+            background: linear-gradient(180deg, #ff7675 0%, #d63031 100%);
+            border: 4px solid var(--subtraction-shadow);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+            box-shadow: 0 10px 0 var(--subtraction-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bin-header h3 {
+            font-size: 1.2rem;
+            font-weight: 900;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .bin-header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .bin-dropzone {
+            width: 140px;
+            height: 140px;
+            border: 4px dashed #ffffff;
+            border-radius: 50%;
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .bin-dropzone.drag-over {
+            background: rgba(255,255,255,0.4);
+            transform: scale(1.1);
+            border-color: var(--accent-yellow);
+        }
+
+        .bin-count-badge {
+            background: var(--accent-yellow);
+            color: #2d3436;
+            font-size: 1.1rem;
+            font-weight: 900;
+            padding: 6px 16px;
+            border-radius: 20px;
+            box-shadow: 0 4px 0 var(--accent-shadow);
+        }
+
+        /* Answer Options Grid */
+        .answer-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .answer-title {
+            font-size: 1.2rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        @media (max-width: 500px) {
+            .options-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .btn-option {
+            background: #ffffff;
+            border: 4px solid #dfe6e9;
+            border-radius: 20px;
+            padding: 18px 10px;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--text-main);
+            cursor: pointer;
+            box-shadow: 0 8px 0 #dfe6e9;
+            transition: all 0.1s;
+        }
+
+        .btn-option:hover, .btn-option:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            transform: translateY(-3px);
+            box-shadow: 0 11px 0 var(--secondary-color);
+        }
+
+        .btn-option:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #dfe6e9;
+        }
+
+        /* Action Buttons */
+        .btn-action {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 15px 25px;
+            font-size: 1.1rem;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 6px 0 var(--primary-shadow);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.1s;
+        }
+
+        .btn-action:hover, .btn-action:focus {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+            outline: none;
+        }
+
+        .btn-action:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 var(--primary-shadow);
+        }
+
+        .btn-action.reset {
+            background: #74b9ff;
+            box-shadow: 0 6px 0 #0984e3;
+        }
+
+        /* Feedback Overlay */
+        .feedback-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            border-radius: inherit;
+            backdrop-filter: blur(4px);
+        }
+
+        .feedback-overlay.active {
+            display: flex;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .feedback-card {
+            background: white;
+            border-radius: 28px;
+            padding: 35px 25px;
+            text-align: center;
+            max-width: 350px;
+            width: 90%;
+            border: 6px solid var(--accent-yellow);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.6); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Teacher Dashboard Styles */
+        .dashboard-header {
+            background: #2d3436;
+            color: #ffffff;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background: #f8f9fa;
+            border: 3px solid #dfe6e9;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--secondary-color);
+            margin: 5px 0;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #636e72;
+        }
+
+        /* Tables for Baseline & Compliance */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        table.data-table th, table.data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #dfe6e9;
+        }
+
+        table.data-table th {
+            background: #f1f2f6;
+            font-weight: 900;
+            color: #2d3436;
+        }
+
+        .tag-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 900;
+        }
+
+        .tag-status.pass { background: #d1f2eb; color: #00b894; }
+        .tag-status.warn { background: #ffeaa7; color: #d63031; }
+
+        /* Utilities */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .text-subtraction { color: var(--subtraction-red); }
+        .text-addition { color: var(--addition-green); }
+    </style>
 </head>
 <body>
+
     <div id="app-container">
-        <div class="bg-decorations">
-            <div class="cloud" style="top: 10%; left: 10%; animation-duration: 20s;"></div>
-            <div class="cloud" style="top: 25%; right: 15%; animation-duration: 25s; animation-delay: -5s;"></div>
-            <div class="leaf" style="bottom: 10%; left: 5%; animation-duration: 15s;"></div>
-            <div class="leaf" style="bottom: 20%; right: 10%; animation-duration: 18s; animation-delay: -3s;"></div>
-        </div>
-        <!-- Splash Screen -->
-        <section id="splash-screen" class="screen active">
-            <div class="settings-btns" style="position: absolute; top: 20px; right: 20px; z-index: 20;">
-                <button id="main-lang-toggle" class="icon-btn" style="font-weight: 900; font-size: 0.9rem;">BM</button>
-            </div>
-            <div class="game-title-container text-center">
-                <h1 class="game-title">Math Safari</h1>
-                <h2 class="game-subtitle">Kerajaan Nombor</h2>
-            </div>
-            <div class="avatar-display mt-20" id="main-avatar-preview">
-                <!-- SVG Icon will be injected here -->
-            </div>
-            <button id="start-game-btn" class="btn-block btn-primary">MULA / START</button>
-            <button id="open-dashboard-btn" class="btn-block btn-secondary mt-20" style="padding: 12px;">STATS</button>
-            <button id="open-collection-btn-splash" class="btn-block btn-accent mt-20" style="padding: 12px;" data-key="collection">KOLEKSI</button>
-        </section>
-
-        <!-- Avatar Selection Screen -->
-        <section id="avatar-screen" class="screen">
-            <div class="top-nav">
-                <button class="icon-btn back-to-splash">
-                    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                </button>
-                <h1 data-key="choose_avatar">Pilih Hero</h1>
-                <button class="icon-btn home-btn">
-                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                </button>
-            </div>
-            <div class="avatar-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px;">
-                <button class="avatar-choice card" data-avatar="lion">
-                    <div class="avatar-icon-svg" data-icon="lion"></div>
-                    <p style="font-weight: 900; margin-top: 10px;">Leo</p>
-                </button>
-                <button class="avatar-choice card" data-avatar="monkey">
-                    <div class="avatar-icon-svg" data-icon="monkey"></div>
-                    <p style="font-weight: 900; margin-top: 10px;">Momo</p>
-                </button>
-                <button class="avatar-choice card" data-avatar="zebra">
-                    <div class="avatar-icon-svg" data-icon="zebra"></div>
-                    <p style="font-weight: 900; margin-top: 10px;">Zizi</p>
-                </button>
-                <button class="avatar-choice card" data-avatar="elephant">
-                    <div class="avatar-icon-svg" data-icon="elephant"></div>
-                    <p style="font-weight: 900; margin-top: 10px;">Elly</p>
-                </button>
-            </div>
-        </section>
-
-        <!-- Level Selection Screen -->
-        <section id="level-selection-screen" class="screen">
-            <div class="top-nav">
-                <button class="icon-btn back-to-avatar">
-                    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                </button>
-                <button class="icon-btn home-btn">
-                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                </button>
-                <h1 data-key="select_level">Pilih Tahap</h1>
-                <div class="settings-btns" style="display: flex; gap: 8px;">
-                    <button id="lang-toggle" class="icon-btn" style="font-weight: 900; font-size: 0.9rem;">BM</button>
-                    <button id="accessibility-btn" class="icon-btn">
-                        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
-                    </button>
-                </div>
-            </div>
-            <div class="level-grid" id="level-list">
-                <!-- Levels generated by JS -->
-            </div>
-        </section>
-
-        <!-- Learning Screen -->
-        <section id="learning-screen" class="screen">
-            <div class="top-nav">
-                <button id="exit-learning-btn" class="icon-btn">
-                    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                </button>
-                <div class="learning-progress-container progress-container">
-                    <div id="learning-progress-bar" class="progress-fill"></div>
-                </div>
-                <h2 data-key="learning_title" style="margin: 0; font-size: 1rem;">BELAJAR</h2>
-            </div>
-            <div id="learning-content-area" class="card">
-                <!-- Content injected by LearningManager -->
-            </div>
-            <div class="learning-nav" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
-                <button id="prev-learn-btn" class="btn-block btn-secondary" style="padding: 15px; font-size: 1rem;">
-                    <span data-key="prev">KEMBALI</span>
-                </button>
-                <button id="next-learn-btn" class="btn-block btn-primary" style="padding: 15px; font-size: 1rem;">
-                    <span data-key="next">TERUS</span>
-                </button>
-                <button id="start-quiz-btn" class="btn-block btn-accent hidden" style="grid-column: span 2; padding: 15px; font-size: 1rem;">
-                    <span data-key="start_quiz">MULA KUIZ</span>
-                </button>
-                <button id="replay-learn-audio-btn" class="btn-block btn-secondary" style="grid-column: span 2; padding: 12px; font-size: 0.9rem; background: #a29bfe; border-color: #6c5ce7;">
-                    <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: white; stroke: none;"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-                    <span data-key="replay_audio">DENGAR LAGI</span>
-                </button>
-            </div>
-        </section>
-
-        <!-- Map Screen -->
-        <section id="map-screen" class="screen">
-            <div class="top-nav">
-                <button class="icon-btn back-to-levels">
-                    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                </button>
-                <button class="icon-btn home-btn">
-                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                </button>
-                <div class="game-stats icon-btn" style="width: auto; gap: 8px;">
-                    <svg viewBox="0 0 24 24" style="fill: #f1c40f; stroke: #c29d0b;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <span class="star-balance-count" style="font-weight: 900;">0</span>
-                </div>
-            </div>
-            <div class="map-container">
-                <div id="safari-path">
-                    <!-- Nodes generated by JS -->
-                </div>
-            </div>
-            <div class="mt-20">
-                <button id="play-level-btn" class="btn-block btn-accent" data-key="play">MAIN</button>
-            </div>
-        </section>
-
-        <!-- Game Screen -->
-        <section id="game-screen" class="screen">
-            <div class="top-nav">
-                <button id="exit-game-btn" class="icon-btn">
-                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                </button>
-                <div class="progress-container">
-                    <div id="progress-bar" class="progress-fill"></div>
-                </div>
-                <div class="game-stats icon-btn" style="width: auto; gap: 8px;">
-                    <svg viewBox="0 0 24 24" style="fill: #f1c40f; stroke: #c29d0b; width: 20px; height: 20px;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <span class="star-balance-count" style="font-weight: 900;">0</span>
+        <!-- Top Bar Header -->
+        <header>
+            <div class="brand-title">
+                <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+                    <rect x="15" y="15" width="70" height="70" rx="18" fill="#fdcb6e"/>
+                    <rect x="30" y="30" width="40" height="25" rx="8" fill="#2d3436"/>
+                    <circle cx="50" cy="72" r="10" fill="#e17055"/>
+                </svg>
+                <div>
+                    <h1 id="app-title-text">Mesin Pengasah Ajaib</h1>
+                    <span class="badge" id="app-subtitle-badge">BBB Berinovasi Digital</span>
                 </div>
             </div>
 
-            <div class="question-area">
-                <div id="level-label" style="font-weight: 900; color: var(--secondary-color); margin-bottom: 5px;">TAHAP 1</div>
-                <div style="display: flex; justify-content: center; align-items: center; gap: 15px;">
-                    <div id="question-text" class="q-text">0 + 0</div>
-                    <button id="replay-voice-btn" class="icon-btn" style="width: 44px; height: 44px; border-radius: 50%;">
-                        <svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-                    </button>
-                </div>
-            </div>
-
-            <div id="options-container" class="options-grid">
-                <!-- Generated by JS -->
-            </div>
-
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 20px;">
-                <button id="buy-hint-btn" class="btn-block btn-accent" style="padding: 12px; font-size: 1rem; width: auto; min-width: 180px;">
-                    <svg viewBox="0 0 24 24" style="fill: #f1c40f; stroke: #c29d0b; width: 20px; height: 20px;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <span data-key="buy_hint">Guna 10 Bintang</span>
+            <div class="controls-group">
+                <button class="btn-ctrl" id="lang-toggle-btn" aria-label="Tukar Bahasa">
+                    🌐 <span id="lang-btn-text">BM</span>
                 </button>
-                <div id="hint-box" class="card hidden" style="background: #fff9db; border-color: #fab005; padding: 15px; width: 100%; animation: popIn 0.3s ease;">
-                    <p id="hint-text" style="font-weight: 700; color: #f08c00; text-align: center; font-size: 1.2rem;"></p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Result Screen -->
-        <section id="result-screen" class="screen">
-            <div class="top-nav">
-                <button class="icon-btn home-btn">
-                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <button class="btn-ctrl" id="contrast-toggle-btn" aria-label="Mod Kontras Tinggi">
+                    👁️ <span id="contrast-btn-text">Kontras</span>
+                </button>
+                <button class="btn-ctrl" id="tts-toggle-btn" aria-label="Suara Narasi">
+                    🔊 <span id="tts-btn-text">Suara: ON</span>
+                </button>
+                <button class="btn-ctrl" id="sfx-toggle-btn" aria-label="Kesan Bunyi">
+                    🎵 <span id="sfx-btn-text">SFX: ON</span>
                 </button>
             </div>
-            <div class="card text-center" style="padding: 40px 20px;">
-                <h1 id="result-title" data-key="well_done">Hebat!</h1>
-                <div class="star-rating" id="result-stars" style="display: flex; justify-content: center; gap: 10px; margin: 20px 0;">
-                    <!-- Stars injected here -->
-                </div>
-                <div style="font-size: 1.5rem; margin-bottom: 10px; font-weight: 900;">
-                    <span data-key="score">Skor</span>: <span id="final-score">0</span>
-                </div>
-                <div id="auto-continue-timer" style="font-size: 0.9rem; font-weight: 700; color: var(--secondary-color); margin-bottom: 20px;"></div>
-                <div id="reward-display" class="mt-20 mb-20">
-                    <!-- Unlockable animals injected here -->
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 15px;">
-                    <button id="map-return-btn" class="btn-block btn-primary" data-key="continue">TERUSKAN</button>
-                    <button id="retry-btn" class="btn-block btn-secondary" data-key="retry">CUBA LAGI</button>
-                    <button id="replay-all-btn" class="btn-block btn-accent hidden" data-key="replay_all">MAIN SEMULA</button>
-                    <button id="practice-mode-btn" class="btn-block btn-secondary hidden" data-key="practice_mode">MOD LATIHAN</button>
-                </div>
-            </div>
-        </section>
+        </header>
 
-        <!-- Accessibility Screen -->
-        <section id="accessibility-screen" class="screen">
-            <div class="top-nav">
-                <button class="icon-btn back-to-levels">
-                    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                </button>
-                <h1 data-key="accessibility">Aksesibilitas</h1>
-                <button class="icon-btn home-btn">
-                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                </button>
-            </div>
-            <div class="settings-list">
-                <div class="setting-item">
-                    <span data-key="high_contrast">Kontras Tinggi</span>
-                    <button id="toggle-contrast" class="icon-btn" style="width: 80px;">OFF</button>
+        <!-- Main Navigation Tabs -->
+        <nav class="nav-tabs" role="tablist">
+            <button class="nav-btn active" id="tab-learn" role="tab" aria-selected="true" onclick="switchTab('learn')">
+                📖 <span data-key="tab_learn">Mod Belajar</span>
+            </button>
+            <button class="nav-btn" id="tab-game" role="tab" aria-selected="false" onclick="switchTab('game')">
+                ✏️ <span data-key="tab_game">Mesin Pengasah</span>
+            </button>
+            <button class="nav-btn" id="tab-teacher" role="tab" aria-selected="false" onclick="switchTab('teacher')">
+                📊 <span data-key="tab_teacher">Papan Guru & Portfolio</span>
+            </button>
+        </nav>
+
+        <!-- Main Content Views -->
+        <main class="content-area">
+
+            <!-- ================= VIEW 1: GUIDED LEARNING MODE ================= -->
+            <section id="view-learn" class="view-panel active" role="tabpanel">
+                <div class="card text-center" style="background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%); border-color: var(--secondary-color);">
+                    <h2 style="color: var(--secondary-color); font-size: 1.6rem; margin-bottom: 8px;" data-key="learn_welcome_title">Mari Kenali Operasi Tolak (-)!</h2>
+                    <p style="font-size: 1.1rem; color: #555;" data-key="learn_welcome_desc">Belajar beza antara Tambah (+) dan Tolak (-) menggunakan pengasah pensel kesukaan kamu.</p>
                 </div>
-                <div class="setting-item">
-                    <span data-key="dyslexia_font">Font Disleksia</span>
-                    <button id="toggle-dyslexia" class="icon-btn" style="width: 80px;">OFF</button>
-                </div>
-                <div class="setting-item">
-                    <span data-key="text_size">Saiz Teks</span>
-                    <div style="display: flex; gap: 10px;">
-                        <button id="text-smaller" class="icon-btn" style="width: 44px;">A-</button>
-                        <button id="text-larger" class="icon-btn" style="width: 44px;">A+</button>
+
+                <!-- Step 1: Addition vs Subtraction Comparison -->
+                <div class="card">
+                    <h3 style="font-size: 1.3rem; margin-bottom: 10px;" data-key="step1_title">Langkah 1: Bezakan (+) dan (-)</h3>
+
+                    <div class="comparison-grid">
+                        <!-- Addition Box -->
+                        <div class="op-box addition">
+                            <span class="op-badge add" data-key="op_add_title">TAMBAH (+)</span>
+                            <p style="font-weight: 700;" data-key="op_add_desc">Kumpul / Menjadi Lebih Banyak</p>
+                            <div class="op-visual" id="learn-add-visual">
+                                <!-- SVGs injected via JS -->
+                            </div>
+                            <p style="font-weight: 900; font-size: 1.2rem; color: var(--addition-green);">3 + 2 = 5</p>
+                        </div>
+
+                        <!-- Subtraction Box -->
+                        <div class="op-box subtraction">
+                            <span class="op-badge sub" data-key="op_sub_title">TOLAK (-)</span>
+                            <p style="font-weight: 700;" data-key="op_sub_desc">Buang / Asah / Menjadi Sedikit</p>
+                            <div class="op-visual" id="learn-sub-visual">
+                                <!-- SVGs injected via JS -->
+                            </div>
+                            <p style="font-weight: 900; font-size: 1.2rem; color: var(--subtraction-red);">5 - 2 = 3</p>
+                        </div>
                     </div>
                 </div>
-                <div class="setting-item">
-                    <span data-key="voice_toggle">Suara</span>
-                    <button id="toggle-voice-global" class="icon-btn" style="width: 80px;">ON</button>
-                </div>
-                <div class="setting-item">
-                    <span data-key="bgm_toggle">Muzik Latar</span>
-                    <button id="toggle-bgm" class="icon-btn" style="width: 80px;">ON</button>
-                </div>
-                <div class="setting-item" style="flex-direction: column; align-items: flex-start; gap: 10px;">
-                    <span data-key="bgm_volume">Volume Muzik</span>
-                    <input type="range" id="bgm-slider" min="0" max="1" step="0.1" value="0.3" style="width: 100%;">
-                </div>
-                <div class="setting-item" style="flex-direction: column; align-items: flex-start; gap: 10px;">
-                    <span data-key="sfx_volume">Volume Kesan Bunyi</span>
-                    <input type="range" id="sfx-slider" min="0" max="1" step="0.1" value="0.5" style="width: 100%;">
-                </div>
-                <div class="setting-item" style="flex-direction: column; align-items: flex-start; gap: 10px;">
-                    <span data-key="narration_volume">Volume Narasi</span>
-                    <input type="range" id="narration-slider" min="0" max="1" step="0.1" value="1.0" style="width: 100%;">
-                </div>
-                <div class="setting-item" style="flex-direction: column; align-items: flex-start; gap: 10px;">
-                    <span data-key="speech_speed">Kelajuan Suara</span>
-                    <input type="range" id="speech-speed-slider" min="0.5" max="2" step="0.1" value="1.0" style="width: 100%;">
-                </div>
-                <div class="setting-item">
-                    <span data-key="reduced_motion">Kurangkan Animasi</span>
-                    <button id="toggle-motion" class="icon-btn" style="width: 80px;">OFF</button>
-                </div>
-            </div>
-        </section>
 
-        <!-- Collection Book Screen -->
-        <section id="collection-screen" class="screen">
-            <div class="top-nav">
-                <button class="icon-btn back-to-splash">
-                    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                </button>
-                <h1 data-key="collection">Buku Koleksi</h1>
-                <button class="icon-btn home-btn">
-                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                </button>
-            </div>
-            <div id="collection-grid">
-                <!-- Animals injected by JS -->
-            </div>
-        </section>
+                <!-- Step 2: Visual Subtraction Demonstration -->
+                <div class="card">
+                    <h3 style="font-size: 1.3rem; margin-bottom: 10px;" data-key="step2_title">Langkah 2: Konsep "Buang Pengasah Ke Dalam Tong"</h3>
+                    <p style="margin-bottom: 15px;" data-key="step2_desc">Apabila nampak simbol <strong class="text-subtraction">TOLAK (-)</strong>, kita mesti <strong>BUANG</strong> pengasah pensel ke dalam Mesin Pengasah!</p>
 
-        <!-- Dashboard Screen -->
-        <section id="dashboard-screen" class="screen">
-            <div class="top-nav">
-                <button class="icon-btn back-to-splash">
-                    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                </button>
-                <h1 data-key="dashboard_title">Dashboard Guru</h1>
-                <button class="icon-btn home-btn">
-                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                </button>
-            </div>
-            <div id="dashboard-content" class="card">
-                <!-- Stats injected here -->
-            </div>
-            <button id="reset-progress-btn" class="btn-block btn-accent" style="background: var(--danger-color); color: white; border-color: var(--danger-shadow);">RESET DATA</button>
-        </section>
+                    <div style="background: #fff9db; border: 3px solid #f1c40f; border-radius: 16px; padding: 15px; text-align: center;">
+                        <p id="guided-instruction-text" style="font-size: 1.2rem; font-weight: 900; color: #d35400;">Contoh: Ada 4 pengasah, buang 1 pengasah!</p>
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin: 15px 0; flex-wrap: wrap;" id="guided-demo-area">
+                            <!-- Injected via JS -->
+                        </div>
+                        <button class="btn-action" onclick="runGuidedDemoSpeech()">
+                            🔊 <span data-key="btn_listen">Dengar Penerangan</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="text-center" style="margin-top: 10px;">
+                    <button class="btn-action" style="font-size: 1.3rem; padding: 18px 35px;" onclick="switchTab('game')">
+                        🚀 <span data-key="btn_start_game">Mula Bermain Mesin Pengasah!</span>
+                    </button>
+                </div>
+            </section>
+
+
+            <!-- ================= VIEW 2: INTERACTIVE SUBTRACTION MACHINE ================= -->
+            <section id="view-game" class="view-panel" role="tabpanel">
+
+                <!-- Question Header -->
+                <div class="question-header">
+                    <div>
+                        <span style="font-size: 0.85rem; font-weight: 900; color: var(--secondary-color);" id="game-q-number-label">SOALAN 1 / 5</span>
+                        <div class="equation-display">
+                            <span id="num-a">5</span>
+                            <div class="minus-badge-container">
+                                <span class="minus-symbol-badge">-</span>
+                                <span class="tag-remove" data-key="tag_remove">BUANG / REMOVE</span>
+                            </div>
+                            <span id="num-b">2</span>
+                            <span>=</span>
+                            <span style="color: var(--secondary-color); font-weight: 900;">?</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-action reset" onclick="speakCurrentQuestion()" aria-label="Ulang Suara Soalan">
+                        🔊 <span data-key="btn_repeat_audio">Dengar Soalan</span>
+                    </button>
+                </div>
+
+                <!-- Subtraction Workspace -->
+                <div class="subtraction-workspace">
+                    <!-- Left: Sharpener Pool -->
+                    <div class="sharpener-pool-card">
+                        <div class="pool-title">
+                            ✏️ <span data-key="pool_title">Pengasah Pensel Kamu:</span>
+                            <span id="pool-count-label" style="background: var(--secondary-color); color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.9rem;">5 pengasah</span>
+                        </div>
+
+                        <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;" data-key="drag_hint_text">
+                            👉 <strong>Tarik (Drag)</strong> atau <strong>Klik</strong> pengasah ke dalam Tong Pengasah untuk membuangnya!
+                        </p>
+
+                        <div class="sharpener-items-grid" id="sharpener-pool">
+                            <!-- Sharpener SVGs generated dynamically -->
+                        </div>
+
+                        <div style="font-size: 0.9rem; font-weight: 700; color: #2d3436; text-align: center; margin-top: 10px;">
+                            <span data-key="baki_label">Baki Pengasah Tinggal:</span> <strong id="remaining-count-display" style="font-size: 1.3rem; color: var(--primary-color);">5</strong>
+                        </div>
+                    </div>
+
+                    <!-- Right: Sharpener Bin / Machine -->
+                    <div class="sharpener-bin-card" id="sharpener-bin" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+                        <div class="bin-header">
+                            <h3 data-key="bin_title">🗑️ Tong Pengasah</h3>
+                            <p data-key="bin_subtitle">Tempat membuang pengasah</p>
+                        </div>
+
+                        <div class="bin-dropzone" id="bin-dropzone-ui" onclick="discardOneSharpenerByClick()">
+                            <svg width="60" height="60" viewBox="0 0 100 100" fill="none">
+                                <path d="M20 30 H80 V85 Q80 95 70 95 H30 Q20 95 20 85 Z" fill="#ffffff" opacity="0.3"/>
+                                <rect x="15" y="20" width="70" height="10" rx="5" fill="#ffffff"/>
+                                <path d="M40 20 V10 H60 V20" stroke="#ffffff" stroke-width="6"/>
+                                <line x1="40" y1="40" x2="40" y2="80" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+                                <line x1="50" y1="40" x2="50" y2="80" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+                                <line x1="60" y1="40" x2="60" y2="80" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+                            </svg>
+                            <span style="font-size: 0.8rem; margin-top: 6px; font-weight: 900;" data-key="dropzone_label">LETAK DI SINI</span>
+                        </div>
+
+                        <div class="bin-count-badge">
+                            <span data-key="discarded_label">Dibuang:</span> <span id="discarded-count-display">0</span> / <span id="target-discard-display">2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Answer Selection -->
+                <div class="card answer-section">
+                    <div class="answer-title" data-key="answer_title">Berapakah pengasah yang tinggal? Pilih jawapan:</div>
+                    <div class="options-grid" id="options-container">
+                        <!-- Option buttons generated by JS -->
+                    </div>
+                </div>
+
+                <!-- Footer Reset / Skip -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                    <button class="btn-ctrl" onclick="resetCurrentQuestionWorkspace()">
+                        🔄 <span data-key="btn_reset_items">Set Semula Pengasah</span>
+                    </button>
+
+                    <button class="btn-ctrl" onclick="generateNewQuestion()">
+                        ⏩ <span data-key="btn_next_q">Soalan Lain</span>
+                    </button>
+                </div>
+            </section>
+
+
+            <!-- ================= VIEW 3: TEACHER DASHBOARD & PORTFOLIO ================= -->
+            <section id="view-teacher" class="view-panel" role="tabpanel">
+                <div class="dashboard-header">
+                    <h2 style="color: var(--accent-yellow); margin-bottom: 5px;" data-key="teacher_title">📊 Papan Pemuka Guru & Portfolio Pembelajaran</h2>
+                    <p style="font-size: 0.9rem; opacity: 0.9;" data-key="teacher_subtitle">Data Baseline Analysis, Prestasi Murid, & Dokumentasi Kepatuhan KMD2 / 3E KPPB</p>
+                </div>
+
+                <!-- Performance Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="m-total-q">0</div>
+                        <div class="metric-label" data-key="m_total_label">Jumlah Soalan Dijawab</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" style="color: var(--primary-color);" id="m-correct">0</div>
+                        <div class="metric-label" data-key="m_correct_label">Jawapan Tolak Betul</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" style="color: var(--subtraction-red);" id="m-confusion">0</div>
+                        <div class="metric-label" data-key="m_confusion_label">Kekerapan Keliru (+) [Diagnostic]</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" style="color: var(--accent-yellow);" id="m-accuracy">0%</div>
+                        <div class="metric-label" data-key="m_accuracy_label">Ketepatan Konsep Tolak</div>
+                    </div>
+                </div>
+
+                <!-- Baseline Analysis Section -->
+                <div class="card">
+                    <h3 style="font-size: 1.2rem; color: var(--secondary-color); margin-bottom: 10px;" data-key="baseline_section_title">📌 Analisis Keperluan & Profil Murid (Baseline Need Analysis)</h3>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Maklumat Terperinci / Data Impak</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Profil Murid</strong></td>
+                                    <td>Murid PPKI Autisme (Slow Learner profile), tenang, suka meneroka, visual/taktil learner.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Isu Utama (Baseline Problem)</strong></td>
+                                    <td>Boleh melakukan Operasi Tambah (+), tetapi keliru dengan Operasi Tolak (-), kerap menambah nombor walaupun nampak simbol tolak.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Faktor Motivasi Khas</strong></td>
+                                    <td>Sangat meminati & obses dengan <strong>Pengasah Pensel (Pencil Sharpeners)</strong>.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Intervensi BBB Berinovasi</strong></td>
+                                    <td>Mekanisme manipulatif interaktif "Tong Pengasah" di mana murid secara fizikal/digital melempar/membuang pengasah pensel untuk membina pemahaman konkrit konsep "mengurangkan/membuang".</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 3E KPPB Pedagogical Framework Alignment -->
+                <div class="card">
+                    <h3 style="font-size: 1.2rem; color: var(--primary-color); margin-bottom: 10px;" data-key="framework_section_title">🎓 Kerangka Pedagogi 3E KPPB</h3>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Elemen 3E</th>
+                                    <th>Pelaksanaan Dalam Aplikasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Engagement (Keterlibatan)</strong></td>
+                                    <td>Antaramuka berasaskan objek minat khas (pengasah pensel), interaksi drag-and-drop / klik mesra sensori, maklum balas audio-visual bintang & ganjaran.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Enhancement (Penambahbaikan)</strong></td>
+                                    <td>Panduan langkah demi langkah membezakan (+) dan (-), perbezaan warna merah (Tolak/Buang) vs hijau (Tambah), sokongan narasi audio bwi-bahasa (BM/EN).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Extension (Peluasan)</strong></td>
+                                    <td>Menghubungkan konsep matematik abstrak kepada perbuatan konkrit dalam kehidupan seharian (membuang / mengurangkan barang ke dalam tong).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Digital Ethics & KMD2 Compliance -->
+                <div class="card">
+                    <h3 style="font-size: 1.2rem; color: #6c5ce7; margin-bottom: 10px;" data-key="ethics_section_title">🛡️ Kepatuhan Etika Digital & KMD2</h3>
+                    <ul style="padding-left: 20px; line-height: 1.6; font-size: 0.95rem;">
+                        <li><strong>Privasi Data Murid:</strong> Semua data interaksi disimpan secara tempatan (Browser LocalStorage) tanpa mengumpul sebarang maklumat peribadi.</li>
+                        <li><strong>Aksesibiliti & Mesra Sensori:</strong> Memenuhi piawaian WCAG 2.1 AA dengan mod kontras tinggi, fon disleksia, saiz butang besar, dan pengawalan audio.</li>
+                        <li><strong>Inovasi Bahan Bantu Belajar (BBB):</strong> Rekabentuk asal bebas elemen pengiklanan dan pautan luar yang tidak selamat.</li>
+                    </ul>
+                </div>
+
+                <!-- Action Controls -->
+                <div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
+                    <button class="btn-action" onclick="exportStudentData()">
+                        💾 <span data-key="btn_export_data">Cetak / Simpan Ringkasan Portfolio</span>
+                    </button>
+                    <button class="btn-action reset" onclick="resetStudentData()">
+                        🧹 <span data-key="btn_reset_data">Set Semula Data Prestasi</span>
+                    </button>
+                </div>
+            </section>
+
+        </main>
 
         <!-- Feedback Overlay -->
-        <div id="feedback-overlay" class="overlay">
+        <div id="feedback-overlay" class="feedback-overlay">
             <div class="feedback-card">
-                <div id="feedback-icon" style="margin-bottom: 20px;">
-                    <!-- SVG injected here -->
+                <div id="feedback-icon-area" style="margin-bottom: 15px;">
+                    <!-- SVG Injected -->
                 </div>
-                <h2 id="feedback-text" style="font-weight: 900; font-size: 2rem;">BETUL!</h2>
-            </div>
-        </div>
-
-        <!-- Confirm Home Overlay -->
-        <div id="confirm-overlay" class="overlay">
-            <div class="feedback-card">
-                <h2 data-key="confirm_home_title" style="margin-bottom: 10px;">Kembali?</h2>
-                <p data-key="confirm_home_msg" style="margin-bottom: 20px;">Adakah anda mahu berhenti bermain dan kembali ke menu utama?</p>
-                <div style="display: flex; gap: 15px;">
-                    <button id="confirm-yes-btn" class="btn-block btn-primary" data-key="yes" style="padding: 12px; font-size: 1rem;">YA</button>
-                    <button id="confirm-no-btn" class="btn-block btn-secondary" data-key="no" style="padding: 12px; font-size: 1rem;">TIDAK</button>
-                </div>
+                <h2 id="feedback-main-text" style="font-weight: 900; font-size: 1.8rem; color: var(--text-main); margin-bottom: 8px;">Syabas!</h2>
+                <p id="feedback-sub-text" style="font-size: 1.1rem; color: #666; margin-bottom: 20px;">Jawapan kamu betul!</p>
+                <button class="btn-action" style="width: 100%;" onclick="closeFeedbackOverlay()">
+                    <span data-key="btn_continue">TERUSKAN</span> ➔
+                </button>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- JavaScript Logic embedded for single-file robustness -->
+    <script>
+        /* --- ASSETS & CONSTANTS --- */
+        const SHARPENER_SVG = `
+        <svg class="sharpener-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="15" y="20" width="70" height="60" rx="16" fill="#fdcb6e" stroke="#d63031" stroke-width="4"/>
+            <rect x="25" y="32" width="50" height="22" rx="8" fill="#2d3436"/>
+            <circle cx="50" cy="43" r="7" fill="#dfe6e9"/>
+            <path d="M20 65 L80 65 L70 75 L30 75 Z" fill="#e17055"/>
+            <rect x="75" y="30" width="8" height="40" rx="3" fill="#b2bec3"/>
+            <circle cx="30" cy="26" r="3" fill="#ffffff"/>
+            <circle cx="70" cy="26" r="3" fill="#ffffff"/>
+        </svg>`;
+
+        const STAR_SVG = `
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="#f1c40f" stroke="#f39c12" stroke-width="2">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>`;
+
+        const CROSS_SVG = `
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#d63031" stroke-width="4" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>`;
+
+        /* --- TRANSLATIONS (BM / EN) --- */
+        const translations = {
+            ms: {
+                tab_learn: "Mod Belajar",
+                tab_game: "Mesin Pengasah",
+                tab_teacher: "Papan Guru & Portfolio",
+                learn_welcome_title: "Mari Kenali Operasi Tolak (-)!",
+                learn_welcome_desc: "Belajar beza antara Tambah (+) dan Tolak (-) menggunakan pengasah pensel kesukaan kamu.",
+                step1_title: "Langkah 1: Bezakan (+) dan (-)",
+                op_add_title: "TAMBAH (+)",
+                op_add_desc: "Kumpul / Menjadi Lebih Banyak",
+                op_sub_title: "TOLAK (-)",
+                op_sub_desc: "Buang / Asah / Menjadi Sedikit",
+                step2_title: "Langkah 2: Konsep \"Buang Pengasah Ke Dalam Tong\"",
+                step2_desc: "Apabila nampak simbol TOLAK (-), kita mesti BUANG pengasah pensel ke dalam Mesin Pengasah!",
+                btn_listen: "Dengar Penerangan",
+                btn_start_game: "Mula Bermain Mesin Pengasah!",
+                tag_remove: "BUANG / REMOVE",
+                pool_title: "Pengasah Pensel Kamu:",
+                drag_hint_text: "👉 Tarik (Drag) atau Klik pengasah ke dalam Tong Pengasah untuk membuangnya!",
+                baki_label: "Baki Pengasah Tinggal:",
+                bin_title: "🗑️ Tong Pengasah",
+                bin_subtitle: "Tempat membuang pengasah",
+                dropzone_label: "LETAK DI SINI",
+                discarded_label: "Dibuang:",
+                answer_title: "Berapakah pengasah yang tinggal? Pilih jawapan:",
+                btn_repeat_audio: "Dengar Soalan",
+                btn_reset_items: "Set Semula Pengasah",
+                btn_next_q: "Soalan Lain",
+                teacher_title: "📊 Papan Pemuka Guru & Portfolio Pembelajaran",
+                teacher_subtitle: "Data Baseline Analysis, Prestasi Murid, & Dokumentasi Kepatuhan KMD2 / 3E KPPB",
+                m_total_label: "Jumlah Soalan Dijawab",
+                m_correct_label: "Jawapan Tolak Betul",
+                m_confusion_label: "Kekerapan Keliru (+) [Diagnostic]",
+                m_accuracy_label: "Ketepatan Konsep Tolak",
+                baseline_section_title: "📌 Analisis Keperluan & Profil Murid (Baseline Need Analysis)",
+                framework_section_title: "🎓 Kerangka Pedagogi 3E KPPB",
+                ethics_section_title: "🛡️ Kepatuhan Etika Digital & KMD2",
+                btn_export_data: "Cetak / Simpan Ringkasan Portfolio",
+                btn_reset_data: "Set Semula Data Prestasi",
+                btn_continue: "TERUSKAN"
+            },
+            en: {
+                tab_learn: "Learning Mode",
+                tab_game: "Sharpener Machine",
+                tab_teacher: "Teacher & Portfolio",
+                learn_welcome_title: "Let's Learn Subtraction (-)!",
+                learn_welcome_desc: "Learn the difference between Addition (+) and Subtraction (-) using your favorite pencil sharpeners.",
+                step1_title: "Step 1: Differentiate (+) and (-)",
+                op_add_title: "ADDITION (+)",
+                op_add_desc: "Combine / Become More",
+                op_sub_title: "SUBTRACTION (-)",
+                op_sub_desc: "Discard / Take Away / Become Less",
+                step2_title: "Step 2: \"Discard Sharpeners into the Bin\" Concept",
+                step2_desc: "When you see the SUBTRACTION (-) symbol, you must DISCARD pencil sharpeners into the Machine Bin!",
+                btn_listen: "Listen Explanation",
+                btn_start_game: "Start Playing Sharpener Machine!",
+                tag_remove: "REMOVE / BUANG",
+                pool_title: "Your Pencil Sharpeners:",
+                drag_hint_text: "👉 Drag or Click sharpeners into the Sharpener Bin to discard them!",
+                baki_label: "Sharpeners Remaining:",
+                bin_title: "🗑️ Sharpener Bin",
+                bin_subtitle: "Place to discard sharpeners",
+                dropzone_label: "DROP HERE",
+                discarded_label: "Discarded:",
+                answer_title: "How many sharpeners are left? Pick answer:",
+                btn_repeat_audio: "Listen Question",
+                btn_reset_items: "Reset Sharpeners",
+                btn_next_q: "Another Question",
+                teacher_title: "📊 Teacher Dashboard & Learning Portfolio",
+                teacher_subtitle: "Baseline Analysis Data, Student Performance, & KMD2 / 3E KPPB Compliance",
+                m_total_label: "Total Questions Answered",
+                m_correct_label: "Correct Subtractions",
+                m_confusion_label: "Addition Confusion Count",
+                m_accuracy_label: "Subtraction Accuracy",
+                baseline_section_title: "📌 Baseline Need Analysis & Student Profile",
+                framework_section_title: "🎓 3E KPPB Pedagogical Framework",
+                ethics_section_title: "🛡️ Digital Ethics & KMD2 Compliance",
+                btn_export_data: "Print / Save Portfolio Summary",
+                btn_reset_data: "Reset Performance Data",
+                btn_continue: "CONTINUE"
+            }
+        };
+
+        /* --- STATE MANAGEMENT --- */
+        const appState = {
+            currentLang: 'ms',
+            highContrast: false,
+            ttsEnabled: true,
+            sfxEnabled: true,
+            currentQuestionIndex: 1,
+            numA: 5,
+            numB: 2,
+            targetDiscardCount: 2,
+            currentDiscardedCount: 0,
+
+            // Student Assessment & Diagnostic Tracking
+            stats: {
+                totalAnswered: 0,
+                correctCount: 0,
+                confusionCount: 0 // Times picked (a + b) instead of (a - b)
+            }
+        };
+
+        /* --- AUDIO SYNTHESIS (WEB AUDIO API & TTS) --- */
+        const AudioEngine = {
+            ctx: null,
+            initCtx() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            playSFX(type) {
+                if (!appState.sfxEnabled) return;
+                this.initCtx();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                if (type === 'pop') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+                    osc.start(now);
+                    osc.stop(now + 0.1);
+                } else if (type === 'correct') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                    osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, now);
+                    osc.frequency.setValueAtTime(180, now + 0.15);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                }
+            },
+            speak(text) {
+                if (!appState.ttsEnabled || !('speechSynthesis' in window)) return;
+                window.speechSynthesis.cancel();
+                let cleanText = text.replace(/0/g, appState.currentLang === 'ms' ? 'kosong' : 'zero');
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.lang = appState.currentLang === 'ms' ? 'ms-MY' : 'en-US';
+                utterance.rate = 0.9; // Slower rate for special education accessibility
+                window.speechSynthesis.speak(utterance);
+            }
+        };
+
+        /* --- INITIALIZATION & EVENT LISTENERS --- */
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedData();
+            initVisuals();
+            generateNewQuestion();
+            updateDashboardMetrics();
+
+            document.getElementById('lang-toggle-btn').addEventListener('click', toggleLanguage);
+            document.getElementById('contrast-toggle-btn').addEventListener('click', toggleContrast);
+            document.getElementById('tts-toggle-btn').addEventListener('click', toggleTTS);
+            document.getElementById('sfx-toggle-btn').addEventListener('click', toggleSFX);
+        });
+
+        /* --- TAB SWITCHING --- */
+        function switchTab(tabKey) {
+            AudioEngine.playSFX('pop');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-selected', 'false');
+            });
+            document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
+
+            const activeBtn = document.getElementById(`tab-${tabKey}`);
+            const activeView = document.getElementById(`view-${tabKey}`);
+
+            if (activeBtn && activeView) {
+                activeBtn.classList.add('active');
+                activeBtn.setAttribute('aria-selected', 'true');
+                activeView.classList.add('active');
+            }
+
+            if (tabKey === 'learn') {
+                AudioEngine.speak(translations[appState.currentLang].learn_welcome_title);
+            } else if (tabKey === 'game') {
+                speakCurrentQuestion();
+            } else if (tabKey === 'teacher') {
+                updateDashboardMetrics();
+            }
+        }
+
+        /* --- VISUAL INJECTIONS & DEMO --- */
+        function initVisuals() {
+            // Populate Guided Learning Visuals
+            const addVisual = document.getElementById('learn-add-visual');
+            addVisual.innerHTML = `${SHARPENER_SVG} ${SHARPENER_SVG} ${SHARPENER_SVG} <span style="font-size:2rem; font-weight:900; color:var(--addition-green)">+</span> ${SHARPENER_SVG} ${SHARPENER_SVG}`;
+
+            const subVisual = document.getElementById('learn-sub-visual');
+            subVisual.innerHTML = `${SHARPENER_SVG} ${SHARPENER_SVG} ${SHARPENER_SVG} ${SHARPENER_SVG} ${SHARPENER_SVG} <span style="font-size:1.5rem; font-weight:900; color:var(--subtraction-red)">➔ 🗑️ (Buang 2)</span>`;
+
+            renderGuidedDemo();
+        }
+
+        function renderGuidedDemo() {
+            const demoArea = document.getElementById('guided-demo-area');
+            demoArea.innerHTML = `
+                <div style="display:flex; gap:8px;">
+                    ${SHARPENER_SVG}${SHARPENER_SVG}${SHARPENER_SVG}
+                </div>
+                <div style="background:var(--subtraction-red); color:white; padding:8px 15px; border-radius:12px; font-weight:900;">
+                    TOLAK 1 (Buang ke tong) 🗑️
+                </div>
+                <div style="display:flex; gap:8px;">
+                    ${SHARPENER_SVG}
+                </div>
+                <div style="font-size:1.4rem; font-weight:900; color:#2d3436;">
+                    = 3 pengasah tinggal
+                </div>
+            `;
+        }
+
+        function runGuidedDemoSpeech() {
+            AudioEngine.speak(appState.currentLang === 'ms'
+                ? 'Operasi tolak bermaksud membuang barang. Ada 4 pengasah, buang 1 pengasah ke dalam tong, tinggal 3 pengasah.'
+                : 'Subtraction means discarding items. 4 sharpeners minus 1 sharpener discarded equals 3 sharpeners left.');
+        }
+
+        /* --- INTERACTIVE SUBTRACTION MACHINE LOGIC --- */
+        function generateNewQuestion() {
+            // Generate random subtraction where a >= b, range 1-10 suitable for special ed baseline
+            appState.numA = Math.floor(Math.random() * 6) + 3; // 3 to 8
+            appState.numB = Math.floor(Math.random() * appState.numA) + 1; // 1 to numA
+            appState.targetDiscardCount = appState.numB;
+            appState.currentDiscardedCount = 0;
+
+            document.getElementById('num-a').innerText = appState.numA;
+            document.getElementById('num-b').innerText = appState.numB;
+            document.getElementById('pool-count-label').innerText = `${appState.numA} ${appState.currentLang === 'ms' ? 'pengasah' : 'sharpeners'}`;
+            document.getElementById('target-discard-display').innerText = appState.numB;
+
+            resetCurrentQuestionWorkspace();
+            renderAnswerOptions();
+            speakCurrentQuestion();
+        }
+
+        function resetCurrentQuestionWorkspace() {
+            appState.currentDiscardedCount = 0;
+            updateCountsUI();
+
+            const poolContainer = document.getElementById('sharpener-pool');
+            poolContainer.innerHTML = '';
+
+            for (let i = 0; i < appState.numA; i++) {
+                const item = document.createElement('div');
+                item.className = 'interactive-sharpener';
+                item.id = `sharpener-item-${i}`;
+                item.setAttribute('draggable', 'true');
+                item.setAttribute('tabindex', '0');
+                item.setAttribute('aria-label', `Pengasah pensel ${i + 1}`);
+                item.innerHTML = SHARPENER_SVG;
+
+                // Drag and drop event bindings
+                item.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', item.id);
+                });
+
+                // Click to discard support for tactile accessibility
+                item.addEventListener('click', () => {
+                    discardSharpenerItem(item);
+                });
+
+                poolContainer.appendChild(item);
+            }
+        }
+
+        function discardSharpenerItem(itemEl) {
+            if (itemEl.classList.contains('discarded')) return;
+
+            itemEl.classList.add('discarded');
+            appState.currentDiscardedCount++;
+            AudioEngine.playSFX('pop');
+            updateCountsUI();
+
+            const speakText = appState.currentLang === 'ms'
+                ? `Buang pengasah ke-${appState.currentDiscardedCount}`
+                : `Discarded sharpener number ${appState.currentDiscardedCount}`;
+            AudioEngine.speak(speakText);
+        }
+
+        function discardOneSharpenerByClick() {
+            const items = document.querySelectorAll('.interactive-sharpener:not(.discarded)');
+            if (items.length > 0) {
+                discardSharpenerItem(items[0]);
+            }
+        }
+
+        function updateCountsUI() {
+            const remaining = appState.numA - appState.currentDiscardedCount;
+            document.getElementById('discarded-count-display').innerText = appState.currentDiscardedCount;
+            document.getElementById('remaining-count-display').innerText = remaining;
+        }
+
+        /* Drag and Drop Handlers for Bin */
+        function handleDragOver(e) {
+            e.preventDefault();
+            document.getElementById('sharpener-bin').classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            document.getElementById('sharpener-bin').classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            document.getElementById('sharpener-bin').classList.remove('drag-over');
+            const itemId = e.dataTransfer.getData('text/plain');
+            const itemEl = document.getElementById(itemId);
+            if (itemEl) {
+                discardSharpenerItem(itemEl);
+            }
+        }
+
+        function renderAnswerOptions() {
+            const correctAnswer = appState.numA - appState.numB;
+            const confusionAnswer = appState.numA + appState.numB; // Diagnostic answer (adding instead of subtracting)
+
+            const optionsSet = new Set([correctAnswer]);
+            optionsSet.add(confusionAnswer);
+
+            while (optionsSet.size < 4) {
+                let dummy = Math.floor(Math.random() * 12);
+                if (dummy !== correctAnswer) optionsSet.add(dummy);
+            }
+
+            const optionsArray = Array.from(optionsSet).sort(() => Math.random() - 0.5);
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            optionsArray.forEach(optVal => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-option';
+                btn.innerText = optVal;
+                btn.onclick = () => checkAnswer(optVal, correctAnswer, confusionAnswer);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(chosenVal, correctVal, confusionVal) {
+            appState.stats.totalAnswered++;
+
+            if (chosenVal === correctVal) {
+                appState.stats.correctCount++;
+                AudioEngine.playSFX('correct');
+                showFeedback(true, appState.currentLang === 'ms' ? 'SYABAS! BETUL!' : 'WELL DONE! CORRECT!',
+                    `${appState.numA} - ${appState.numB} = ${correctVal}`);
+            } else {
+                if (chosenVal === confusionVal) {
+                    appState.stats.confusionCount++;
+                }
+                AudioEngine.playSFX('wrong');
+                showFeedback(false, appState.currentLang === 'ms' ? 'CUBA LAGI!' : 'TRY AGAIN!',
+                    appState.currentLang === 'ms'
+                        ? `Ingat: TOLAK (-) bermaksud BUANG pengasah! ${appState.numA} buang ${appState.numB} tinggal ${correctVal}.`
+                        : `Remember: MINUS (-) means DISCARD sharpeners! ${appState.numA} minus ${appState.numB} equals ${correctVal}.`);
+            }
+
+            saveData();
+            updateDashboardMetrics();
+        }
+
+        function showFeedback(isCorrect, mainMsg, subMsg) {
+            const overlay = document.getElementById('feedback-overlay');
+            const iconArea = document.getElementById('feedback-icon-area');
+            const mainText = document.getElementById('feedback-main-text');
+            const subText = document.getElementById('feedback-sub-text');
+
+            iconArea.innerHTML = isCorrect ? STAR_SVG : CROSS_SVG;
+            mainText.innerText = mainMsg;
+            subText.innerText = subMsg;
+
+            overlay.classList.add('active');
+            AudioEngine.speak(`${mainMsg}. ${subMsg}`);
+        }
+
+        function closeFeedbackOverlay() {
+            document.getElementById('feedback-overlay').classList.remove('active');
+            generateNewQuestion();
+        }
+
+        function speakCurrentQuestion() {
+            const questionStr = appState.currentLang === 'ms'
+                ? `Soalan: ${appState.numA} tolak ${appState.numB} sama dengan berapa? Sila buang ${appState.numB} pengasah ke dalam tong.`
+                : `Question: What is ${appState.numA} minus ${appState.numB}? Discard ${appState.numB} sharpeners into the bin.`;
+            AudioEngine.speak(questionStr);
+        }
+
+        /* --- DASHBOARD & METRICS LOGIC --- */
+        function updateDashboardMetrics() {
+            document.getElementById('m-total-q').innerText = appState.stats.totalAnswered;
+            document.getElementById('m-correct').innerText = appState.stats.correctCount;
+            document.getElementById('m-confusion').innerText = appState.stats.confusionCount;
+
+            const accuracy = appState.stats.totalAnswered > 0
+                ? Math.round((appState.stats.correctCount / appState.stats.totalAnswered) * 100)
+                : 0;
+            document.getElementById('m-accuracy').innerText = `${accuracy}%`;
+        }
+
+        function resetStudentData() {
+            if (confirm(appState.currentLang === 'ms' ? 'Set semula semua data prestasi murid?' : 'Reset all student performance data?')) {
+                appState.stats.totalAnswered = 0;
+                appState.stats.correctCount = 0;
+                appState.stats.confusionCount = 0;
+                saveData();
+                updateDashboardMetrics();
+                AudioEngine.playSFX('pop');
+            }
+        }
+
+        function exportStudentData() {
+            window.print();
+        }
+
+        /* --- CONTROLS & ACCESSIBILITY TOGGLES --- */
+        function toggleLanguage() {
+            appState.currentLang = appState.currentLang === 'ms' ? 'en' : 'ms';
+            document.getElementById('lang-btn-text').innerText = appState.currentLang.toUpperCase();
+
+            // Translate UI elements
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[appState.currentLang][key]) {
+                    el.innerText = translations[appState.currentLang][key];
+                }
+            });
+
+            AudioEngine.playSFX('pop');
+            saveData();
+        }
+
+        function toggleContrast() {
+            appState.highContrast = !appState.highContrast;
+            document.body.classList.toggle('high-contrast', appState.highContrast);
+            document.getElementById('contrast-btn-text').innerText = appState.highContrast
+                ? (appState.currentLang === 'ms' ? 'Kontras: ON' : 'Contrast: ON')
+                : (appState.currentLang === 'ms' ? 'Kontras' : 'Contrast');
+            AudioEngine.playSFX('pop');
+            saveData();
+        }
+
+        function toggleTTS() {
+            appState.ttsEnabled = !appState.ttsEnabled;
+            document.getElementById('tts-btn-text').innerText = `Suara: ${appState.ttsEnabled ? 'ON' : 'OFF'}`;
+            if (!appState.ttsEnabled && 'speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            AudioEngine.playSFX('pop');
+            saveData();
+        }
+
+        function toggleSFX() {
+            appState.sfxEnabled = !appState.sfxEnabled;
+            document.getElementById('sfx-btn-text').innerText = `SFX: ${appState.sfxEnabled ? 'ON' : 'OFF'}`;
+            saveData();
+        }
+
+        /* --- LOCAL STORAGE SAVE/LOAD --- */
+        const STORAGE_KEY = 'mesin_pengasah_special_ed_v1';
+
+        function saveData() {
+            const dataToSave = {
+                currentLang: appState.currentLang,
+                highContrast: appState.highContrast,
+                ttsEnabled: appState.ttsEnabled,
+                sfxEnabled: appState.sfxEnabled,
+                stats: appState.stats
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+        }
+
+        function loadSavedData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.currentLang) appState.currentLang = parsed.currentLang;
+                    if (parsed.highContrast !== undefined) {
+                        appState.highContrast = parsed.highContrast;
+                        document.body.classList.toggle('high-contrast', appState.highContrast);
+                    }
+                    if (parsed.ttsEnabled !== undefined) appState.ttsEnabled = parsed.ttsEnabled;
+                    if (parsed.sfxEnabled !== undefined) appState.sfxEnabled = parsed.sfxEnabled;
+                    if (parsed.stats) Object.assign(appState.stats, parsed.stats);
+                } catch (e) {
+                    console.error('Error loading saved state', e);
+                }
+            }
+        }
+    </script>
 </body>
 </html>
