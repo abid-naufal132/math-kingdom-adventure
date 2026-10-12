@@ -683,9 +683,10 @@
         <header>
             <div class="brand-title">
                 <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
-                    <rect x="15" y="15" width="70" height="70" rx="18" fill="#fdcb6e"/>
-                    <rect x="30" y="30" width="40" height="25" rx="8" fill="#2d3436"/>
-                    <circle cx="50" cy="72" r="10" fill="#e17055"/>
+                    <path d="M 22 20 L 78 20 Q 88 20 86 35 L 78 85 Q 76 92 68 92 L 32 92 Q 24 92 22 85 L 14 35 Q 12 20 22 20 Z" fill="#fdcb6e" stroke="#e1b14c" stroke-width="3"/>
+                    <ellipse cx="50" cy="22" rx="16" ry="8" fill="#2d3436"/>
+                    <path d="M 38 38 L 64 38 L 57 78 L 45 78 Z" fill="#ffffff" stroke="#b2bec3" stroke-width="2"/>
+                    <circle cx="51" cy="52" r="4" fill="#dfe6e9" stroke="#636e72" stroke-width="1"/>
                 </svg>
                 <div>
                     <h1 id="app-title-text">Mesin Pengasah Ajaib</h1>
@@ -786,10 +787,20 @@
             <!-- ================= VIEW 2: INTERACTIVE SUBTRACTION MACHINE ================= -->
             <section id="view-game" class="view-panel" role="tabpanel">
 
+                <!-- Stage & Level Progression Bar -->
+                <div style="margin-bottom: 12px; background: #ffffff; padding: 10px 15px; border-radius: 16px; border: 3px solid #dfe6e9; display: flex; align-items: center; justify-content: space-between; gap: 15px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 1.1rem;">🏆</span>
+                        <span id="game-q-number-label" style="font-size: 1rem; font-weight: 900; color: var(--secondary-color);">Tahap 1 / 5</span>
+                    </div>
+                    <div style="flex: 1; max-width: 300px; height: 16px; background: #dfe6e9; border-radius: 10px; overflow: hidden; border: 2px solid #b2bec3;">
+                        <div id="stage-progress-fill" style="width: 20%; height: 100%; background: linear-gradient(90deg, #00b894, #55efc4); transition: width 0.4s ease-in-out;"></div>
+                    </div>
+                </div>
+
                 <!-- Question Header -->
                 <div class="question-header">
                     <div>
-                        <span style="font-size: 0.85rem; font-weight: 900; color: var(--secondary-color);" id="game-q-number-label">SOALAN 1 / 5</span>
                         <div class="equation-display">
                             <span id="num-a">5</span>
                             <div class="minus-badge-container">
@@ -1000,6 +1011,29 @@
                 </button>
             </div>
         </div>
+
+        <!-- Victory / Reward Screen Overlay -->
+        <div id="victory-overlay" class="feedback-overlay">
+            <div class="feedback-card" style="max-width: 450px; border-color: var(--primary-color);">
+                <div style="font-size: 4rem; margin-bottom: 10px; animation: pulse 1s infinite alternate;">🏆</div>
+                <h2 style="font-weight: 900; font-size: 2rem; color: var(--primary-color); margin-bottom: 8px;" data-key="victory_title">TAHNIAH! KAMU HEBAT!</h2>
+                <p style="font-size: 1.1rem; color: #2d3436; margin-bottom: 15px;" data-key="victory_desc">Kamu telah berjaya menyempurnakan kesemua 5 Tahap Operasi Tolak!</p>
+
+                <div style="background: #fff9db; border: 3px solid #f1c40f; border-radius: 16px; padding: 15px; margin-bottom: 20px; text-align: center;">
+                    <div style="font-size: 1.2rem; font-weight: 900; color: #d35400;" data-key="badge_earned_title">🎖️ LENCANA DIBUKA!</div>
+                    <p style="font-size: 1rem; font-weight: 700; color: #2d3436; margin-top: 5px;" data-key="badge_earned_name">Master Pengasah Ajaib (Operasi Tolak)</p>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-action" style="flex: 1;" onclick="restartGameFromStageOne()">
+                        🔄 <span data-key="btn_play_again">Main Semula</span>
+                    </button>
+                    <button class="btn-action reset" style="flex: 1;" onclick="switchTab('teacher')">
+                        📊 <span data-key="btn_view_portfolio">Portfolio Guru</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- JavaScript Logic embedded for single-file robustness -->
@@ -1020,53 +1054,48 @@
             <svg class="sharpener-svg" viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="overflow: visible;">
                 <defs>
                     <filter id="shadow-${uid}" x="-20%" y="-20%" width="140%" height="140%">
-                        <feDropShadow dx="0" dy="5" stdDeviation="3.5" flood-color="#000000" flood-opacity="0.3"/>
+                        <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#000000" flood-opacity="0.25"/>
                     </filter>
                     <linearGradient id="bodyGrad-${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stop-color="${palette.light}"/>
-                        <stop offset="50%" stop-color="${palette.main}"/>
+                        <stop offset="60%" stop-color="${palette.main}"/>
                         <stop offset="100%" stop-color="${palette.dark}"/>
                     </linearGradient>
-                    <linearGradient id="bladeGrad-${uid}" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#f5f6fa"/>
-                        <stop offset="30%" stop-color="#ffffff"/>
-                        <stop offset="70%" stop-color="#dcdde1"/>
-                        <stop offset="100%" stop-color="#718093"/>
-                    </linearGradient>
-                    <radialGradient id="screwGrad-${uid}" cx="35%" cy="35%" r="65%">
+                    <linearGradient id="bladeGrad-${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stop-color="#ffffff"/>
-                        <stop offset="60%" stop-color="#b2bec3"/>
-                        <stop offset="100%" stop-color="#636e72"/>
-                    </radialGradient>
-                    <radialGradient id="holeGrad-${uid}" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stop-color="#000000"/>
-                        <stop offset="75%" stop-color="#1e272e"/>
-                        <stop offset="100%" stop-color="#485460"/>
-                    </radialGradient>
+                        <stop offset="50%" stop-color="#cfd8dc"/>
+                        <stop offset="100%" stop-color="#90a4ae"/>
+                    </linearGradient>
                 </defs>
                 <g filter="url(#shadow-${uid})">
-                    <!-- Plastic Curved Main Casing -->
-                    <rect x="12" y="15" width="76" height="70" rx="18" fill="url(#bodyGrad-${uid})" stroke="${palette.stroke}" stroke-width="2.5"/>
+                    <!-- Main Plastic Casing (Ergonomic Wedge Body) -->
+                    <path d="M 22 20 L 78 20 Q 88 20 86 35 L 78 85 Q 76 92 68 92 L 32 92 Q 24 92 22 85 L 14 35 Q 12 20 22 20 Z" fill="url(#bodyGrad-${uid})" stroke="${palette.stroke}" stroke-width="2.5"/>
+
+                    <!-- Side Grip Ridges -->
+                    <line x1="16" y1="40" x2="19" y2="75" stroke="${palette.dark}" stroke-width="2.5" stroke-linecap="round"/>
+                    <line x1="12" y1="42" x2="15" y2="73" stroke="${palette.light}" stroke-width="1.5" stroke-linecap="round"/>
+                    <line x1="84" y1="40" x2="81" y2="75" stroke="${palette.dark}" stroke-width="2.5" stroke-linecap="round"/>
+                    <line x1="88" y1="42" x2="85" y2="73" stroke="${palette.light}" stroke-width="1.5" stroke-linecap="round"/>
+
+                    <!-- Top Pencil Entry Hole -->
+                    <ellipse cx="50" cy="22" rx="16" ry="8" fill="#2d3436" stroke="${palette.stroke}" stroke-width="2"/>
+                    <ellipse cx="50" cy="22" rx="11" ry="5.5" fill="#000000"/>
+
+                    <!-- Sharpening Trough / Recess Chamber -->
+                    <path d="M 32 34 L 68 34 L 62 82 L 38 82 Z" fill="#2d3436" opacity="0.15"/>
+                    <path d="M 34 36 L 66 36 L 60 80 L 40 80 Z" fill="#ffffff" opacity="0.2"/>
+
+                    <!-- Silver Metallic Razor Blade -->
+                    <path d="M 38 38 L 64 38 L 57 78 L 45 78 Z" fill="url(#bladeGrad-${uid})" stroke="#607d8b" stroke-width="1.5"/>
+                    <line x1="38" y1="38" x2="45" y2="78" stroke="#ffffff" stroke-width="2"/>
+
+                    <!-- Center Securing Screw -->
+                    <circle cx="51" cy="52" r="4.5" fill="#eceff1" stroke="#455a64" stroke-width="1"/>
+                    <line x1="48" y1="52" x2="54" y2="52" stroke="#37474f" stroke-width="1"/>
+                    <line x1="51" y1="49" x2="51" y2="55" stroke="#37474f" stroke-width="1"/>
+
                     <!-- Specular Curved Highlight -->
-                    <path d="M 22 17 Q 50 14 78 17 Q 82 22 84 32 Q 50 24 16 32 Q 18 22 22 17 Z" fill="#ffffff" opacity="0.45"/>
-                    <path d="M 16 35 L 16 68 Q 18 78 22 81 L 22 35 Z" fill="#ffffff" opacity="0.25"/>
-                    <!-- Center Metallic Blade Chamber Block -->
-                    <rect x="24" y="27" width="52" height="46" rx="8" fill="#1e272e" stroke="#000000" stroke-width="1.5"/>
-                    <!-- Mounted Steel Blade -->
-                    <path d="M 27 31 L 73 31 L 69 45 L 27 45 Z" fill="url(#bladeGrad-${uid})" stroke="#485460" stroke-width="1"/>
-                    <line x1="27" y1="45" x2="69" y2="45" stroke="#ffffff" stroke-width="1.5"/>
-                    <!-- Precision Screws -->
-                    <circle cx="34" cy="37" r="3.5" fill="url(#screwGrad-${uid})" stroke="#2c3e50" stroke-width="0.5"/>
-                    <line x1="32.5" y1="37" x2="35.5" y2="37" stroke="#2d3436" stroke-width="0.8"/>
-                    <line x1="34" y1="35.5" x2="34" y2="38.5" stroke="#2d3436" stroke-width="0.8"/>
-                    <circle cx="64" cy="37" r="3.5" fill="url(#screwGrad-${uid})" stroke="#2c3e50" stroke-width="0.5"/>
-                    <line x1="62.5" y1="37" x2="65.5" y2="37" stroke="#2d3436" stroke-width="0.8"/>
-                    <line x1="64" y1="35.5" x2="64" y2="38.5" stroke="#2d3436" stroke-width="0.8"/>
-                    <!-- Pencil Sharpening Hole -->
-                    <circle cx="50" cy="57" r="11" fill="url(#holeGrad-${uid})" stroke="#718093" stroke-width="2"/>
-                    <circle cx="50" cy="57" r="8.5" fill="#000000"/>
-                    <!-- Bottom Grip/Rib Slot -->
-                    <rect x="32" y="77" width="36" height="4" rx="2" fill="#1e272e" opacity="0.5"/>
+                    <path d="M 24 24 Q 50 21 76 24 Q 78 28 77 34 Q 50 28 23 34 Q 22 28 24 24 Z" fill="#ffffff" opacity="0.4"/>
                 </g>
             </svg>`;
         }
@@ -1090,6 +1119,13 @@
                 tab_learn: "Mod Belajar",
                 tab_game: "Mesin Pengasah",
                 tab_teacher: "Papan Guru & Portfolio",
+                stage_label: "Tahap",
+                victory_title: "TAHNIAH! KAMU HEBAT!",
+                victory_desc: "Kamu telah berjaya menyempurnakan kesemua 5 Tahap Operasi Tolak!",
+                badge_earned_title: "🎖️ LENCANA DIBUKA!",
+                badge_earned_name: "Master Pengasah Ajaib (Operasi Tolak)",
+                btn_play_again: "Main Semula",
+                btn_view_portfolio: "Portfolio Guru",
                 learn_welcome_title: "Mari Kenali Operasi Tolak (-)!",
                 learn_welcome_desc: "Belajar beza antara Tambah (+) dan Tolak (-) menggunakan pengasah pensel kesukaan kamu.",
                 step1_title: "Langkah 1: Bezakan (+) dan (-)",
@@ -1151,6 +1187,13 @@
                 tab_learn: "Learning Mode",
                 tab_game: "Sharpener Machine",
                 tab_teacher: "Teacher & Portfolio",
+                stage_label: "Stage",
+                victory_title: "CONGRATULATIONS! YOU ARE AWESOME!",
+                victory_desc: "You have successfully completed all 5 Subtraction Stages!",
+                badge_earned_title: "🎖️ BADGE UNLOCKED!",
+                badge_earned_name: "Magic Sharpener Master (Subtraction)",
+                btn_play_again: "Play Again",
+                btn_view_portfolio: "Teacher Portfolio",
                 learn_welcome_title: "Let's Learn Subtraction (-)!",
                 learn_welcome_desc: "Learn the difference between Addition (+) and Subtraction (-) using your favorite pencil sharpeners.",
                 step1_title: "Step 1: Differentiate (+) and (-)",
@@ -1217,6 +1260,7 @@
             ttsEnabled: true,
             sfxEnabled: true,
             currentQuestionIndex: 1,
+            lastAnswerWasCorrect: false,
             numA: 5,
             numB: 2,
             targetDiscardCount: 2,
@@ -1230,14 +1274,41 @@
             }
         };
 
+        /* --- NUMBER TO WORDS HELPER (MALAY & ENGLISH) --- */
+        const MALAY_NUMBERS = ["kosong", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "lapan", "sembilan", "sepuluh", "sebelas", "dua belas", "tiga belas", "empat belas", "lima belas", "enam belas", "tujuh belas", "lapan belas", "sembilan belas", "dua puluh"];
+
+        function numberToWords(num, lang = 'ms') {
+            if (lang === 'ms') {
+                if (num >= 0 && num < MALAY_NUMBERS.length) return MALAY_NUMBERS[num];
+                return num.toString();
+            }
+            return num.toString();
+        }
+
         /* --- AUDIO SYNTHESIS (WEB AUDIO API & TTS) --- */
         const AudioEngine = {
             ctx: null,
             voices: [],
+            unlocked: false,
             initCtx() {
                 if (!this.ctx) {
                     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
                 }
+                if (this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            },
+            unlockAudio() {
+                if (this.unlocked) return;
+                this.initCtx();
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.resume();
+                    // Play a silent short utterance to prime Web Speech API on iOS / Safari / Chrome autoplay restrictions
+                    const dummyUtterance = new SpeechSynthesisUtterance('');
+                    dummyUtterance.volume = 0;
+                    window.speechSynthesis.speak(dummyUtterance);
+                }
+                this.unlocked = true;
             },
             initVoices() {
                 if ('speechSynthesis' in window) {
@@ -1255,8 +1326,8 @@
                         this.voices = window.speechSynthesis.getVoices();
                     }
                 }
-                // Strictly filter ONLY native ms-MY or ms_MY voices
-                return this.voices.find(v => /^ms[-_]MY$/i.test(v.lang) || v.lang === 'ms-MY' || v.lang === 'ms_MY');
+                // Match Malay locale (ms-MY, ms_MY, ms)
+                return this.voices.find(v => /^ms[-_]MY$/i.test(v.lang) || v.lang === 'ms-MY' || v.lang === 'ms_MY' || v.lang.startsWith('ms'));
             },
             getEnglishVoice() {
                 if (!this.voices || this.voices.length === 0) {
@@ -1365,6 +1436,16 @@
         window.addEventListener('DOMContentLoaded', () => {
             loadSavedData();
             AudioEngine.initVoices();
+
+            // Bind global user interaction triggers to bypass browser autoplay restriction
+            const unlockHandler = () => {
+                AudioEngine.unlockAudio();
+                document.removeEventListener('click', unlockHandler);
+                document.removeEventListener('touchstart', unlockHandler);
+            };
+            document.addEventListener('click', unlockHandler);
+            document.addEventListener('touchstart', unlockHandler);
+
             initVisuals();
             generateNewQuestion();
             updateDashboardMetrics();
@@ -1439,6 +1520,19 @@
         }
 
         /* --- INTERACTIVE SUBTRACTION MACHINE LOGIC --- */
+        function updateStageUI() {
+            const stageLabel = translations[appState.currentLang].stage_label || (appState.currentLang === 'ms' ? 'Tahap' : 'Stage');
+            const qNumLabel = document.getElementById('game-q-number-label');
+            if (qNumLabel) {
+                qNumLabel.innerText = `${stageLabel} ${appState.currentQuestionIndex} / 5`;
+            }
+            const progressFill = document.getElementById('stage-progress-fill');
+            if (progressFill) {
+                const percent = Math.min(100, Math.max(0, (appState.currentQuestionIndex / 5) * 100));
+                progressFill.style.width = `${percent}%`;
+            }
+        }
+
         function generateNewQuestion() {
             // Generate random subtraction where a >= b, range 1-10 suitable for special ed baseline
             appState.numA = Math.floor(Math.random() * 6) + 3; // 3 to 8
@@ -1451,6 +1545,7 @@
             document.getElementById('pool-count-label').innerText = `${appState.numA} ${appState.currentLang === 'ms' ? 'pengasah' : 'sharpeners'}`;
             document.getElementById('target-discard-display').innerText = appState.numB;
 
+            updateStageUI();
             resetCurrentQuestionWorkspace();
             renderAnswerOptions();
             speakCurrentQuestion();
@@ -1562,11 +1657,13 @@
             appState.stats.totalAnswered++;
 
             if (chosenVal === correctVal) {
+                appState.lastAnswerWasCorrect = true;
                 appState.stats.correctCount++;
                 AudioEngine.playSFX('correct');
                 showFeedback(true, appState.currentLang === 'ms' ? 'SYABAS! BETUL!' : 'WELL DONE! CORRECT!',
                     `${appState.numA} - ${appState.numB} = ${correctVal}`);
             } else {
+                appState.lastAnswerWasCorrect = false;
                 if (chosenVal === confusionVal) {
                     appState.stats.confusionCount++;
                 }
@@ -1597,13 +1694,42 @@
 
         function closeFeedbackOverlay() {
             document.getElementById('feedback-overlay').classList.remove('active');
+
+            if (appState.lastAnswerWasCorrect) {
+                if (appState.currentQuestionIndex >= 5) {
+                    showVictoryOverlay();
+                    return;
+                } else {
+                    appState.currentQuestionIndex++;
+                }
+            }
+            generateNewQuestion();
+        }
+
+        function showVictoryOverlay() {
+            AudioEngine.playSFX('correct');
+            const victoryOverlay = document.getElementById('victory-overlay');
+            victoryOverlay.classList.add('active');
+
+            const speechText = appState.currentLang === 'ms'
+                ? 'Tahniah! Kamu hebat! Kamu telah berjaya menyempurnakan kesemua 5 Tahap Operasi Tolak!'
+                : 'Congratulations! You are awesome! You completed all 5 Subtraction Stages!';
+            AudioEngine.speak(speechText);
+        }
+
+        function restartGameFromStageOne() {
+            document.getElementById('victory-overlay').classList.remove('active');
+            appState.currentQuestionIndex = 1;
             generateNewQuestion();
         }
 
         function speakCurrentQuestion() {
+            const numAWord = numberToWords(appState.numA, appState.currentLang);
+            const numBWord = numberToWords(appState.numB, appState.currentLang);
+
             const questionStr = appState.currentLang === 'ms'
-                ? `Soalan: ${appState.numA} tolak ${appState.numB} sama dengan berapa? Sila buang ${appState.numB} pengasah ke dalam tong.`
-                : `Question: What is ${appState.numA} minus ${appState.numB}? Discard ${appState.numB} sharpeners into the bin.`;
+                ? `Soalan ${appState.currentQuestionIndex}: ${numAWord} tolak ${numBWord} sama dengan berapa? Sila buang ${numBWord} pengasah ke dalam tong.`
+                : `Question ${appState.currentQuestionIndex}: What is ${numAWord} minus ${numBWord}? Discard ${numBWord} sharpeners into the bin.`;
             AudioEngine.speak(questionStr);
         }
 
@@ -1648,10 +1774,7 @@
             });
 
             // Update dynamic language labels
-            const qNumLabel = document.getElementById('game-q-number-label');
-            if (qNumLabel) {
-                qNumLabel.innerText = `${appState.currentLang === 'ms' ? 'SOALAN' : 'QUESTION'} ${appState.currentQuestionIndex} / 5`;
-            }
+            updateStageUI();
 
             const poolCountLabel = document.getElementById('pool-count-label');
             if (poolCountLabel) {
