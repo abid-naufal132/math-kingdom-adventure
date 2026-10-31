@@ -1644,6 +1644,15 @@
                 }
                 let cleanText = text.replace(/0/g, appState.currentLang === 'ms' ? 'kosong' : 'zero');
 
+                if (appState.currentLang === 'ms') {
+                    // Prevent TTS engine from pronouncing '-' as 'sampai' or reading 'sampai' in place of 'tolak'
+                    cleanText = cleanText.replace(/(\d+)\s*-\s*(\d+)/g, '$1 tolak $2')
+                                         .replace(/\bsampai\b/gi, 'tolak');
+                } else {
+                    // Prevent TTS engine from pronouncing '-' as 'to' or reading 'to' in place of 'minus'
+                    cleanText = cleanText.replace(/(\d+)\s*-\s*(\d+)/g, '$1 minus $2');
+                }
+
                 this.triggerVisualHighlight(highlightTarget);
 
                 if (appState.currentLang === 'ms') {
@@ -2135,7 +2144,17 @@
             subText.innerText = subMsg;
 
             overlay.classList.add('active');
-            AudioEngine.speak(`${mainMsg}. ${subMsg}`);
+
+            // Spoken voiceover post-answer formatting
+            let spokenSubMsg = subMsg;
+            if (isCorrect) {
+                if (appState.currentLang === 'ms') {
+                    spokenSubMsg = `${appState.numA} tolak ${appState.numB} sama dengan ${appState.numA - appState.numB}`;
+                } else {
+                    spokenSubMsg = `${appState.numA} minus ${appState.numB} equals ${appState.numA - appState.numB}`;
+                }
+            }
+            AudioEngine.speak(`${mainMsg}. ${spokenSubMsg}`);
         }
 
         function closeFeedbackOverlay() {
